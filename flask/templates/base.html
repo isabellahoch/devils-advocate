@@ -104,6 +104,11 @@ a.active-sub-link {
   color: #A8A8A8 !important;
 }
 
+.divider {
+	margin-top: 5px;
+    font-size: 25px;
+}
+
 /*@media (min-width: 768px) {
 
   .navbar-collapse.collapse {
@@ -151,18 +156,21 @@ a.active-sub-link {
 	</div>
 	<nav class="navbar navbar-inverse navbar-expand-md" id="navbar">
 		<div class="container-fluid">
-			<a class="navbar-brand" href="/" style="padding-top:5px">
+			<!-- <a class="navbar-brand" href="/" style="padding-top:5px">
 				<img src="https://www.sfuhs.org/uploaded/favicon.ico" id="logo" style="height:40px; padding-left:20px">
-			</a>
+			</a> -->
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbarDropdown" aria-expanded="false" aria-label="Toggle navigation" style="all:initial">
 				<!-- <span class="navbar-toggler-icon"></span> -->
 				<i class="fas fa-bars"></i>
 			</button>
 			<div class="collapse navbar-collapse" id="navbar" style="    text-transform: uppercase;">
-				<ul class="nav navbar-nav">
+				<ul class="nav navbar-nav text-center justify-content-center">
 					<li class="{% block homeisactive %}{% endblock %}"><a href="/" id="nav_">Home</a></li>
+					<li class="divider">•</li>
 					<li class="{% block featuredisactive %}{% endblock %}"><a href="/featured" id="nav_about">Featured</a></li>
+					<li class="divider">•</li>
 					<li class="{% block articlesisactive %}{% endblock %}"><a href="/articles" id="nav_explore">Articles</a></li>
+					<li class="divider">•</li>
 					<li class="{% block authorsisactive %}{% endblock %}"><a href="/authors" id="nav_swipe">Authors</a></li>
 				</ul>
 				<!-- <ul class="nav navbar-nav navbar-right">
