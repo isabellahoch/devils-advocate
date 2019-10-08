@@ -152,7 +152,7 @@ a.active-sub-link {
 
 <body>
 	<div class="container">
-		<img src="http://devils-advocate.herokuapp.com/static/img/logo.png" style="max-width: 100%;/* max-height: 100px; */padding-left: 50px;padding-right: 50px;">
+		<a href="/"><img src="http://devils-advocate.herokuapp.com/static/img/logo.png" style="max-width: 100%;/* max-height: 100px; */padding-left: 50px;padding-right: 50px;"></a>
 	</div>
 	<nav class="navbar navbar-inverse navbar-expand-md" id="navbar">
 		<div class="container-fluid">
@@ -164,7 +164,7 @@ a.active-sub-link {
 				<i class="fas fa-bars"></i>
 			</button>
 			<div class="collapse navbar-collapse" id="navbar" style="    text-transform: uppercase;">
-				<ul class="nav navbar-nav text-center justify-content-center">
+				<ul class="nav navbar-nav text-center justify-content-center" style="width:100%">
 					<li class="{% block homeisactive %}{% endblock %}"><a href="/" id="nav_">Home</a></li>
 					<li class="divider">•</li>
 					<li class="{% block featuredisactive %}{% endblock %}"><a href="/featured" id="nav_about">Featured</a></li>
