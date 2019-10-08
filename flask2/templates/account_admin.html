@@ -1,0 +1,510 @@
+{% extends "base.html" %}
+{% block title %}(Admin) {% if dashboard %}Dashboard{% else %}Account{% endif %} | INCUB8{% endblock %}
+{% block dashboardisactive %}{% if dashboard %}active{% endif %}{% endblock %}
+{% block content %}
+{% if update %}
+<div class="row justify-content-center align-items-center message" id="update_msg" style="background-color:lightblue; padding: 10px; margin-bottom: 25px;">
+    <div class="clown">
+        <span>Your changes have been saved!</span>
+    </div>
+    <div class="float-right" style="margin-left:25px">
+        <button class="btn btn-outline-secondary hide_msg" id="hide_msg">x</button>
+    </div>
+</div>
+{% endif %}
+{% if message %}
+<div class="row justify-content-center align-items-center message" id="msg" style="background-color:lightblue; padding: 10px; margin-bottom: 25px;">
+    <div class="clown">
+        <span>{{ message }}</span>
+    </div>
+    <div class="float-right" style="margin-left:25px">
+        <button class="btn btn-outline-secondary hide_msg" id="hide_message">x</button>
+    </div>
+</div>
+{% endif %}
+<div class="row">
+	<div class="col-sm-2">
+		<button class="account-nav-item active" id="get_information">Account Details</button>
+		<button class="account-nav-item" id="get_admin_info">Admin Info</button>
+    <button class="account-nav-item" id="get_admin">Change Admins</button>
+    <button class="account-nav-item" id="get_delete">Delete a User</button>
+    <a style="color:inherit" class="account-nav-item" href="/edit-features" id="get_features">Edit Features</a>
+		<button class="account-nav-item" id="get_bio">Bio</button>
+		<button class="account-nav-item" id="get_image">Image</button>
+		<button class="account-nav-item" id="get_password">Change Password</button>
+		<a class="account-nav-item" id="logout" href="/logout" style="border-bottom: 1px solid #000; color:inherit !important">Log Out</a>
+	</div>
+	<div class="account-panel col-xs-12 col-sm-10 row justify-content-center align-items-center active" id="information">
+    <button style="all:none; display:none" class="mobile_go_back">
+      <img class="mobile_go_back_img" width="27" src="{{ url_for('static', filename='img/icons/blue-arrow.png') }}" alt="Blue arrow left">
+    </button>
+		<h1 class="account_heading">{{ info.name }}</h1>
+		<div class="account_content">
+			<div>
+				<p class="mtl"><strong>Name: </strong>{{ info.name }}
+				</p>
+				<p><strong>Email: </strong>{{ info.email }}</p>
+				<p><strong>URL: </strong><a style="color:inherit" href="{{ url_for('get_investor' ,investor_id=info.name) }}"><span style="display:inline" id="account_link">incub8.herokuapp.com/investors/{{ info.name }}</span></a><button id="copy_link" onclick="copy_link()" style="border-style: none;background: none;"><i class="far fa-copy"></i></button></p>
+				<p><strong>Password: </strong>XXXXXXXX</p>
+				{% if message %}<p>{{ message }}</p>{% endif %}
+			</div>
+		</div>
+    </div>
+    <div class="account-panel col-xs-12 col-sm-10 row justify-content-center align-items-center" id="admin_info" style="display:none">
+      <button style="all:none; display:none" class="mobile_go_back">
+      <img class="mobile_go_back_img" width="27" src="{{ url_for('static', filename='img/icons/blue-arrow.png') }}" alt="Blue arrow left">
+    </button>
+		<h1 class="account_heading">Admin Info</h1>
+		<div class="account_content">
+			{{ admin_info|safe }}
+		</div>
+    </div>
+    <div class="account-panel col-xs-12 col-sm-10 row justify-content-center align-items-center" id="admin" style="display:none">
+      <button style="all:none; display:none" class="mobile_go_back">
+      <img class="mobile_go_back_img" width="27" src="{{ url_for('static', filename='img/icons/blue-arrow.png') }}" alt="Blue arrow left">
+    </button>
+        <h1 class="account_heading">Edit Admins</h1>
+        <div class="account_content">
+            <div class="col-md-6" id="new-admin">
+                <h3 style="width:100%">Add a new admin</h3><br>
+                <form autocomplete="off" action="/add-admin" method="post">
+                    <div class="autocomplete" style="width:300px;">
+                        <!-- <input id="add_admin" class="form-control" type="text" name="user" placeholder="User Email"> -->
+                        {{ add_admin.email }}
+                    </div>
+                    <br style="width:100%">
+                    <!-- <input style="width: 300px;margin-top: 15px;" type="submit" class="btn btn-baking" id="add-admin-btn"> -->
+                    <div style="padding-top:15px">
+                        <input name="confirm" type="checkbox" style="display:inline"><span style="display:inline">&nbsp;Yes, I'm sure I want to do this</span>
+                        {{ add_admin.submit }}
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-6" id="remove-admin">
+                <h3 style="width:100%">Remove an admin</h3><br>
+                <form autocomplete="off" action="/remove-admin" method="post">
+                    <div class="autocomplete" style="width:300px;">
+                        <!-- <input id="remove_admin" class="form-control" type="text" name="user" placeholder="User Email"> -->
+                        {{ remove_admin.email }}
+                    </div>
+                    <!-- <input style="width: 300px;margin-top: 15px;" type="submit" class="btn btn-baking" id="remove-admin-btn"> -->
+                    <div style="padding-top:15px">
+                        <input name="confirm" type="checkbox" style="display:inline"><span style="display:inline">&nbsp;Yes, I'm sure I want to do this</span>
+                        {{ remove_admin.submit }}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="account-panel col-xs-12 col-sm-10 row justify-content-center align-items-center" id="delete" style="display:none">
+      <button style="all:none; display:none" class="mobile_go_back">
+      <img class="mobile_go_back_img" width="27" src="{{ url_for('static', filename='img/icons/blue-arrow.png') }}" alt="Blue arrow left">
+    </button>
+        <h1 class="account_heading">Remove User(s)</h1>
+        <div class="account_content">
+            <form style="all:none" autocomplete="off" action="/delete" method="post">
+                <div class="autocomplete" style="width:100%">
+                    {{ delete_user.email }}
+                </div>
+                <br style="width:100%">
+                <div style="padding-top:15px">
+                    <input name="confirm" type="checkbox" style="display:inline"><span style="display:inline">&nbsp;Yes, I'm sure I want to do this</span>
+                    <br style="width:100%">
+                    <div class="row align-items-center justify-content-center">
+                        {{ delete_user.submit }}
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="account-panel col-xs-12 col-sm-10 row justify-content-center align-items-center" id="bio" style="display:none">
+      <button style="all:none; display:none" class="mobile_go_back">
+      <img class="mobile_go_back_img" width="27" src="{{ url_for('static', filename='img/icons/blue-arrow.png') }}" alt="Blue arrow left">
+    </button>
+		<h1 class="account_heading">Edit Bio</h1>
+		<form style="all:none" action="/dashboard?action=bio" method="POST">
+			<div class="account_content">
+				{{ form.bio }}
+			</div>
+			<div class="update">
+				{{ form.update }}
+			</div>
+		</form>
+    </div>
+    <div class="account-panel col-xs-12 col-sm-10 row justify-content-center align-items-center" id="image" style="display:none">
+      <button style="all:none; display:none" class="mobile_go_back">
+      <img class="mobile_go_back_img" width="27" src="{{ url_for('static', filename='img/icons/blue-arrow.png') }}" alt="Blue arrow left">
+    </button>
+		<h1 class="account_heading">Image</h1>
+		<form style="all:none" action="/dashboard?action=image" method="POST" enctype=multipart/form-data>
+			<div class="account_content">
+                <input type=file name=photo id="upload_a_pic" style="padding-bottom:20px">
+				{{ form.image }}
+				<div id="preview" class="row justify-content-center align-items-center" style="margin-top: 50px">
+					<img style="max-width:50%" id="preview-img">
+				</div>
+			</div>
+			<div class="update">
+				{{ form.update }}
+			</div>
+		</form>
+    </div>
+    <div class="account-panel col-xs-12 col-sm-10 row justify-content-center align-items-center" id="password" style="display:none">
+      <button style="all:none; display:none" class="mobile_go_back">
+      <img class="mobile_go_back_img" width="27" src="{{ url_for('static', filename='img/icons/blue-arrow.png') }}" alt="Blue arrow left">
+    </button>
+		<h1 class="account_heading">Change Password</h1>
+		<form style="all:none" action="/dashboard?action=password" method="POST">
+			<div class="account_content">
+				<p class="mtl"><strong>New Password: </strong>{{ form.password }}</p>
+				<p class="mtl"><strong>Confirm Password: </strong>{{ form.confirm_password }}</p>
+			</div>
+			<div class="update">
+				{{ form.update }}
+			</div>
+		</form>
+    </div>
+	<!-- <div class="col-sm-10">
+	</div> -->
+</div>
+
+<div class="row">
+  </div>
+
+
+
+{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/glossier.css') }}">
+<style>
+#dash h3 {
+  width:100% !important;
+}
+
+
+* { box-sizing: border-box; }
+
+.autocomplete {
+  /*the container must be positioned relative:*/
+  position: relative;
+  display: inline-block;
+}
+/*input {
+  border: 1px solid transparent;
+  background-color: #f1f1f1;
+  padding: 10px;
+  font-size: 16px;
+}
+input[type=text] {
+  background-color: #f1f1f1;
+  width: 100%;
+}
+input[type=submit] {
+  background-color: DodgerBlue;
+  color: #fff;
+}*/
+.autocomplete-items {
+  position: absolute;
+  border: 1px solid #d4d4d4;
+  border-bottom: none;
+  border-top: none;
+  z-index: 99;
+  /*position the autocomplete items to be the same width as the container:*/
+  top: 100%;
+  left: 0;
+  right: 0;
+}
+.autocomplete-items div {
+  padding: 10px;
+  cursor: pointer;
+  background-color: #fff; 
+  border-bottom: 1px solid #d4d4d4; 
+}
+.autocomplete-items div:hover {
+  /*when hovering an item:*/
+  background-color: #e9e9e9; 
+}
+.autocomplete-active {
+  /*when navigating through the items using the arrow keys:*/
+  background-color: DodgerBlue !important; 
+  color: #ffffff; 
+}
+</style>
+{% endblock %}
+{% block js %}
+<script>
+	$(document).ready(function() {
+
+		$('.update').each(function() {
+			if ($(this).hasClass('row align-items-center justify-content-center')){}
+        	else {
+        		$(this).addClass("row align-items-center justify-content-center");
+        	}
+        });
+
+	function hide_tabs() {
+		console.log("what up my dudes")
+		$('.account-panel').hide();
+		$('.account-panel').each(function() {
+        	if ( $(this).hasClass('active') ) {
+        		console.log($(this).attr("id"));
+        		$(this).removeClass("active");
+        	}
+        });
+        $('.account-nav-item').each(function() {
+        	if ($ (this).hasClass('active') ) {
+        		console.log($(this).attr("id"));
+        		$(this).removeClass("active");
+        	}
+        });
+        $('button').each(function() {
+        	if ( $(this).hasClass('active') ) {
+        		console.log($(this).attr("id"));
+        		$(this).removeClass("active");
+        	}
+        });
+        return ":)"
+	}
+
+	if ($('#form-image').val()) {
+		$("#preview-img").attr("src",$('#form-image').val());
+	}
+
+    $("#get_information").click(function(){
+        hide_tabs();
+        $('#information').show();
+        $('#information').addClass("active");
+        $('#get_information').addClass("active");
+    }); 
+    $("#get_password").click(function(){
+        hide_tabs();
+        $('#password').show();
+        $('#password').addClass("active");
+        $('#get_password').addClass("active");
+    }); 
+    $("#get_bio").click(function(){
+        hide_tabs();
+        $('#bio').show();
+        $('#bio').addClass("active");
+        $('#get_bio').addClass("active");
+    }); 
+    $("#get_image").click(function(){
+        hide_tabs();
+        $('#image').show();
+        $('#image').addClass("active");
+        $('#get_image').addClass("active");
+    });
+    $("#get_admin").click(function(){
+        hide_tabs();
+        $('#admin').show();
+        $('#admin').addClass("active");
+        $('#get_admin').addClass("active");
+    });
+    $("#get_admin_info").click(function(){
+        hide_tabs();
+        $('#admin_info').show();
+        $('#admin_info').addClass("active");
+        $('#get_admin_info').addClass("active");
+    });
+    $("#get_delete").click(function(){
+        hide_tabs();
+        $('#delete').show();
+        $('#delete').addClass("active");
+        $('#get_delete').addClass("active");
+    });
+
+    if ($(window).width() <= 575) {
+          function hide_links() {
+            $('.account-nav-item').hide();
+            $('.account-nav-item').each(function() {
+                  if ( $(this).hasClass('active') ) {
+                    console.log($(this).attr("id"));
+                    $(this).removeClass("active");
+                  }
+                });
+                return ":)"
+          }
+
+          function show_links() {
+            $('.account-nav-item').show();
+            $('.account-nav-item').each(function() {
+                  if ( $(this).hasClass('active') ) {
+                    console.log($(this).attr("id"));
+                    $(this).removeClass("active");
+                  }
+                });
+                return ":)"
+          }
+      hide_tabs();
+      show_links();
+      function mobilify (section) {
+        $("#get_"+section).click(function(){
+            hide_tabs();
+            $('.account-nav-item').hide();
+            $('#'+section).show();
+            $('.mobile_go_back').show();
+            $('#'+section).addClass("active");
+            $('#'+section).css("margin-left", "2px");
+            $('#'+section).css("padding-bottom", "50px");
+            $('#get_'+section).addClass("active");
+            $('.account-nav-item').hide();
+            hide_links()
+        }); 
+      }
+      mobilify("information")
+      mobilify("bio")
+      mobilify("password")
+      mobilify("image")
+      mobilify("admin_info")
+      mobilify("admin")
+      mobilify("delete")
+      $(".mobile_go_back").click(function(){
+            hide_tabs();
+            show_links()
+    }); 
+  }
+
+});
+</script>
+<script>
+function checkUrl(url){
+   var arr = [ "jpeg", "jpg", "gif", "png" ];
+   var ext = url.substring(url.lastIndexOf(".")+1);
+   if($.inArray(ext,arr)){
+     return true;
+  }
+}
+$('#form-image').on('input', function() {
+	if (checkUrl($('#form-image').val())) {
+		$("#preview-img").attr("src",$('#form-image').val());
+	}
+});
+</script>
+<script>
+function copyToClipboard(element) {
+  var $temp = $("<input>");
+  $("body").append($temp);
+  $temp.val($(element).text()).select();
+  document.execCommand("copy");
+  $temp.remove();
+}
+
+function copy_link() {
+  copyToClipboard("#account_link")
+}
+</script>
+<script>
+$(".hide_msg").click(function(){
+    $('.message').hide();
+});
+</script>
+<script>
+  function autocomplete(inp, arr) {
+  /*the autocomplete function takes two arguments,
+  the text field element and an array of possible autocompleted values:*/
+  var currentFocus;
+  /*execute a function when someone writes in the text field:*/
+  inp.addEventListener("input", function(e) {
+      var a, b, i, val = this.value;
+      /*close any already open lists of autocompleted values*/
+      closeAllLists();
+      if (!val) { return false;}
+      currentFocus = -1;
+      /*create a DIV element that will contain the items (values):*/
+      a = document.createElement("DIV");
+      a.setAttribute("id", this.id + "autocomplete-list");
+      a.setAttribute("class", "autocomplete-items");
+      /*append the DIV element as a child of the autocomplete container:*/
+      this.parentNode.appendChild(a);
+      /*for each item in the array...*/
+      for (i = 0; i < arr.length; i++) {
+        /*check if the item starts with the same letters as the text field value:*/
+        if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+          /*create a DIV element for each matching element:*/
+          b = document.createElement("DIV");
+          /*make the matching letters bold:*/
+          b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+          b.innerHTML += arr[i].substr(val.length);
+          /*insert a input field that will hold the current array item's value:*/
+          b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+          /*execute a function when someone clicks on the item value (DIV element):*/
+              b.addEventListener("click", function(e) {
+              /*insert the value for the autocomplete text field:*/
+              inp.value = this.getElementsByTagName("input")[0].value;
+              /*close the list of autocompleted values,
+              (or any other open lists of autocompleted values:*/
+              closeAllLists();
+          });
+          a.appendChild(b);
+        }
+      }
+  });
+  /*execute a function presses a key on the keyboard:*/
+  inp.addEventListener("keydown", function(e) {
+      var x = document.getElementById(this.id + "autocomplete-list");
+      if (x) x = x.getElementsByTagName("div");
+      if (e.keyCode == 40) {
+        /*If the arrow DOWN key is pressed,
+        increase the currentFocus variable:*/
+        currentFocus++;
+        /*and and make the current item more visible:*/
+        addActive(x);
+      } else if (e.keyCode == 38) { //up
+        /*If the arrow UP key is pressed,
+        decrease the currentFocus variable:*/
+        currentFocus--;
+        /*and and make the current item more visible:*/
+        addActive(x);
+      } else if (e.keyCode == 13) {
+        /*If the ENTER key is pressed, prevent the form from being submitted,*/
+        e.preventDefault();
+        if (currentFocus > -1) {
+          /*and simulate a click on the "active" item:*/
+          if (x) x[currentFocus].click();
+        }
+      }
+  });
+  function addActive(x) {
+    /*a function to classify an item as "active":*/
+    if (!x) return false;
+    /*start by removing the "active" class on all items:*/
+    removeActive(x);
+    if (currentFocus >= x.length) currentFocus = 0;
+    if (currentFocus < 0) currentFocus = (x.length - 1);
+    /*add class "autocomplete-active":*/
+    x[currentFocus].classList.add("autocomplete-active");
+  }
+  function removeActive(x) {
+    /*a function to remove the "active" class from all autocomplete items:*/
+    for (var i = 0; i < x.length; i++) {
+      x[i].classList.remove("autocomplete-active");
+    }
+  }
+  function closeAllLists(elmnt) {
+    /*close all autocomplete lists in the document,
+    except the one passed as an argument:*/
+    var x = document.getElementsByClassName("autocomplete-items");
+    for (var i = 0; i < x.length; i++) {
+      if (elmnt != x[i] && elmnt != inp) {
+      x[i].parentNode.removeChild(x[i]);
+    }
+  }
+}
+/*execute a function when someone clicks in the document:*/
+document.addEventListener("click", function (e) {
+    closeAllLists(e.target);
+});
+}
+</script>
+<script>
+  var users = []
+  {% for user in all_users %}
+  users.push('{{ user.email }}')
+  console.log('{{ user.email }}')
+  {% endfor %}
+  console.log(users)
+autocomplete(document.getElementById("add_admin"), users);
+autocomplete(document.getElementById("remove_admin"), users);
+autocomplete(document.getElementById("delete_user"), users);
+  </script>
+{% endblock %}

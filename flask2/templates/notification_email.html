@@ -1,0 +1,21 @@
+{% extends "email_base.html" %}
+{% block title %}{{ investor.name }} just saved your page!{% endblock %}
+{% block heading %}Hey, {{ user.name }}!{% endblock %}
+{% block content %}
+<div class="row text-center">
+	<p class="fix-me-pls">You can check them out <a href="{{ url_for('get_investor', investor_id=investor.id, _external=True) }}">here</a>!</p>
+	<p class="fix-me-pls">If you want to edit your account information, please click <a href="{{ url_for('dashboard', _external=True) }}">here</a>.</p>
+</div>
+<div class="row text-center" style="padding-top:20px">
+	<p class="fix-me-pls">Regards,</p>
+	<p class="fix-me-pls">the <a href="http://incub8.herokuapp.com">INCUB8</a> Team</p>
+</div>
+{% endblock %}
+{% block ref %}notification&s=t{% endblock %}
+{% block head %}
+<style>
+.fix-me-pls {
+	width:100%;
+}
+</style>
+{% endblock %}
