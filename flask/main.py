@@ -1,12 +1,34 @@
 from flask import Flask, render_template, request, redirect, url_for, make_response, abort
-from credentials import FIREBASE_API_KEY
+# from credentials import FIREBASE_API_KEY
 from flask import request
 import os
 import json
 
 app = Flask(__name__)
 
-db = {"Startups":{"test":{"feature":"true"}}}
+app.config['SECRET_KEY'] = os.urandom(24)
+
+
+import firebase_admin
+# from firebase_admin import credentials
+# from firebase_admin import db
+from firebase_admin import credentials
+from firebase_admin import firestore
+
+# Use the application default credentials
+# cred = credentials.ApplicationDefault()
+
+# added this below might be wrong teehee :()
+cred = credentials.Certificate("firebase-private-key.json")
+
+
+firebase_admin.initialize_app(cred, {
+  'projectId': "uhs-devils-advocate",
+})
+
+db = firestore.client()
+
+
 
 @app.errorhandler(404)
 def page_not_found(e):
@@ -66,6 +88,8 @@ def sitemap():
 
     # return response
     return render_template('sitemap_template.xml', pages=pages)
+
+
 
 
 
