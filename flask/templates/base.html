@@ -191,21 +191,58 @@ a.active-sub-link {
 {% endblock %}
 
 <footer class="page-footer deep-purple center-on-small-only pt-0">
-  <div class="container">
-    <div class="row pt-5 mb-3 text-center d-flex justify-content-center" style="text-transform:uppercase;">
-      <div class="col-md-2 mb-3">
-        <h6 class="title font-bold"><a class="{% block aboutisactive %}{% endblock %}-sub-link" href="/about">About the <strong>D.A.</strong></a></h6>
-      </div>
-      <div class="col-md-2 mb-3">
-        <!-- <h6 class="title font-bold"><a href="/successes">Success Stories</a></h6> -->
-        <h6 class="title font-bold"><a class="{% block articles2isactive %}{% endblock %}-sub-link" href="/articles">Articles</a></h6>
-      </div>
-      <div class="col-md-2 mb-3">
-        <h6 class="title font-bold"><a class="{% block contactisactive %}{% endblock %}-sub-link" href="/contact">Contact</a></h6>
-      </div>
-    </div>
-    <hr class="rgba-white-light" style="margin: 0 15%;">
-    <div class="row d-flex text-center justify-content-center mb-md-0 mb-4" style="padding-top: 25px; height: 75px;>
+	<div class="container-fluid text-center text-md-left">
+		<div class="row" style="padding:25px">
+			<div class="col-md-2 mb-md-0 mb-3">
+				<!--hehehhe-->
+			</div>
+			<div class="col-md-2 mb-md-0 mb-3">
+				<h5 class="text-uppercase">Archive</h5>
+				<ul class="list-unstyled">
+					<li>
+						<a href="{{ url_for('get_edition',edition_id='oct2019') }}">October 2019</a>
+					</li>
+				</ul>
+			</div>
+			<div class="col-md-2 mb-md-0 mb-3">
+				<h5 class="text-uppercase">Authors</h5>
+				<ul class="list-unstyled">
+					<li>
+						<a href="{{ url_for('get_author',author_id='evan') }}">Evan-Carlo Fowler</a>
+					</li>
+				</ul>
+			</div>
+			<div class="col-md-2 mb-md-0 mb-3">
+				<h5 class="text-uppercase">COLUMNS</h5>
+				<ul class="list-unstyled">
+					<li>
+						<a href="{{ url_for('get_column', column_id='environment') }}">Environmentalism @ UHS</a>
+					</li>
+					<li>
+						<a href="{{ url_for('get_column', column_id='sports') }}">Sports</a>
+					</li>
+					<li>
+						<a href="{{ url_for('get_column', column_id='food') }}">Food</a>
+					</li>
+				</ul>
+			</div>
+			<div class="col-md-3 mb-md-0 mb-3" style="    border-left: #efefef 1px solid;">
+				<h5 class="text-uppercase">Subscribe</h5>
+				<ul class="list-unstyled">
+					<li style="padding:15px">
+						<a href="/newsletter" class="btn btn-custom">EMAIL NEWSLETTER</a>
+					</li>
+					<li style="padding:15px">
+						<a href="/crossword" class="btn btn-custom">CROSSWORD</a>
+					</li>
+				</ul>
+			</div>
+
+		</div>
+	</div>
+
+      <hr class="rgba-white-light" style="margin: 0 15%;">
+    <div class="row d-flex text-center justify-content-center mb-md-0 mb-4" style="padding-top: 25px; height: 75px;">
       <div class="col">
         <div class="social-footer mb-5 flex-center social-links" id="social-media-links" style="font-size:25px">
           <!--Facebook-->
@@ -224,12 +261,17 @@ a.active-sub-link {
       </div>
     </div>
     <hr class="clearfix rgba-white-light" style="margin: 10% 15% 5%; margin-bottom: 0px; margin-top:0px">
-    <div class="row d-flex text-center justify-content-center mb-md-0 mb-4">
+  <!-- Footer Links -->
+
+  <!-- Copyright -->
+  <div class="row d-flex text-center justify-content-center mb-md-0 mb-4">
       <div class="col-md-8 col-12 mt-5">
         <p style="line-height: 1.7rem">&copy; <span id="copyright_year"></span>: <a href="bit.ly/uhs-student-it-team"> UHS STUDENT IT TEAM </a></p>
       </div>
     </div>
   </div>
+  <!-- Copyright -->
+
 </footer>
                     <!--/Footer-->
 

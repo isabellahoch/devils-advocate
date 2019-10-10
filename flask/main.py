@@ -68,9 +68,40 @@ def index():
 	return render_template('index.html')
 	# return render_template('index.html', feature_no = feature_indexes, features = features, logged_in=current_user.is_authenticated)
 
+
+
+@app.route('/authors/<author_id>')
+def get_author(author_id):
+	author_info = {"title":author_id,"id":author_id}
+	return render_template('column.html', info = author_info)
+
+@app.route('/columns/<column_id>')
+def get_column(column_id):
+	column_info = {"title":column_id,"id":column_id}
+	return render_template('column.html', info = column_info)
+
+@app.route('/editions/<edition_id>')
+def get_edition(edition_id):
+	edition_info = {"title":edition_id,"id":edition_id}
+	return render_template('column.html', info = edition_info)
+
+
 @app.route('/sorry')
 def sorry():
     return render_template('under_construction.html')
+
+@app.route('/test')
+def test():
+    test_ref = db.collection(u'test')
+    docs = test_ref.stream()
+    all_tests = []
+    for doc in docs:
+        print(u'{} => {}'.format(doc.id, doc.to_dict()))
+        all_tests.append(doc.to_dict())
+    return render_template('test.html', info = all_tests)
+
+
+
 
 
 @app.route('/sitemap.xml', methods=['GET'])
@@ -95,6 +126,7 @@ def sitemap():
 
 
 
+ 
 
 
 
