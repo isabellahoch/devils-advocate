@@ -28,8 +28,6 @@ firebase_admin.initialize_app(cred, {
 
 db = firestore.client()
 
-
-
 @app.errorhandler(404)
 def page_not_found(e):
     title = 'Not Found'
@@ -68,7 +66,15 @@ def index():
 	return render_template('index.html')
 	# return render_template('index.html', feature_no = feature_indexes, features = features, logged_in=current_user.is_authenticated)
 
-
+@app.route('/authors')
+def authors():
+	authors_ref = db.collection(u'authors')
+	docs = authors_ref.stream()
+	all_authors = []
+	for doc in docs:
+		print(u'{} => {}'.format(doc.id, doc.to_dict()))
+		all_authors.append(doc.to_dict())
+	return render_template('column.html', info = all_authors)
 
 @app.route('/authors/<author_id>')
 def get_author(author_id):
