@@ -245,5 +245,32 @@ document.getElementById("copyright_year").innerHTML = year.toString();
 </script>
 {% block js %}
 {% endblock %}
+
+
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/7.1.0/firebase-app.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<script src="https://www.gstatic.com/firebasejs/7.1.0/firebase-analytics.js"></script>
+
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyARCliKyACLYhK_1qlK8a3IUSvQ4Do_3Jc",
+    authDomain: "uhs-devils-advocate.firebaseapp.com",
+    databaseURL: "https://uhs-devils-advocate.firebaseio.com",
+    projectId: "uhs-devils-advocate",
+    storageBucket: "uhs-devils-advocate.appspot.com",
+    messagingSenderId: "71141609151",
+    appId: "1:71141609151:web:910e765f140fdf5625c00a",
+    measurementId: "G-463S3TM4JZ"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
+</script>
+
+
 </body>
 </html>
