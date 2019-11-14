@@ -15,7 +15,6 @@ Flask==1.1.1
 Flask-WTF==0.9.4
 flask-wysiwyg==0.1
 future==0.16.0
-futures==3.3.0
 gax-google-logging-v2==0.8.3
 gax-google-pubsub-v1==0.8.3
 gcloud==0.17.0
