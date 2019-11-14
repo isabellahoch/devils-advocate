@@ -136,7 +136,7 @@ def sitemap():
 
 
 
-
+app.jinja_env.cache = {}
 
 
 if __name__ == "__main__":
