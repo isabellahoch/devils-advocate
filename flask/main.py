@@ -4,6 +4,7 @@ from flask import request
 import os
 import json
 
+
 app = Flask(__name__)
 
 app.config['SECRET_KEY'] = os.urandom(24)
@@ -74,7 +75,7 @@ def authors():
 	for doc in docs:
 		print(u'{} => {}'.format(doc.id, doc.to_dict()))
 		all_authors.append(doc.to_dict())
-	return render_template('column.html', info = all_authors)
+	return render_template('authors.html', info = all_authors)
 
 @app.route('/authors/<author_id>')
 def get_author(author_id):
@@ -95,6 +96,17 @@ def get_edition(edition_id):
 @app.route('/sorry')
 def sorry():
     return render_template('under_construction.html')
+
+from forms import EditForm
+
+@app.route('/editor', methods=['GET', 'POST'])
+def editor():
+    form = EditForm()
+    if form.validate():
+	    print("yay")
+	    print(form.title.data)
+	    print(form.body.data)
+    return render_template('edit.html', form=form)
 
 @app.route('/test')
 def test():

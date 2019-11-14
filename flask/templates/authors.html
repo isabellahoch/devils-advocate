@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}DEVILS' ADVOCATE{% endblock %}
+{% block content %}
+<div class="container">
+	<ul>
+		{% for author in info %}
+		<li><a href="{{ url_for('get_author',author_id=author.id) }}">{{ author.fname }} {{ author.lname }} ({{ author.grad }})</a></li>
+		{% endfor %}
+	</ul>
+</div>
+{% endblock %}

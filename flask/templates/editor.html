@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}DEVILS' ADVOCATE{% endblock %}
+{% block content %}
+<div class="container">
+	<form action="/editor" method="post">
+		<span>title</span>
+		{{ form.title }}
+		<div id="editor">
+			{{ form.body }}
+		</div>
+		{{ form.submit }}
+	</form>
+</div>
+{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="https://mdbootstrap.agilecrm.com/core/js/api/web-rules?callback=json9547111515062845&id=rvnkji5gd7c5c74136umt99rcv">
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+<script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
+
+<script>
+    $('#editor').wysiwyg();
+</script>
+
+<script src="https://mdbootstrap.com/wp-content/themes/mdbootstrap4/js/plugins/wysiwyg.min.js"></script>
+<script src="https://mdbootstrap.com/wp-content/themes/mdbootstrap4/js/plugins/wysiwyg.js"></script>
+<script src="/static/third-party/jquery-hotkeys/jquery.hotkeys.js"></script>
+
+<script async="" src="https://cdn.prettifyjs.net/bundle.js?v=1911071520"></script>
+{% endblock %}
+
+{% block js %
+	{% endblock}
