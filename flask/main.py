@@ -29,6 +29,62 @@ firebase_admin.initialize_app(cred, {
 
 db = firestore.client()
 
+
+
+
+from flask_login import LoginManager
+
+
+from flask_login import current_user, login_user, UserMixin
+
+login = LoginManager()
+login.init_app(app)
+
+@login.user_loader
+def load_user(id):
+    return User.query.get(int(id))
+
+from forms import LoginForm
+
+from werkzeug.security import generate_password_hash, check_password_hash
+
+import google.auth
+
+credentials, project = google.auth.default(
+    scopes=['https://www.googleapis.com/auth/cloud-platform'])
+
+from google.oauth2 import service_account
+
+credentials = service_account.Credentials.from_service_account_file(
+    'firebase-private-key.json')
+
+scoped_credentials = credentials.with_scopes(
+    ['https://www.googleapis.com/auth/cloud-platform'])
+
+class User(UserMixin):
+    def set_password(self, password):
+        self.password_hash = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+	form = LoginForm()
+	if current_user.is_authenticated:
+		return redirect(url_for('dashboard', form=form, logged_in=current_user.is_authenticated))
+	if request.method == 'POST':
+		if form.validate():
+			check_user = User.objects(email=form.email.data).first()
+			if check_user:
+				if check_password_hash(check_user['password'], form.password.data):
+					login_user(check_user)
+					return redirect(next or url_for('dashboard', form=form, logged_in=current_user.is_authenticated))
+	return render_template('login.html', form=form, next=next)
+
+
+
+
 @app.errorhandler(404)
 def page_not_found(e):
     title = 'Not Found'
@@ -95,6 +151,10 @@ def get_edition(edition_id):
 
 @app.route('/sorry')
 def sorry():
+    return render_template('under_construction.html')
+
+@app.route('/dashboard')
+def dashboard():
     return render_template('under_construction.html')
 
 from forms import EditForm
