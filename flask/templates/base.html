@@ -222,15 +222,11 @@ a.active-sub-link {
 			<div class="col-md-2 mb-md-0 mb-3">
 				<h5 class="text-uppercase">COLUMNS</h5>
 				<ul class="list-unstyled">
+          {% for this_section in info.sections %}
 					<li>
-						<a href="{{ url_for('get_column', column_id='environment') }}">Environmentalism @ UHS</a>
+						<a href="{{ url_for('get_section', column_id='{{ this_section }}') }}">{{ this_section }}</a>
 					</li>
-					<li>
-						<a href="{{ url_for('get_column', column_id='sports') }}">Sports</a>
-					</li>
-					<li>
-						<a href="{{ url_for('get_column', column_id='food') }}">Food</a>
-					</li>
+          {% endfor %}
 				</ul>
 			</div>
 			<div class="col-md-3 mb-md-0 mb-3" style="    border-left: #efefef 1px solid;">

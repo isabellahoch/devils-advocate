@@ -94,6 +94,7 @@ def get_info():
     info["authors"] = []
     for key, val in snapshot.items():
         info["authors"].append(val)
+    info["sections"] = ["A&E","Current Events","Food","Op-Ed","Sports","Backpage"]
     return info
 
 
@@ -155,10 +156,10 @@ def get_author(author_id):
             author_info["articles"].append(val)
     return render_template('author.html', author = author_info, data = get_info())
 
-@app.route('/columns/<column_id>')
-def get_column(column_id):
-	column_info = {"title":column_id,"id":column_id}
-	return render_template('column.html', info = column_info, data = get_info())
+@app.route('/sections/<section_id>')
+def get_section(section_id):
+	column_info = {"title":section_id,"id":section_id}
+	return render_template('column.html', info = section_info, data = get_info())
 
 @app.route('/articles/<article_id>')
 def get_article(article_id):
