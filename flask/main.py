@@ -93,7 +93,7 @@ def get_info():
     info = {}
     info["authors"] = []
     for key, val in snapshot.items():
-        if not val.role == "Contributing Writer":
+        if not val["role"] == "Contributing Writer":
             info["authors"].append(val)
     info["sections"] = ["A&E","Current Events","Food","Op-Ed","Sports","Backpage"]
     return info
