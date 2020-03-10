@@ -11,6 +11,17 @@
 			<p style="font-color:gray; font-size:15pt">{{ author.role }}</p>
 		</div>
 		<hr>
-	</ul>
+	</div>
+	{% if author.articles %}
+	<div class="row" style="padding-top:50px">
+		<h1 style="width:100%">Recent Articles</h1>
+		<br>
+		<ul>
+			{% for article in author.articles %}
+			<li><h3><a href="/articles/{{ article.id }}">{{ article.title }}</a></h3></li>
+			{% endfor %}
+		</ul>
+	</div>
+	{% endif %}
 </div>
 {% endblock %}

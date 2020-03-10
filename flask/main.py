@@ -146,8 +146,14 @@ def articles():
 
 @app.route('/authors/<author_id>')
 def get_author(author_id):
-	author_info = db.reference('/authors').child(author_id).get()
-	return render_template('author.html', author = author_info, data = get_info())
+    author_info = db.reference('/authors').child(author_id).get()
+    snapshot = db.reference('/articles').order_by_child('author').equal_to(author_id).get()
+    if snapshot:
+        author_info["articles"] = []
+        print(snapshot)
+        for key, val in snapshot.items():
+            author_info["articles"].append(val)
+    return render_template('author.html', author = author_info, data = get_info())
 
 @app.route('/columns/<column_id>')
 def get_column(column_id):
