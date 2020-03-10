@@ -21,6 +21,10 @@ all_articles = {}
 for article in articles:
 	if not "formatted_title" in article:
 		article["formatted_title"] = article["title"]
-	new_id = article["title"].lower().replace(" ","-")
+	new_id = ""
+	for character in article["title"].lower():
+		if character.isalnum() or character == " ":
+			new_id += character
+	new_id = new_id.replace(" ","-")
 	article["id"] = new_id
 	all_articles[new_id] = article

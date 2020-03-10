@@ -18,7 +18,7 @@
 		<br>
 		<ul>
 			{% for article in author.articles %}
-			<li><h3><a href="/articles/{{ article.id }}">{{ article.title }}</a></h3></li>
+			<li><h3><a href="/articles/{{ article.id }}">{{ article.formatted_title|safe }}</a></h3></li>
 			{% endfor %}
 		</ul>
 	</div>

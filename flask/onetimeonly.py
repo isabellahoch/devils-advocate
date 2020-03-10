@@ -13,8 +13,8 @@ firebase_admin.initialize_app(cred, {
 
 ref = db.reference("/")
 
-users_ref = ref.child('authors')
-users_ref.set(author_info)
+# users_ref = ref.child('authors')
+# users_ref.set(author_info)
 
-# users_ref = ref.child('articles')
-# users_ref.set(all_articles)
+users_ref = ref.child('articles')
+users_ref.set(all_articles)
