@@ -222,7 +222,7 @@ a.active-sub-link {
 			<div class="col-md-2 mb-md-0 mb-3">
 				<h5 class="text-uppercase">COLUMNS</h5>
 				<ul class="list-unstyled">
-          {% for this_section in info.sections %}
+          {% for this_section in data.sections %}
 					<li>
 						<a href="{{ url_for('get_section', column_id='{{ this_section }}') }}">{{ this_section }}</a>
 					</li>
