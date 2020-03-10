@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}{{ info.title }} | THE DEVILS' ADVOCATE{% endblock %}
+{% block content %}
+<div class="container">
+	<div class="row">
+		<h1>{{ info.title|safe }}</h1>
+		{% if info.img %}
+		<div class="row justify-content-center align-items-center text-center">
+			<img src="{{ info.img }}" style="max-width:500px">
+		</div>
+		{% endif %}
+		<div class="col-sm-3">
+			<img src="{{ info.author.img }}">
+		</div>
+		<div class="col-md-9">
+			<h3>{{ info.author.name }} ({{ info.author.class }})</h3>
+			<p style="font-color:gray; font-size:15pt">{{ info.author.role }}</p>
+		</div>
+		<hr>
+	</div>
+	<div class="row">
+		<div class="content">
+			<p>{{ info.contents|safe }}</p>
+		</div>
+	</div>
+</div>
+{% endblock %}

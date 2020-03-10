@@ -12,7 +12,7 @@ app.config['SECRET_KEY'] = os.urandom(24)
 
 import firebase_admin
 # from firebase_admin import credentials
-# from firebase_admin import db
+from firebase_admin import db
 from firebase_admin import credentials
 from firebase_admin import firestore
 
@@ -25,9 +25,10 @@ cred = credentials.Certificate("firebase-private-key.json")
 
 firebase_admin.initialize_app(cred, {
   'projectId': "uhs-devils-advocate",
+  'databaseURL': 'https://uhs-devils-advocate.firebaseio.com'
 })
 
-db = firestore.client()
+# db = firestore.client()
 
 
 
@@ -83,6 +84,13 @@ def login():
 	return render_template('login.html', form=form, next=next)
 
 
+def get_info():
+    snapshot = db.reference('/authors').get()
+    info = {}
+    info["authors"] = []
+    for key, val in snapshot.items():
+        info["authors"].append(val)
+    return info
 
 
 @app.errorhandler(404)
@@ -90,72 +98,82 @@ def page_not_found(e):
     title = 'Not Found'
     code = '404'
     message = "We can't seem to find the page you're looking for."
-    return render_template('error.html', title = title, code = code, message = message), 404
+    return render_template('error.html', title = title, code = code, message = message, data = get_info()), 404
 
 @app.errorhandler(403)
 def page_forbidden(e):
     title = 'Forbidden'
     code = '403'
     message = "You do not have access to this page."
-    return render_template('error.html', title = title, code = code, message = message), 403
+    return render_template('error.html', title = title, code = code, message = message, data = get_info()), 403
 
 @app.errorhandler(500)
 def internal_server_error(e):
     title = 'Internal Server Error'
     code = '500'
     message = "The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application."
-    return render_template('error.html', title = title, code = code, message = message), 500
+    return render_template('error.html', title = title, code = code, message = message, data = get_info()), 500
 
 @app.route('/')
 def index():
-	# current_features = ["sophiamartika", "incub8", "eaglerivercustomtshirts"]
-	# features = list(db.Startups.find({"id": {"$in": current_features}}))
-	# features = list(db.Startups.find({"feature": True}))
-	# feature_indexes = []
-	# for feature in features:
-	# 	feature["index"] = features.index(feature)
-	# 	if "location" in feature:
-	# 		if "latitude" in feature["location"]:
-	# 			feature["coordinates"] = [feature["location"]["latitude"], feature["location"]["longitude"]]
-	# 			feature["location"] = feature["location"]["address"]
-	# 	feature_indexes.append(features.index(feature))
-	# feature_indexes.pop(0)
-	return render_template('index.html')
+    notif = {"message":"The FEBRUARY issue is out now!", "link":"/february-2020"}
+    return render_template('index.html', notification = notif, data = get_info())
 	# return render_template('index.html', feature_no = feature_indexes, features = features, logged_in=current_user.is_authenticated)
 
 @app.route('/authors')
 def authors():
-	authors_ref = db.collection(u'authors')
-	docs = authors_ref.stream()
-	all_authors = []
-	for doc in docs:
-		print(u'{} => {}'.format(doc.id, doc.to_dict()))
-		all_authors.append(doc.to_dict())
-	return render_template('authors.html', info = all_authors)
+    test_ref = db.reference('/authors')
+    print(test_ref.get())
+    snapshot = test_ref.get()
+    all_authors = []
+    for key, val in snapshot.items():
+         all_authors.append(val)
+    return render_template('authors.html', info = all_authors, data = get_info())
+
+@app.route('/articles')
+def articles():
+    ref = db.reference('/articles')
+    print(ref.get())
+    snapshot = ref.get()
+    all_articles = []
+    for key, val in snapshot.items():
+         all_articles.append(val)
+    return render_template('index.html', data = get_info())
 
 @app.route('/authors/<author_id>')
 def get_author(author_id):
-	author_info = {"title":author_id,"id":author_id}
-	return render_template('column.html', info = author_info)
+	author_info = db.reference('/authors').child(author_id).get()
+	return render_template('author.html', author = author_info, data = get_info())
 
 @app.route('/columns/<column_id>')
 def get_column(column_id):
 	column_info = {"title":column_id,"id":column_id}
-	return render_template('column.html', info = column_info)
+	return render_template('column.html', info = column_info, data = get_info())
+
+@app.route('/articles/<article_id>')
+def get_article(article_id):
+    article_info = db.reference('/articles').child(article_id).get()
+    article_info["author"] = db.reference('/authors').child(article_info["author"]).get()
+    return render_template('article.html', info = article_info, data = get_info())
 
 @app.route('/editions/<edition_id>')
 def get_edition(edition_id):
-	edition_info = {"title":edition_id,"id":edition_id}
-	return render_template('column.html', info = edition_info)
+    edition_info = {"title":edition_id,"id":edition_id,"date":"March 2020"}
+    edition_info["features"] = [{"title":"Sorrel: UHS's Michelin-Starred Neighbor","id":"sorrel"}, {"title":"Eve Leupold '20 Breaks Down Her Favorite Holiday Movies","id":"eve_movies"},{"title": "Lukas Bacho '20's Guide to College Etiquette","id":"lukas_coletiquette"}]
+    edition_info["articles"] = [{"title":"Eve Leupold '20 Breaks Down Her Favorite Holiday Movies","id":"eve_movies","author":{"name":"Eve Leupold","img":"https://previews.dropbox.com/p/thumb/AAtSmlmLIMt_5Rw4jAaAu_bQcWxfEJNqwYsRy8grIObRuOgNLLFCrZ-_V8Ck3YxZ7DmNP9MrjeAIKq4S5vIFXw8BlS9354PnNjQP2_tI2wAThcQ8P_CVwIlgendC_6yp9SrMZmSxtKwIbRvL4Gd4jJ4bRtHtxRXb676981DDagTcbzfohDjTbZNDGlH874BSB6RbmEGJzXtHsPHXRQup-60Usa8MaYXSUxBHy-za6pP-d_VT1XqmV754rx2rrOOePzcEDwMkdv8qH1p5g7RC5wXx-xHF6dTckG_na8UVC7QRRNRtoPLqx4jLzNmyug8tbViDlXIUiGeg5YWYrskS3_KJL1fDqlGf5KYuTT8Z35Ov6Q/p.jpeg?size=2048x1536&size_mode=3"}}]
+    return render_template('issue.html', info = edition_info, data = get_info())
 
+@app.route('/testinggg')
+def issue():
+    return render_template('issue.html', data = get_info())
 
 @app.route('/sorry')
 def sorry():
-    return render_template('under_construction.html')
+    return render_template('under_construction.html', data = get_info())
 
 @app.route('/dashboard')
 def dashboard():
-    return render_template('under_construction.html')
+    return render_template('under_construction.html', data = get_info())
 
 from forms import EditForm
 
@@ -166,7 +184,7 @@ def editor():
 	    print("yay")
 	    print(form.title.data)
 	    print(form.body.data)
-    return render_template('edit.html', form=form)
+    return render_template('edit.html', form=form, data = get_info())
 
 @app.route('/test')
 def test():
@@ -176,7 +194,7 @@ def test():
     for doc in docs:
         print(u'{} => {}'.format(doc.id, doc.to_dict()))
         all_tests.append(doc.to_dict())
-    return render_template('test.html', info = all_tests)
+    return render_template('test.html', info = all_tests, data = get_info())
 
 
 

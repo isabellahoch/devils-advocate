@@ -1,0 +1,21 @@
+@import url('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css');
+@import 'https://fonts.googleapis.com/css?family=Montserrat|Open+Sans';
+@import url('https://fonts.googleapis.com/css?family=Spinnaker');
+@import url(http://weloveiconfonts.com/api/?family=entypo);
+@import url('https://fonts.googleapis.com/css?family=PT+Sans+Narrow&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Saira+Condensed&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Saira+Extra+Condensed&display=swap');
+
+* {
+  font-family: 'PT Sans Narrow', sans-serif;
+  box-sizing:border-box;
+  }
+
+body {
+  line-height: 1.5;
+  font-size: 12px;
+}
+
+:root {
+	--main-color: #ab192d !important;
+}
