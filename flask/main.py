@@ -51,8 +51,12 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 import google.auth
 
-credentials, project = google.auth.default(
+try:
+    credentials, project = google.auth.default(
     scopes=['https://www.googleapis.com/auth/cloud-platform'])
+except: 
+    import os
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = './private-key.json'
 
 from google.oauth2 import service_account
 
