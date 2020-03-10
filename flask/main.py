@@ -93,7 +93,8 @@ def get_info():
     info = {}
     info["authors"] = []
     for key, val in snapshot.items():
-        info["authors"].append(val)
+        if not val.role == "Contributing Writer":
+            info["authors"].append(val)
     info["sections"] = ["A&E","Current Events","Food","Op-Ed","Sports","Backpage"]
     return info
 
@@ -132,7 +133,8 @@ def authors():
     snapshot = test_ref.get()
     all_authors = []
     for key, val in snapshot.items():
-         all_authors.append(val)
+        if not val["role"] == "Contributing Writer":
+            all_authors.append(val)
     return render_template('authors.html', info = all_authors, data = get_info())
 
 @app.route('/articles')
