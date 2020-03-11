@@ -330,6 +330,15 @@ document.getElementById("copyright_year").innerHTML = year.toString();
           });
            
 </script>
+<script>
+	$(document).ready(function() { //<<====== wont work without this
+      $(window).scroll(function() {
+          if($("#wrapper").hasClass("toggled")) {
+          	$("#wrapper").removeClass("toggled");
+          }
+      });
+  });
+</script>
 
 {% block js %}
 {% endblock %}
