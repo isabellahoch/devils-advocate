@@ -89,13 +89,14 @@ def login():
 
 
 def get_info():
-    snapshot = db.reference('/authors').get()
     info = {}
-    info["authors"] = []
-    for key, val in snapshot.items():
-        if not val["role"] == "Contributing Writer":
-            info["authors"].append(val)
-    info["sections"] = ["A&E","Current Events","Food","Op-Ed","Sports","Backpage"]
+    # snapshot = db.reference('/authors').get()
+    # info["authors"] = []
+    # for key, val in snapshot.items():
+    #     if not val["role"] == "Contributing Writer":
+    #         info["authors"].append(val)
+    info["sections"] = ["Arts & Entertainment","Current Events","Food","Op-Ed","Sports","Back Page"]
+    info["archive"] = [{"name":"February 2020","id":"february-2020"},{"name":"November 2019","id":"november-2019"}]
     return info
 
 
@@ -122,7 +123,7 @@ def internal_server_error(e):
 
 @app.route('/')
 def index():
-    notif = {"message":"The FEBRUARY issue is out now!", "link":"/february-2020"}
+    notif = {"message":"The FEBRUARY issue is out now!", "link":"/latest"}
     return render_template('index.html', notification = notif, data = get_info())
 	# return render_template('index.html', feature_no = feature_indexes, features = features, logged_in=current_user.is_authenticated)
 
@@ -135,7 +136,19 @@ def authors():
     for key, val in snapshot.items():
         if not val["role"] == "Contributing Writer":
             all_authors.append(val)
-    return render_template('authors.html', info = all_authors, data = get_info())
+    info = {}
+    info["sections"] = {}
+    for section in get_info()["sections"]:
+        info["sections"][section] = {"title":section,"editors":[]}
+    info["sections"]["EICs"] = {"title":"Editors in Chief","editors":[]}
+    for author in all_authors:
+        print(author["role"])
+        if author["role"] == "Editor in Chief":
+            info["sections"]["EICs"]["editors"].append(author)
+        else:
+            info["sections"][author["role"].split(" Editor")[0]]["editors"].append(author)
+    print(info)
+    return render_template('authors.html', info = info, all_authors = all_authors, data = get_info())
 
 @app.route('/articles')
 def articles():
@@ -146,6 +159,10 @@ def articles():
     for key, val in snapshot.items():
          all_articles.append(val)
     return render_template('index.html', data = get_info())
+
+@app.route('/latest')
+def latest():
+    return redirect(url_for("get_edition", edition_id = "february-2020"))
 
 @app.route('/authors/<author_id>')
 def get_author(author_id):
@@ -160,7 +177,7 @@ def get_author(author_id):
 
 @app.route('/sections/<section_id>')
 def get_section(section_id):
-	column_info = {"title":section_id,"id":section_id}
+	section_info = {"title":section_id,"id":section_id}
 	return render_template('column.html', info = section_info, data = get_info())
 
 @app.route('/articles/<article_id>')
@@ -169,9 +186,14 @@ def get_article(article_id):
     article_info["author"] = db.reference('/authors').child(article_info["author"]).get()
     return render_template('article.html', info = article_info, data = get_info())
 
+@app.route('/archive/<archive_id>')
+def get_archive(archive_id):
+    archive_info = db.reference('/archive').child(archive_id).get()
+    return render_template('archive.html', info = archive_info, data = get_info())
+
 @app.route('/editions/<edition_id>')
 def get_edition(edition_id):
-    edition_info = {"title":edition_id,"id":edition_id,"date":"March 2020"}
+    edition_info = {"title":edition_id,"id":edition_id,"date":edition_id.replace("-"," ").title()}
     edition_info["features"] = [{"title":"Sorrel: UHS's Michelin-Starred Neighbor","id":"sorrel"}, {"title":"Eve Leupold '20 Breaks Down Her Favorite Holiday Movies","id":"eve_movies"},{"title": "Lukas Bacho '20's Guide to College Etiquette","id":"lukas_coletiquette"}]
     edition_info["articles"] = [{"title":"Eve Leupold '20 Breaks Down Her Favorite Holiday Movies","id":"eve_movies","author":{"name":"Eve Leupold","img":"https://previews.dropbox.com/p/thumb/AAtSmlmLIMt_5Rw4jAaAu_bQcWxfEJNqwYsRy8grIObRuOgNLLFCrZ-_V8Ck3YxZ7DmNP9MrjeAIKq4S5vIFXw8BlS9354PnNjQP2_tI2wAThcQ8P_CVwIlgendC_6yp9SrMZmSxtKwIbRvL4Gd4jJ4bRtHtxRXb676981DDagTcbzfohDjTbZNDGlH874BSB6RbmEGJzXtHsPHXRQup-60Usa8MaYXSUxBHy-za6pP-d_VT1XqmV754rx2rrOOePzcEDwMkdv8qH1p5g7RC5wXx-xHF6dTckG_na8UVC7QRRNRtoPLqx4jLzNmyug8tbViDlXIUiGeg5YWYrskS3_KJL1fDqlGf5KYuTT8Z35Ov6Q/p.jpeg?size=2048x1536&size_mode=3"}}]
     return render_template('issue.html', info = edition_info, data = get_info())
@@ -179,6 +201,38 @@ def get_edition(edition_id):
 @app.route('/testinggg')
 def issue():
     return render_template('issue.html', data = get_info())
+
+@app.route('/youtube')
+def youtube():
+    return render_template('youtube.html', data = get_info())
+
+@app.route('/about')
+def about():
+    test_ref = db.reference('/authors')
+    snapshot = test_ref.get()
+    all_authors = []
+    for key, val in snapshot.items():
+        if not val["role"] == "Contributing Writer":
+            all_authors.append(val)
+    info = {}
+    info["sections"] = {}
+    for section in get_info()["sections"]:
+        info["sections"][section] = {"title":section,"editors":[]}
+    info["sections"]["EICs"] = {"title":"Editors in Chief","editors":[]}
+    for author in all_authors:
+        if author["role"] == "Editor in Chief":
+            info["sections"]["EICs"]["editors"].append(author)
+        else:
+            info["sections"][author["role"].split(" Editor")[0]]["editors"].append(author)
+    return render_template('authors.html', info = info, authors = all_authors, data = get_info())
+
+@app.route('/about/privacy')
+def privacy_policy():
+    return render_template('index.html', data = get_info())
+
+@app.route('/crossword')
+def crossword():
+    return render_template('crossword.html', data = get_info())
 
 @app.route('/sorry')
 def sorry():

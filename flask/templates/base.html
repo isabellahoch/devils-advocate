@@ -13,6 +13,7 @@
     <link rel="icon" type="image/png" href="https://www.sfuhs.org/uploaded/favicon.ico">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/nav.css') }}">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
     <style>
     :root {
@@ -89,11 +90,12 @@ a {
   width:100%;
 }
 
-.btn-incub8, .btn-custom {
+.btn-custom {
     color: #fff;
     background-color: var(--main-color) !important;
     border-color: var(--main-color) !important;
     width:100%;
+    min-width:fit-content !important;
 }
 
 .btn-custom:hover {
@@ -156,16 +158,44 @@ a.active-sub-link {
 
 <body>
   {% block notification %}{% endblock %}
-	<div class="container">
+	<!-- <div class="container">
 		<a href="/"><img src="http://devils-advocate.herokuapp.com/static/img/logo.png" style="max-width: 100%;/* max-height: 100px; */padding-left: 50px;padding-right: 50px;"></a>
-	</div>
-	<nav class="navbar navbar-inverse navbar-expand-md" id="navbar">
+	</div> -->
+	<nav class="navbar navbar-expand bg-primary navbar-light bg-light" style="background-color:#fff !important"> <a href="#menu-toggle" id="menu-toggle" class="navbar-brand"><span class="navbar-toggler-icon"></span></a> <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample02" aria-controls="navbarsExample02" aria-expanded="false" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span> </button>
+            <div class="collapse navbar-collapse" id="navbarsExample02">
+                <a href="/"><img src="http://devils-advocate.herokuapp.com/static/img/logo.png" style="max-width: 100%;/* max-height: 100px; */padding-left: 50px;padding-right: 50px;"></a>
+                <form class="form-inline my-2 my-md-0"> </form>
+            </div>
+        </nav>
+        <div id="wrapper" class="">
+            <!-- Sidebar -->
+            <div id="sidebar-wrapper">
+                <ul class="sidebar-nav">
+                    <li class="sidebar-brand"> <a href="/sections"> Sections </a> </li>
+                    {% for section in data.sections %}
+                    <li> <a href="/sections/{{ section }}">{{ section }}</a> </li>
+                    {% endfor %}
+                    <hr>
+                    <li> <a href="/latest">Latest Edition</a> </li>
+                    <li> <a href="/newsletter">Newsletter</a> </li>
+                    <li> <a href="{{ url_for('privacy_policy') }}">Privacy Policy</a> </li>
+                    <li> <a href="/contact">Contact Us</a> </li>
+                </ul>
+            </div> <!-- /#sidebar-wrapper -->
+            <!-- Page Content -->
+            <div id="page-content-wrapper">
+                <div class="container-fluid">
+                    {% block content %}
+                    {% endblock %}
+                </div>
+            
+<!-- 	<nav class="navbar navbar-inverse navbar-expand-md" id="navbar">
 		<div class="container-fluid">
-			<!-- <a class="navbar-brand" href="/" style="padding-top:5px">
+		<a class="navbar-brand" href="/" style="padding-top:5px">
 				<img src="https://www.sfuhs.org/uploaded/favicon.ico" id="logo" style="height:40px; padding-left:20px">
-			</a> -->
+			</a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbarDropdown" aria-expanded="false" aria-label="Toggle navigation" style="all:initial">
-				<!-- <span class="navbar-toggler-icon"></span> -->
+				<span class="navbar-toggler-icon"></span>
 				<i class="fas fa-bars"></i>
 			</button>
 			<div class="collapse navbar-collapse" id="navbar" style="    text-transform: uppercase;">
@@ -178,22 +208,10 @@ a.active-sub-link {
 					<li class="divider">•</li>
 					<li class="{% block authorsisactive %}{% endblock %}"><a href="/authors" id="nav_swipe">Authors</a></li>
 				</ul>
-				<!-- <ul class="nav navbar-nav navbar-right">
-					{% if logged_in %}
-					<li class="{% block dashboardisactive %}{% endblock %}"><a href="/dashboard" id="nav_dashboard">Dashboard</a></li>
-					<li><a href="/logout" id="nav_logout">Log Out</a></li>
-					{% else %}
-					<li><a href="" id="nav_registration?role=investor"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-					<li><a href="/login" id="nav_login"><span class="glyphicon glyphicon-log-in"></span> Log In</a></li>
-					{% endif %}
-				</ul> -->
 			</div>
 		</div>
 	</div>
-</nav>
-
-{% block content %}
-{% endblock %}
+</nav> -->
 
 <footer class="page-footer deep-purple center-on-small-only pt-0">
 	<div class="container-fluid text-center text-md-left">
@@ -202,29 +220,31 @@ a.active-sub-link {
 				<!--hehehhe-->
 			</div>
 			<div class="col-md-2 mb-md-0 mb-3">
-				<h5 class="text-uppercase">Archive</h5>
-				<ul class="list-unstyled">
-					<li>
-						<a href="{{ url_for('get_edition',edition_id='oct2019') }}">October 2019</a>
-					</li>
-				</ul>
-			</div>
-			<div class="col-md-2 mb-md-0 mb-3">
-				<h5 class="text-uppercase">Authors</h5>
-				<ul class="list-unstyled">
-          {% for this_author in data.authors %}
-					<li>
-						<a href="/authors/{{ this_author.id }}">{{ this_author.name }}</a>
-					</li>
-          {% endfor %}
-				</ul>
-			</div>
-			<div class="col-md-2 mb-md-0 mb-3">
-				<h5 class="text-uppercase">COLUMNS</h5>
+				<h5 class="text-uppercase">SECTIONS</h5>
 				<ul class="list-unstyled">
           {% for this_section in data.sections %}
 					<li>
-						<a href="{{ url_for('get_section', section_id='{{ this_section }}') }}">{{ this_section }}</a>
+						<a href="/sections/{{ this_section }}">{{ this_section }}</a>
+					</li>
+          {% endfor %}
+
+				</ul>
+			</div>
+			<div class="col-md-2 mb-md-0 mb-3">
+				<h5 class="text-uppercase">About</h5>
+				<ul class="list-unstyled">
+					<li><a href="/about">General</a></li>
+					<li><a href="{{ url_for('privacy_policy')}}">Privacy Policy</a></li>
+					<li><a href="/contact">Corrections</a></li>
+					<li><a href="/contact">Contact Us</a></li>
+				</ul>
+			</div>
+						<div class="col-md-2 mb-md-0 mb-3">
+				<h5 class="text-uppercase">Archive</h5>
+				<ul class="list-unstyled">
+          {% for this_archive in data.archive %}
+					<li>
+						<a href="/archive/{{ this_archive.id }}">{{ this_archive.name }}</a>
 					</li>
           {% endfor %}
 				</ul>
@@ -239,7 +259,7 @@ a.active-sub-link {
 						<a href="/crossword" class="btn btn-custom">CROSSWORD</a>
 					</li>
           <li style="padding:15px">
-            <a href="/lie-witness-news" class="btn btn-custom">LIE WITNESS NEWS</a>
+            <a href="/youtube" class="btn btn-custom">LIE WITNESS NEWS</a>
           </li>
 				</ul>
 			</div>
@@ -279,6 +299,8 @@ a.active-sub-link {
   <!-- Copyright -->
 
 </footer>
+</div> <!-- /#page-content-wrapper -->
+        </div>
                     <!--/Footer-->
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -291,6 +313,24 @@ var date = new Date();
 var year = date.getFullYear();  
 document.getElementById("copyright_year").innerHTML = year.toString();
 </script>
+<script>
+          $(function(){
+            $("#menu-toggle").click(function(e) {
+                e.preventDefault();
+                $("#wrapper").toggleClass("toggled");
+            });
+
+            $(window).resize(function(e) {
+              if($(window).width()<=768){
+                $("#wrapper").removeClass("toggled");
+              }else{
+                $("#wrapper").addClass("toggled");
+              }
+            });
+          });
+           
+</script>
+
 {% block js %}
 {% endblock %}
 

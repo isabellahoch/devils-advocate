@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}{{ info.title }} | DEVILS' ADVOCATE{% endblock %}
+{% block content %}
+<div class="container">
+	<div class="row justify-content-center align-items-center text-center">
+		<iframe src = "{{ info.url }}" style="display:block; width:100%">
+			your browser doesn't support iframes:(
+		</iframe>
+	</div>
+</div>
+{% endblock %}
