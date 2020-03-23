@@ -3,6 +3,7 @@ from flask import Flask, render_template, request, redirect, url_for, make_respo
 from flask import request
 import os
 import json
+from forms import RegForm
 
 
 app = Flask(__name__)
@@ -32,18 +33,45 @@ firebase_admin.initialize_app(cred, {
 
 
 
+import flask_login
 
-from flask_login import LoginManager
 
-
-from flask_login import current_user, login_user, UserMixin
+from flask_login import LoginManager, UserMixin, current_user, login_user, login_required, logout_user
 
 login = LoginManager()
 login.init_app(app)
 
 @login.user_loader
-def load_user(id):
-    return User.query.get(int(id))
+def load_user(user_email):
+    user = find_user_by_email(user_email)
+    if not user:
+        return None
+    return user
+
+login.login_view = 'login'
+
+users = [
+    {'email':'isabella.hochschi_21@sfuhs.org', 'password': 'killerskill!', 'is_admin': True},
+    {'email':'uhsstudentit@gmmail.com', 'password': 'killerskill!', 'is_admin': True}
+]
+
+def find_user_by_id(user_id):
+    for _user in users:
+        if _user['id'] == user_id:
+            return _user
+    return None
+
+def find_user_by_username(username):
+    for _user in users:
+        if _user['username'] == username:
+            return _user
+    return None
+
+def find_user_by_email(email):
+    for _user in users:
+        if _user['email'] == email:
+            return _user
+    return None
 
 from forms import LoginForm
 
@@ -67,26 +95,90 @@ scoped_credentials = credentials.with_scopes(
     ['https://www.googleapis.com/auth/cloud-platform'])
 
 class User(UserMixin):
+    def __init__(self, user_json):
+        self.user_json = user_json
+
+    def get_id(self):
+        object_id = self.user_json.get('_id')
+        return str(object_id)
+
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
+# class LoginUser(UserMixin):
+#     def __init__(self, id):
+#         self.id = id
+
+#     @property
+#     def username(self):
+#         user = self.get_user()
+#         return user['username']
+
+#     @property
+#     def is_admin(self):
+#         user = self.get_user()
+#         return user['is_admin']
+
+#     def get_user(self):
+#         return find_user_by_id(self.id)
+
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-	form = LoginForm()
-	if current_user.is_authenticated:
-		return redirect(url_for('dashboard', form=form, logged_in=current_user.is_authenticated))
-	if request.method == 'POST':
-		if form.validate():
-			check_user = User.objects(email=form.email.data).first()
-			if check_user:
-				if check_password_hash(check_user['password'], form.password.data):
-					login_user(check_user)
-					return redirect(next or url_for('dashboard', form=form, logged_in=current_user.is_authenticated))
-	return render_template('login.html', form=form, next=next)
+    form = LoginForm()
+    if (current_user.is_authenticated):
+        return redirect(url_for('dashboard', current_user=current_user, data = get_info()))
+    if request.method == 'POST':
+        email = form.email.data
+        password = form.password.data
+        if form.errors:
+            print(form.errors)
+        user = find_user_by_email(email)
+        if user:
+            if user['password'] == password:
+                user_obj = User(user)
+                login_user(user_obj, remember=True)
+                print(current_user.is_authenticated)
+                next = request.args.get("next")
+                return redirect(next or url_for('dashboard'))
+    # if current_user.is_authenticated:
+    #   return redirect(url_for('dashboard', form=form, logged_in=current_user.is_authenticated, data = get_info()))
+    # if request.method == 'POST':
+    #   if form.validate():
+    #       check_user = User.get(email=form.email.data).first()
+    #       if check_user:
+    #           if check_password_hash(check_user['password'], form.password.data):
+    #               login_user(check_user)
+ #                    session.permanent = True
+    #               return redirect(next or url_for('dashboard', form=form, logged_in=current_user.is_authenticated, data = get_info()))
+    return render_template('login.html', form=form, data = get_info())
 
+@app.route('/register', methods=['GET', 'POST'])
+def registration():
+    role = request.args.get('role', default=None, type=None)
+    form = RegForm()
+    if request.method == 'POST':
+        if form.validate():
+            print('looks like the form validated')
+            # existing_user = User.objects(email=form.email.data).first()
+            existing_user = User.query.filter_by(email=form.email.data).first()
+            if existing_user is None:
+                hashpass = generate_password_hash(form.password.data, method='sha256')
+                hey = User(form.email.data,hashpass).save()
+                login_user(hey)
+                return redirect(url_for('dashboard', form=form, logged_in=current_user.is_authenticated, data = get_info()))
+        else:
+            print(form.errors)
+    return render_template('registration.html', form=form, next=next, data = get_info())
+
+@app.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for("index"))
 
 def get_info():
     info = {}
@@ -124,7 +216,10 @@ def internal_server_error(e):
 @app.route('/')
 def index():
     notif = {"message":"The FEBRUARY issue is out now!", "link":"/latest"}
-    return render_template('index.html', notification = notif, data = get_info())
+    info = {}
+    info["features"] = [{"title":"Sorrel: UHS's Michelin-Starred Neighbor","id":"sorrel"}, {"title":"Eve Leupold '20 Breaks Down Her Favorite Holiday Movies","id":"eve_movies"},{"title": "Lukas Bacho '20's Guide to College Etiquette","id":"lukas_coletiquette"}]
+    info["articles"] = [{"title":"Eve Leupold '20 Breaks Down Her Favorite Holiday Movies","id":"eve_movies","author":{"name":"Eve Leupold","img":"https://previews.dropbox.com/p/thumb/AAtSmlmLIMt_5Rw4jAaAu_bQcWxfEJNqwYsRy8grIObRuOgNLLFCrZ-_V8Ck3YxZ7DmNP9MrjeAIKq4S5vIFXw8BlS9354PnNjQP2_tI2wAThcQ8P_CVwIlgendC_6yp9SrMZmSxtKwIbRvL4Gd4jJ4bRtHtxRXb676981DDagTcbzfohDjTbZNDGlH874BSB6RbmEGJzXtHsPHXRQup-60Usa8MaYXSUxBHy-za6pP-d_VT1XqmV754rx2rrOOePzcEDwMkdv8qH1p5g7RC5wXx-xHF6dTckG_na8UVC7QRRNRtoPLqx4jLzNmyug8tbViDlXIUiGeg5YWYrskS3_KJL1fDqlGf5KYuTT8Z35Ov6Q/p.jpeg?size=2048x1536&size_mode=3"}}]
+    return render_template('index.html', notification = notif, info = info, data = get_info())
 	# return render_template('index.html', feature_no = feature_indexes, features = features, logged_in=current_user.is_authenticated)
 
 @app.route('/authors')
@@ -193,6 +288,8 @@ def get_archive(archive_id):
 
 @app.route('/editions/<edition_id>')
 def get_edition(edition_id):
+    if(edition_id == "february-2020"):
+        return redirect(url_for("get_archive", archive_id = edition_id))
     edition_info = {"title":edition_id,"id":edition_id,"date":edition_id.replace("-"," ").title()}
     edition_info["features"] = [{"title":"Sorrel: UHS's Michelin-Starred Neighbor","id":"sorrel"}, {"title":"Eve Leupold '20 Breaks Down Her Favorite Holiday Movies","id":"eve_movies"},{"title": "Lukas Bacho '20's Guide to College Etiquette","id":"lukas_coletiquette"}]
     edition_info["articles"] = [{"title":"Eve Leupold '20 Breaks Down Her Favorite Holiday Movies","id":"eve_movies","author":{"name":"Eve Leupold","img":"https://previews.dropbox.com/p/thumb/AAtSmlmLIMt_5Rw4jAaAu_bQcWxfEJNqwYsRy8grIObRuOgNLLFCrZ-_V8Ck3YxZ7DmNP9MrjeAIKq4S5vIFXw8BlS9354PnNjQP2_tI2wAThcQ8P_CVwIlgendC_6yp9SrMZmSxtKwIbRvL4Gd4jJ4bRtHtxRXb676981DDagTcbzfohDjTbZNDGlH874BSB6RbmEGJzXtHsPHXRQup-60Usa8MaYXSUxBHy-za6pP-d_VT1XqmV754rx2rrOOePzcEDwMkdv8qH1p5g7RC5wXx-xHF6dTckG_na8UVC7QRRNRtoPLqx4jLzNmyug8tbViDlXIUiGeg5YWYrskS3_KJL1fDqlGf5KYuTT8Z35Ov6Q/p.jpeg?size=2048x1536&size_mode=3"}}]
@@ -239,8 +336,9 @@ def sorry():
     return render_template('under_construction.html', data = get_info())
 
 @app.route('/dashboard')
+@login_required
 def dashboard():
-    return render_template('under_construction.html', data = get_info())
+    return render_template('dashboard.html', current_user = current_user, data = get_info())
 
 from forms import EditForm
 

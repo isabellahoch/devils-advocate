@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Register | THE DEVILS' ADVOCATE{% endblock %}
+{% block content %}
+<!-- <h1>Registration</h1> -->
+<div class="row align-items-center justify-content-center">
+	<center><h3 style="width:100%">Sign Up!</h3></center>
+	<br><br>
+	<div id="reg_form_div" style="width:60%; padding-top:40px">
+		<form action="/register" method="post" class="regForm">
+		  <p class='form_label'>Email</p>
+		  {{ form.email }}
+		  <p class='form_label'>Password</p>
+		  {{ form.password }}
+		  {{ form.hidden_tag() }}
+		  <p class='form_label'>Confirm Password</p>
+		  {{ form.confirm_password }}
+		  {{ form.hidden_tag() }}
+		  <br>
+		  <br>
+		  {{ form.submit }}
+		</form>
+	</div>
+</div>
+{% endblock %}
+{% block head %}
+<style>
+.form_label {
+	padding-top:15px;
+}
+</style>
+{% endblock %}
