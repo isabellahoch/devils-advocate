@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}BUDDI Demo Video{% endblock %}
+{% block description %}{% endblock %}
+{% block head %}
+<meta name="google-site-verification" content="n/a" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/inverted_nav.css') }}">
+{% endblock %}
+{% block content %}
+<div class="container">
+	<div class="row align-items-center justify-content-center">
+		<iframe width="560" height="315" src="https://www.youtube.com/embed/6RqXy1rQZmQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+	</div>
+</div>
+{% endblock %}
