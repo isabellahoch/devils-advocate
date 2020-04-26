@@ -69,4 +69,3 @@ urllib3==1.25.7
 virtualenv==16.7.2
 Werkzeug==0.15.5
 WTForms==2.2.1
-xattr==0.6.4
