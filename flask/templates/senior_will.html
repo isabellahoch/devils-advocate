@@ -25,7 +25,7 @@
     <h3 id="freshmen">Freshmen</h3>
     <ul class= "senior-will-list">
         {% for this_person in info.freshmen %}
-        <li>{{ this_person }}: {{ info.freshmen[this_person] }}</li>
+        <li><strong>{{ this_person }}</strong>: {{ info.freshmen[this_person] }}</li>
         {% endfor %}
     </ul>
     {% endif %}
@@ -33,7 +33,7 @@
     <h3 id="sophomores">Sophomores</h3>
     <ul class= "senior-will-list">
         {% for this_person in info.sophomores %}
-        <li>{{ this_person }}: {{ info.sophomores[this_person] }}</li>
+        <li><strong>{{ this_person }}</strong>: {{ info.sophomores[this_person] }}</li>
         {% endfor %}
     </ul>
     {% endif %}
@@ -41,7 +41,7 @@
     <h3 id="juniors">Juniors</h3>
     <ul class= "senior-will-list">
         {% for this_person in info.juniors %}
-        <li>{{ this_person }}: {{ info.juniors[this_person] }}</li>
+        <li><strong>{{ this_person }}</strong>: {{ info.juniors[this_person] }}</li>
         {% endfor %}
     </ul>
     {% endif %}
@@ -49,7 +49,7 @@
     <h3 id="faculty">Faculty</h3>
     <ul class= "senior-will-list">
         {% for this_person in info.faculty %}
-        <li>{{ this_person }}: {{ info.faculty[this_person] }}</li>
+        <li><strong>{{ this_person }}</strong>: {{ info.faculty[this_person] }}</li>
         {% endfor %}
     </ul>
     {% endif %}
@@ -57,7 +57,7 @@
     <h3 id="miscellaneous">Miscellaneous</h3>
     <ul class= "senior-will-list">
         {% for this_person in info.miscellaneous %}
-        <li>{{ this_person }}: {{ info.miscellaneous[this_person] }}</li>
+        <li><strong>{{ this_person }}</strong>: {{ info.miscellaneous[this_person] }}</li>
         {% endfor %}
     </ul>
     {% endif %}
