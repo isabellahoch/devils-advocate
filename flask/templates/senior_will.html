@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}{{ info.name }} | 2020 Senior Wills | THE DEVILS' ADVOCATE{% endblock %}
+{% block head %}
+<style>
+    .senior-will-list {
+        text-align: left !important;
+        padding: 20px;
+        line-height: 1.8;
+    }
+</style>
+{% endblock %}
+{% block content %}
+<div class="container align-items-center justify-content-center text-center">
+    <h1 style="margin-bottom:10px">{{ info.name }}'s Senior Will</h1>
+    <hr>
+    {% if info.cause_of_death %}
+    <h3 id="cause-of-death">Cause of Death</h3>
+    <span>{{ info.cause_of_death }}</span>
+    {% endif %}
+    {% if info.statement %}
+    <h3 id="statement">Statement</h3>
+    <p>{{ info.statement }}</p>
+    {% endif %}
+    {% if info.freshmen %}
+    <h3 id="freshmen">Freshmen</h3>
+    <ul class= "senior-will-list">
+        {% for this_person in info.freshmen %}
+        <li>{{ this_person }}: {{ info.freshmen[this_person] }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% if info.sophomores %}
+    <h3 id="sophomores">Sophomores</h3>
+    <ul class= "senior-will-list">
+        {% for this_person in info.sophomores %}
+        <li>{{ this_person }}: {{ info.sophomores[this_person] }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% if info.juniors %}
+    <h3 id="juniors">Juniors</h3>
+    <ul class= "senior-will-list">
+        {% for this_person in info.juniors %}
+        <li>{{ this_person }}: {{ info.juniors[this_person] }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% if info.faculty %}
+    <h3 id="faculty">Faculty</h3>
+    <ul class= "senior-will-list">
+        {% for this_person in info.faculty %}
+        <li>{{ this_person }}: {{ info.faculty[this_person] }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% if info.miscellaneous %}
+    <h3 id="miscellaneous">Miscellaneous</h3>
+    <ul class= "senior-will-list">
+        {% for this_person in info.miscellaneous %}
+        <li>{{ this_person }}: {{ info.miscellaneous[this_person] }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+</div>
+{% endblock %}

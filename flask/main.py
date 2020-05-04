@@ -215,7 +215,7 @@ def internal_server_error(e):
 
 @app.route('/')
 def index():
-    notif = {"message":"The SENIOR WILLS ARE out now!", "link":"/senior-wills"}
+    notif = {"message":"The SENIOR WILLS are out in the latest edition!", "link":"/latest"}
     info = {}
     info["features"] = [{"title":"Sorrel: UHS's Michelin-Starred Neighbor","id":"sorrel"}, {"title":"Eve Leupold '20 Breaks Down Her Favorite Holiday Movies","id":"eve_movies"},{"title": "Lukas Bacho '20's Guide to College Etiquette","id":"lukas_coletiquette"}]
     info["articles"] = [{"title":"Eve Leupold '20 Breaks Down Her Favorite Holiday Movies","id":"eve_movies","author":{"name":"Eve Leupold","img":"https://previews.dropbox.com/p/thumb/AAtSmlmLIMt_5Rw4jAaAu_bQcWxfEJNqwYsRy8grIObRuOgNLLFCrZ-_V8Ck3YxZ7DmNP9MrjeAIKq4S5vIFXw8BlS9354PnNjQP2_tI2wAThcQ8P_CVwIlgendC_6yp9SrMZmSxtKwIbRvL4Gd4jJ4bRtHtxRXb676981DDagTcbzfohDjTbZNDGlH874BSB6RbmEGJzXtHsPHXRQup-60Usa8MaYXSUxBHy-za6pP-d_VT1XqmV754rx2rrOOePzcEDwMkdv8qH1p5g7RC5wXx-xHF6dTckG_na8UVC7QRRNRtoPLqx4jLzNmyug8tbViDlXIUiGeg5YWYrskS3_KJL1fDqlGf5KYuTT8Z35Ov6Q/p.jpeg?size=2048x1536&size_mode=3"}}]
@@ -259,7 +259,7 @@ def articles():
 
 @app.route('/latest')
 def latest():
-    return redirect(url_for("get_edition", edition_id = "february-2020"))
+    return redirect(url_for("get_edition", edition_id = "2020-senior-wills"))
 
 @app.route('/authors/<author_id>')
 def get_author(author_id):
@@ -292,14 +292,23 @@ def get_archive(archive_id):
 def get_edition(edition_id):
     if(edition_id == "february-2020"):
         return redirect(url_for("get_archive", archive_id = edition_id))
+    elif(edition_id == "2020-senior-wills"):
+        return redirect(url_for("senior_wills_2020"))
     edition_info = {"title":edition_id,"id":edition_id,"date":edition_id.replace("-"," ").title()}
     edition_info["features"] = [{"title":"Sorrel: UHS's Michelin-Starred Neighbor","id":"sorrel"}, {"title":"Eve Leupold '20 Breaks Down Her Favorite Holiday Movies","id":"eve_movies"},{"title": "Lukas Bacho '20's Guide to College Etiquette","id":"lukas_coletiquette"}]
     edition_info["articles"] = [{"title":"Eve Leupold '20 Breaks Down Her Favorite Holiday Movies","id":"eve_movies","author":{"name":"Eve Leupold","img":"https://previews.dropbox.com/p/thumb/AAtSmlmLIMt_5Rw4jAaAu_bQcWxfEJNqwYsRy8grIObRuOgNLLFCrZ-_V8Ck3YxZ7DmNP9MrjeAIKq4S5vIFXw8BlS9354PnNjQP2_tI2wAThcQ8P_CVwIlgendC_6yp9SrMZmSxtKwIbRvL4Gd4jJ4bRtHtxRXb676981DDagTcbzfohDjTbZNDGlH874BSB6RbmEGJzXtHsPHXRQup-60Usa8MaYXSUxBHy-za6pP-d_VT1XqmV754rx2rrOOePzcEDwMkdv8qH1p5g7RC5wXx-xHF6dTckG_na8UVC7QRRNRtoPLqx4jLzNmyug8tbViDlXIUiGeg5YWYrskS3_KJL1fDqlGf5KYuTT8Z35Ov6Q/p.jpeg?size=2048x1536&size_mode=3"}}]
     return render_template('issue.html', info = edition_info, data = get_info())
 
-@app.route('/testinggg')
-def issue():
-    return render_template('issue.html', data = get_info())
+@app.route('/2020-senior-wills')
+def senior_wills_2020():
+    senior_wills_info = db.reference('/archive').child("2020-senior-wills").child("senior-wills").get()
+    print(senior_wills_info)
+    return render_template('senior_wills.html', info = senior_wills_info, data = get_info())
+
+@app.route('/2020-senior-wills/<senior_will_id>')
+def get_senior_will(senior_will_id):
+    senior_will_info = db.reference('/archive').child("2020-senior-wills").child("senior-wills").child(senior_will_id).get()
+    return render_template('senior_will.html', info = senior_will_info, data = get_info())
 
 @app.route('/youtube')
 def youtube():

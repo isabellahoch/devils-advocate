@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}2020 Senior Wills | THE DEVILS' ADVOCATE{% endblock %}
+{% block content %}
+<div class="container">
+    <h1>2020 SENIOR WILLS</h1>
+    <div class="accordion" id="accordion">
+        {% for this_will in info %}
+        <div class="card">
+            <div class="card-header" id="{{ info[this_will].id }}">
+                <h2 class="mb-0">
+                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse-{{ info[this_will].id }}" aria-expanded="true" aria-controls="{{ info[this_will].id }}">{{ info[this_will].name }}</button>
+                </h2>
+            </div>
+            <div id="collapse-{{ info[this_will].id }}" class="collapse" aria-labelledby="{{ info[this_will].id }}" data-parent="#accordion">
+                <div class="card-body">
+                    {% if info[this_will].cause_of_death %}
+                    <h3 id="{{ info[this_will].id }}-cause-of-death">Cause of Death</h3>
+                    <span>{{ info[this_will].cause_of_death }}</span>
+                    {% endif %}
+                    {% if info[this_will].statement %}
+                    <h3 id="{{ info[this_will].id }}-statement">Statement</h3>
+                    <p>{{ info[this_will].statement }}</p>
+                    {% endif %}
+                    {% if info[this_will].freshmen %}
+                    <h3 id="{{ info[this_will].id }}-freshmen">Freshmen</h3>
+                    <ul class= "senior-will-list">
+                        {% for this_person in info[this_will].freshmen %}
+                        <li>{{ this_person }}: {{ info[this_will].freshmen[this_person] }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                    {% if info[this_will].sophomores %}
+                    <h3 id="{{ info[this_will].id }}-sophomores">Sophomores</h3>
+                    <ul class= "senior-will-list">
+                        {% for this_person in info[this_will].sophomores %}
+                        <li>{{ this_person }}: {{ info[this_will].sophomores[this_person] }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                    {% if info[this_will].juniors %}
+                    <h3 id="{{ info[this_will].id }}-juniors">Juniors</h3>
+                    <ul class= "senior-will-list">
+                        {% for this_person in info[this_will].juniors %}
+                        <li>{{ this_person }}: {{ info[this_will].juniors[this_person] }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                    {% if info[this_will].faculty %}
+                    <h3 id="{{ info[this_will].id }}-faculty">Faculty</h3>
+                    <ul class= "senior-will-list">
+                        {% for this_person in info[this_will].faculty %}
+                        <li>{{ this_person }}: {{ info[this_will].faculty[this_person] }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                    {% if info[this_will].miscellaneous %}
+                    <h3 id="{{ info[this_will].id }}-miscellaneous">Miscellaneous</h3>
+                    <ul class= "senior-will-list">
+                        {% for this_person in info[this_will].miscellaneous %}
+                        <li>{{ this_person }}: {{ info[this_will].miscellaneous[this_person] }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

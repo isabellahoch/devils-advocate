@@ -4,7 +4,7 @@
 @import url(http://weloveiconfonts.com/api/?family=entypo);
 
 * {
-  font-family: 'Spinnaker', sans-serif;
+  font-family: 'Spinnaker', sans-serif !important;
   box-sizing:border-box;
   }
 
