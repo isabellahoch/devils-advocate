@@ -2,16 +2,16 @@
 {% block title %}2020 Senior Wills | THE DEVILS' ADVOCATE{% endblock %}
 {% block content %}
 <div class="container">
-    <h1>2020 SENIOR WILLS</h1>
+    <!-- <h1>2020 SENIOR WILLS</h1> -->
     <div class="accordion" id="accordion">
         {% for this_will in info %}
         <div class="card">
             <div class="card-header" id="{{ info[this_will].id }}">
                 <h2 class="mb-0">
-                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse-{{ info[this_will].id }}" aria-expanded="true" aria-controls="{{ info[this_will].id }}">{{ info[this_will].name }}</button>
+                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse-{{ info[this_will].id }}" aria-expanded="true" aria-controls="{{ info[this_will].id }}" style="color: #AB192B !important; font-size: 20px">{{ info[this_will].name }}</button>
                 </h2>
             </div>
-            <div id="collapse-{{ info[this_will].id }}" class="collapse" aria-labelledby="{{ info[this_will].id }}" data-parent="#accordion">
+            <div id="collapse-{{ info[this_will].id }}" class="collapse text-center align-items-center justify-content-center" style="padding-bottom:25px" aria-labelledby="{{ info[this_will].id }}" data-parent="#accordion">
                 <div class="card-body">
                     {% if info[this_will].cause_of_death %}
                     <h3 id="{{ info[this_will].id }}-cause-of-death">Cause of Death</h3>
