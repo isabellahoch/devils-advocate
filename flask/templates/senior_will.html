@@ -15,17 +15,17 @@
     <hr>
     {% if info.cause_of_death %}
     <h3 id="cause-of-death">Cause of Death</h3>
-    <span>{{ info.cause_of_death }}</span>
+    <span>{{ info.cause_of_death|safe }}</span>
     {% endif %}
     {% if info.statement %}
     <h3 id="statement">Statement</h3>
-    <p>{{ info.statement }}</p>
+    <p>{{ info.statement|safe }}</p>
     {% endif %}
     {% if info.freshmen %}
     <h3 id="freshmen">Freshmen</h3>
     <ul class= "senior-will-list">
         {% for this_person in info.freshmen %}
-        <li><strong>{{ this_person }}</strong>: {{ info.freshmen[this_person] }}</li>
+        <li><strong>{{ this_person|safe }}</strong>: {{ info.freshmen[this_person]|safe }}</li>
         {% endfor %}
     </ul>
     {% endif %}
@@ -33,7 +33,7 @@
     <h3 id="sophomores">Sophomores</h3>
     <ul class= "senior-will-list">
         {% for this_person in info.sophomores %}
-        <li><strong>{{ this_person }}</strong>: {{ info.sophomores[this_person] }}</li>
+        <li><strong>{{ this_person|safe }}</strong>: {{ info.sophomores[this_person]|safe }}</li>
         {% endfor %}
     </ul>
     {% endif %}
@@ -41,7 +41,7 @@
     <h3 id="juniors">Juniors</h3>
     <ul class= "senior-will-list">
         {% for this_person in info.juniors %}
-        <li><strong>{{ this_person }}</strong>: {{ info.juniors[this_person] }}</li>
+        <li><strong>{{ this_person|safe }}</strong>: {{ info.juniors[this_person]|safe }}</li>
         {% endfor %}
     </ul>
     {% endif %}
@@ -49,7 +49,7 @@
     <h3 id="faculty">Faculty</h3>
     <ul class= "senior-will-list">
         {% for this_person in info.faculty %}
-        <li><strong>{{ this_person }}</strong>: {{ info.faculty[this_person] }}</li>
+        <li><strong>{{ this_person|safe }}</strong>: {{ info.faculty[this_person]|safe }}</li>
         {% endfor %}
     </ul>
     {% endif %}
@@ -57,7 +57,7 @@
     <h3 id="miscellaneous">Miscellaneous</h3>
     <ul class= "senior-will-list">
         {% for this_person in info.miscellaneous %}
-        <li><strong>{{ this_person }}</strong>: {{ info.miscellaneous[this_person] }}</li>
+        <li><strong>{{ this_person|safe }}</strong>: {{ info.miscellaneous[this_person]|safe }}</li>
         {% endfor %}
     </ul>
     {% endif %}
