@@ -13,12 +13,12 @@
     <div class="accordion" id="accordion">
         {% for this_will in info %}
         <div class="card">
-            <div class="card-header" id="{{ info[this_will].id }}">
+            <div class="card-header text-center align-items-center justify-content-center" id="{{ info[this_will].id }}">
                 <h2 class="mb-0">
                     <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse-{{ info[this_will].id }}" aria-expanded="true" aria-controls="{{ info[this_will].id }}" style="color: #AB192B !important; font-size: 20px">{{ info[this_will].name }}</button>
                 </h2>
             </div>
-            <div id="collapse-{{ info[this_will].id }}" class="collapse text-center align-items-center justify-content-center" style="padding-bottom:25px" aria-labelledby="{{ info[this_will].id }}" data-parent="#accordion">
+            <div id="collapse-{{ info[this_will].id }}" class="collapse" style="padding-bottom:25px" aria-labelledby="{{ info[this_will].id }}" data-parent="#accordion">
                 <div class="card-body">
                     {% if info[this_will].cause_of_death %}
                     <h3 id="{{ info[this_will].id }}-cause-of-death">Cause of Death</h3>
