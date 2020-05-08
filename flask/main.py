@@ -5,7 +5,6 @@ import os
 import json
 from forms import RegForm
 
-
 app = Flask(__name__)
 
 app.config['SECRET_KEY'] = os.urandom(24)
@@ -301,8 +300,11 @@ def get_edition(edition_id):
 
 @app.route('/2020-senior-wills')
 def senior_wills_2020():
-    senior_wills_info = db.reference('/archive').child("2020-senior-wills").child("senior-wills").get()
-    print(senior_wills_info)
+    senior_wills_info = db.reference('/archive').child("2020-senior-wills").child("senior-wills").order_by_key().get()
+    count = 0
+    for this_will in senior_wills_info:
+        senior_wills_info[this_will]["index"] = count
+        count = count + 1
     return render_template('senior_wills.html', info = senior_wills_info, data = get_info())
 
 @app.route('/2020-senior-wills/<senior_will_id>')
