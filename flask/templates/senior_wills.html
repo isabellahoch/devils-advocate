@@ -36,7 +36,7 @@
             {% for this_will in info %}
             <tr data-index="{{ this_will.index }}">
                 <td style="">0</td>
-                <td style=""><a href="{{ url_for(get_senior_will, senior_will_id = this_will.id) }}">{{ this_will.name }}</td>
+                <td style=""><a href="{{ url_for('get_senior_will', senior_will_id = this_will.id) }}">{{ this_will.name }}</td>
                 <td style="">$0</td>
             </tr>
             {% endfor %}
