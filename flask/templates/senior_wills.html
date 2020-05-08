@@ -6,11 +6,47 @@
         text-align: left !important;
     }
 </style>
+<link rel="stylesheet" type="text/css" href="extensions/filter-control/bootstrap-table-filter-control.css">
+<script src="extensions/filter-control/bootstrap-table-filter-control.js"></script>
 {% endblock %}
 {% block content %}
 <div class="container">
     <!-- <h1>2020 SENIOR WILLS</h1> -->
-    <div class="row text-center align-items-center justify-content-center">
+
+    <table id="table" data-url="json/data1.json" data-filter-control="true" data-show-search-clear-button="true" class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <!-- <th style="" data-field="id">
+                    <div class="th-inner ">ID</div>
+                    <div class="fht-cell">
+                        <div class="no-filter-control"></div>
+                    </div>
+                </th> -->
+                <th style="" data-field="name">
+                    <div class="th-inner ">Name</div>
+                    <div class="fht-cell">
+                        <div class="filter-control">
+                            <input type="text" class="form-control bootstrap-table-filter-control-name search-input" style="width: 100%;" placeholder="" value="">
+                        </div>
+                    </div>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for this_will in info %}
+            <tr data-index="{{ this_will.index }}">
+                <td style="">0</td>
+                <td style=""><a href="{{ url_for(get_senior_will, senior_will_id = this_will.id) }}">{{ this_will.name }}</td>
+                <td style="">$0</td>
+            </tr>
+            {% endfor %}
+            <tr data-index="1"><td style="">1</td><td style="">Item 1</td><td style="">$1</td></tr><tr data-index="2"><td style="">2</td><td style="">Item 2</td><td style="">$2</td></tr><tr data-index="3"><td style="">3</td><td style="">Item 3</td><td style="">$3</td></tr><tr data-index="4"><td style="">4</td><td style="">Item 4</td><td style="">$4</td></tr><tr data-index="5"><td style="">5</td><td style="">Item 5</td><td style="">$5</td></tr><tr data-index="6"><td style="">6</td><td style="">Item 6</td><td style="">$6</td></tr><tr data-index="7"><td style="">7</td><td style="">Item 7</td><td style="">$7</td></tr><tr data-index="8"><td style="">8</td><td style="">Item 8</td><td style="">$8</td></tr><tr data-index="9"><td style="">9</td><td style="">Item 9</td><td style="">$9</td></tr><tr data-index="10"><td style="">10</td><td style="">Item 10</td><td style="">$10</td></tr><tr data-index="11"><td style="">11</td><td style="">Item 11</td><td style="">$11</td></tr><tr data-index="12"><td style="">12</td><td style="">Item 12</td><td style="">$12</td></tr><tr data-index="13"><td style="">13</td><td style="">Item 13</td><td style="">$13</td></tr><tr data-index="14"><td style="">14</td><td style="">Item 14</td><td style="">$14</td></tr><tr data-index="15"><td style="">15</td><td style="">Item 15</td><td style="">$15</td></tr><tr data-index="16"><td style="">16</td><td style="">Item 16</td><td style="">$16</td></tr><tr data-index="17"><td style="">17</td><td style="">Item 17</td><td style="">$17</td></tr><tr data-index="18"><td style="">18</td><td style="">Item 18</td><td style="">$18</td></tr><tr data-index="19"><td style="">19</td><td style="">Item 19</td><td style="">$19</td></tr><tr data-index="20"><td style="">20</td><td style="">Item 20</td><td style="">$20</td></tr></tbody></table>
+
+
+
+
+
+    <!-- <div class="row text-center align-items-center justify-content-center">
         <input type="text" id="search_box"/>
     </div>
     <div class="accordion" id="accordion">
@@ -75,23 +111,23 @@
             </div>
         </div>
         {% endfor %}
-    </div>
+    </div> -->
 </div>
 {% endblock %}
 {% block js %}
 <script>
     $(document).ready(function(){
-      $("input").keyup(function(){
-       var bla = $('#search_box').val();
-       $( ".card" ).each(function(){
-            var htxt=$(this).find('h3').text();
-            if (htxt.indexOf(bla) > -1) {
-                $(this).show();
-            } else {
-                $(this).hide();
-            }
-        });
-      });
+    //   $("input").keyup(function(){
+    //    var bla = $('#search_box').val();
+    //    $( ".card" ).each(function(){
+    //         var htxt=$(this).find('h3').text();
+    //         if (htxt.indexOf(bla) > -1) {
+    //             $(this).show();
+    //         } else {
+    //             $(this).hide();
+    //         }
+    //     });
+    //   });
       $("#logo_header").attr("src","http://devils-advocate.herokuapp.com/static/img/senior_wills_header.jpg");
     });
     
