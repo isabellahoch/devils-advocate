@@ -10,6 +10,9 @@
 {% block content %}
 <div class="container">
     <!-- <h1>2020 SENIOR WILLS</h1> -->
+    <div class="row text-center align-items-center justify-content-center">
+        <input type="text" id="search_box"/>
+    </div>
     <div class="accordion" id="accordion">
         {% for this_will in info %}
         <div class="card">
@@ -74,4 +77,26 @@
         {% endfor %}
     </div>
 </div>
+{% endblock %}
+{% block js %}
+<script>
+    $(document).ready(function(){
+      $("input").keyup(function(){
+       var bla = $('#search_box').val();
+       $( ".card" ).each(function(){
+            var htxt=$(this).find('h3').text();
+            if (htxt.indexOf(bla) > -1) {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
+      });
+      $("#logo_header").attr("src","http://devils-advocate.herokuapp.com/static/img/senior_wills_header.png");
+    });
+    
+    </script>
+    <script>
+
+    </script>
 {% endblock %}
