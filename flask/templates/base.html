@@ -161,6 +161,12 @@ a.active-sub-link {
 	padding: 20px;
 }
 
+.navbar-nav.navbar-center {
+    position: absolute;
+    left: 50%;
+    transform: translatex(-50%);
+}
+
   </style>
  {% block head %}{% endblock %}
 
@@ -171,20 +177,30 @@ a.active-sub-link {
   {% block notification %}{% endblock %}
 	<!-- <div class="container">
 		<a href="/"><img src="http://devils-advocate.herokuapp.com/static/img/logo.png" style="max-width: 100%;/* max-height: 100px; */padding-left: 50px;padding-right: 50px;"></a>
-	</div> -->
-	<nav class="navbar navbar-expand bg-primary navbar-light bg-light" style="background-color:#fff !important"> <a href="#menu-toggle" id="menu-toggle" class="navbar-brand"><span class="navbar-toggler-icon"></span></a> <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample02" aria-controls="navbarsExample02" aria-expanded="false" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span> </button>
-            <div class="collapse navbar-collapse" id="navbarsExample02">
-                <a href="/"><img id="logo_header" src="http://devils-advocate.herokuapp.com/static/img/evan_logo.jpg" style="max-width: 100%;/* max-height: 100px; */padding-left: 50px;padding-right: 50px;"></a>
-                <form class="form-inline my-2 my-md-0"> </form>
-            </div>
+  </div> -->
+  <div class="row header align-items-center justify-content-center text-center" id="header">
+    <a href="/"><img id="logo_header" src="http://devils-advocate.herokuapp.com/static/img/evan_logo.jpg" style="max-width: 100%;/* max-height: 100px; */padding-left: 50px;padding-right: 50px;"></a>
+  </div>
+	<nav class="navbar navbar-expand bg-primary navbar-light bg-light" style="background-color:#ab192d !important">
+            <!--<div class="navbar-collapse collapse">-->
+              <ul class="nav justify-content-center align-items-center" style="width:100%">
+                  {% for section in data.sections %}
+                  <li><a style="text-transform:uppercase; color:#fff" href="/sections/{{ data.sections[section]['id'] }}">{{ data.sections[section]['name'] }}</a></li>
+                  {% endfor %}
+                  <li><a style="text-transform:uppercase; color:#fff" href="/2020-senior-wills">senior wills</a></li>
+                  |
+                  <li><a style="text-transform:uppercase; color:#fff" href="/subscribe">newsletter</a></li>
+                  <li><a style="text-transform:uppercase; color:#fff" href="/latest">latest</a></li>
+              </ul>
+            <!--</div>-->
         </nav>
         <div id="wrapper" class="">
             <!-- Sidebar -->
-            <div id="sidebar-wrapper">
+            <div id="sidebar-wrapper" style="margin-top: -150px;">
                 <ul class="sidebar-nav">
-                    <li class="sidebar-brand"> <a href="/sections"> Sections </a> </li>
+                    <li class="sidebar-brand"> Sections </li>
                     {% for section in data.sections %}
-                    <li> <a href="/sections/{{ section }}">{{ section }}</a> </li>
+                    <li> <a href="/sections/{{ data.sections[section]['id'] }}">{{ data.sections[section]['name'] }}</a> </li>
                     {% endfor %}
                     <hr>
                     <li> <a href="/latest">Latest Edition</a> </li>
@@ -195,6 +211,18 @@ a.active-sub-link {
             </div> <!-- /#sidebar-wrapper -->
             <!-- Page Content -->
             <div id="page-content-wrapper">
+              <nav class="navbar navbar-light bg-light navbar-fixed-top" id="menu" style="display:none">
+                <div class="container text-center justify-content-center align-items-center">
+                  <div style="width:fit-content">
+                    <a href="#menu-toggle" id="menu-toggle" class="navbar-brand" style="">
+                      <span class="navbar-toggler-icon"></span>
+                    </a>
+                  </div>
+                  <div class="col text-center justify-content-center align-items-center">
+                    <a class="navbar-brand" style="width:100%; font-family: 'Libre Baskerville', serif !important; color:#ab192d !important" href="/">THE DEVILS' ADVOCATE</a>
+                  </div>
+                </div>
+              </nav>
                 <div class="container-fluid">
                     {% block content %}
                     {% endblock %}
@@ -233,9 +261,9 @@ a.active-sub-link {
 			<div class="col-md-2 mb-md-0 mb-3">
 				<h5 class="text-uppercase">SECTIONS</h5>
 				<ul class="list-unstyled">
-          {% for this_section in data.sections %}
+          {% for section in data.sections %}
 					<li>
-						<a href="/sections/{{ this_section }}">{{ this_section }}</a>
+						<a href="/sections/{{ data.sections[section]['id'] }}">{{ data.sections[section]['name'] }}</a>
 					</li>
           {% endfor %}
 
@@ -303,7 +331,7 @@ a.active-sub-link {
   <!-- Copyright -->
   <div class="row d-flex text-center justify-content-center mb-md-0 mb-4">
       <div class="col-md-8 col-12 mt-5">
-        <p style="line-height: 1.7rem">&copy; <span id="copyright_year"></span>: <a href="bit.ly/uhs-student-it-team"> UHS STUDENT IT TEAM </a></p>
+        <p style="line-height: 1.7rem">&copy; <span id="copyright_year"></span>: <a href="/"> THE DEVILS' ADVOCATE </a></p>
       </div>
     </div>
   </div>
@@ -350,6 +378,20 @@ document.getElementById("copyright_year").innerHTML = year.toString();
       });
   });
 </script>
+
+<script type="text/javascript">
+  (function($) {          
+      $(document).ready(function(){                    
+          $(window).scroll(function(){                          
+              if ($(this).scrollTop() > 200) {
+                  $('#menu').fadeIn(500);
+              } else {
+                  $('#menu').fadeOut(500);
+              }
+          });
+      });
+  })(jQuery);
+  </script>
 
 {% block js %}
 {% endblock %}

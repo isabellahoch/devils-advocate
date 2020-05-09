@@ -1,12 +1,10 @@
 {% extends "base.html" %}
-{% block title %}DEVILS' ADVOCATE{% endblock %}
+{% block title %}THE DEVILS' ADVOCATE{% endblock %}
 {% block homeisactive %}active{% endblock %}
 {% if notification %}
-{% block notification %}
 <div id="notification-bar" class="notification-bar row text-center align-items-center justify-content-center" style="background-color:#ab192D">
-    <h3 style="color:#ffffff; padding-right:25px">{{ notification.message }} Check it out <a href="{{ notification.link }}" style="text-decoration:underline; color:#fff">here</a>!</h3><button class="btn btn-close" data-dismiss="notification-bar" type="button" id="dismissbar">&times;</button>
+    <h3 style="color:#ffffff; padding-right:25px">{{ notification.message }} Visit this <a href="{{ notification.link }}" style="text-decoration:underline; color:#fff">link</a> for more info!</h3><button class="btn btn-close" data-dismiss="notification-bar" type="button" id="dismissbar">&times;</button>
 </div>
-{% endblock %}
 {% endif %}
 {% block content %}
 <div class="container">
@@ -16,6 +14,8 @@
 	<hr>
 	<div class="row text-center align-items-center justify-content-center">
         <img style="max-width:400px" src="{{ url_for('static', filename='img/EICs.PNG') }}">
+    </div>
+    <div class="row text-center align-items-center justify-content-center">
         <h1>Welcome to the online version of the DA!</h1>
 <!--         
             <div class="col-sm-3 align-items-center justify-content-center text-center">
