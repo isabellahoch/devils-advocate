@@ -1,91 +1,14 @@
 {% extends "base.html" %}
-{% block title %}About Us | INCUB8{% endblock %}
-{% block aboutisactive %}active{% endblock %}
-{% block about2isactive %}active{% endblock %}
-{% block content %}
-<div class="container text-center">
-	<div class="row justify-content-center">
-		<h2>Our Story</h2>
-		<p style="font-size:15px; padding:25px">Inspired by Kickstarter and other similar platforms, we created INCUB8, a web app designed to connect startups, specifically ones founded by fellow teens, with potential investors and mentors.</p>
-	</div>
-	<div class="row justify-content-center" style="padding-bottom:15px">
-		<h2>Meet the Team</h2>
-	</div>
-	<div class="row">
-		<!-- <div class="col-sm text-center">
-			<img src="/static/img/profiles/aarushi.jpg" class="about-pics rounded-circle" id="aarushipic" alt="Aarushi" style="height: 175px; width: 175px;">
-			<h3>Aarushi</h3>
-			<h5>Co-Founder and CFO</h5>
-			<span>Hey! I'm Aarushi. I'm going to be a sophomore in high school. I love coding, bears, and food!</span>
-	    </div>
-	    <div class="col-sm text-center">
-			<img src="/static/img/profiles/isabella.png" class="about-pics rounded-circle" id="isabellapic" alt="Isabella" style="height: 175px;">
-			<h3>Isabella</h3>
-			<h5>Co-Founder and CEO</h5>
-			<span>I'm a rising sophomore in high school and my interests include coding, track, XC, and baking.</span>
-	    </div>
-	    <div class="col-sm text-center">
-			<img src="/static/img/profiles/sriya.JPG" class="about-pics rounded-circle" id="sriyapic" alt="Sriya" style="height: 175px;">
-			<h3>Sriya</h3>
-			<h5>Co-Founder and COO</h5>
-			<span>I'm going to be a senior in high school and I love to code and watch TV.</span>
-	    </div> -->
-	    <div class="col-sm text-center">
-			<img src="/static/img/profiles/aarushi.jpg" class="about-pics rounded-circle" id="aarushipic" alt="Aarushi" style="height: 175px; width: 175px;">
-			<h3>{{ info.aarushi.name }}</h3>
-			<h5>{{ info.aarushi.position }}</h5>
-			<span>{{ info.aarushi.bio }}</span>
-	    </div>
-	    <div class="col-sm text-center">
-			<img src="/static/img/profiles/isabella.png" class="about-pics rounded-circle" id="isabellapic" alt="Isabella" style="height: 175px; filter:brightness(1.5)">
-			<h3><a class="incognito-link" href="https://isabellahochschild.herokuapp.com/">{{ info.isabella.name }}</a></h3>
-			<h5>{{ info.isabella.position }}</h5>
-			<span>{{ info.isabella.bio }}</span>
-	    </div>
-	    <div class="col-sm text-center">
-			<img src="/static/img/profiles/sriya.JPG" class="about-pics rounded-circle" id="sriyapic" alt="Sriya" style="height: 175px;">
-			<h3>{{ info.sriya.name }}</h3>
-			<h5>{{ info.sriya.position }}</h5>
-			<span>{{ info.sriya.bio }}</span>
-	    </div>
-	</div>
-	<div class="row justify-content-center" style="padding-top:50px">
-		<span style="font-size:15px">See more of our family <a href="/extended-family">here</a>!</span>
-	</div>
-	<!-- <div class="row" id="secondary_row">
-		<div class="col-sm text-center">
-			<img src="/static/img/profiles/sofia.jpg" class="about-pics rounded-circle" id="sofiapic" alt="Sofia" style="height: 175px;">
-			<h3>Sofia</h3>
-			<h5>Technical Adviser</h5>
-			<span>#syntaxwithsofia!!</span>
-	    </div>
-		<div class="col-sm text-center">
-			<img src="/static/img/profiles/will.jpg" class="about-pics rounded-circle" id="willpic" alt="Will" style="height: 175px; width: 175px;">
-			<h3>Will</h3>
-			<h5>Intern</h5>
-			<span>Hey! I'm Will. I assisted the founders of INCUB8 by getting coffee, providing (some) technical support, and agreeing to be low key cyberbullied...</span>
-	    </div> -->
-	    <!-- <div class="col-sm text-center">
-			<img src="/static/img/profiles/tara.png" class="about-pics rounded-circle" id="tarapic" alt="Tara" style="height: 175px;">
-			<h3>Tara</h3>
-			<h5>Mentor</h5>
-			<span>I'm the better #kodewithklossy instructor...</span>
-	    </div> -->
-	</div>
-</div>
-{% endblock %}
+{% block title %}About | THE DEVILS' ADVOCATE{% endblock %}
 {% block head %}
 <style>
-@media (min-width: 768px) {
-  #secondary_row {
-	    padding-right: 50px;
-	    padding-left: 50px;
-	    padding-top: 50px;
-	}
-}
-
-@media (max-width : 320px) {
-    .col-sm.text-center {padding: 25px;}
-}
+    .form-field {
+        padding-bottom:25px;
+    }
 </style>
 {% endblock %}
+{% block content %}
+<h1>About Us</h1>
+<div class="row">
+    <p>Meet the editors in chief: <a href="mailto:zach.beischer_21@sfuhs.org">Zach Beischer '21</a>, <a href="mailto:evancarlo.fowler_21@sfuhs.org">Evan-Carlo Fowler '21</a>, and <a href="mailto:jeanette.nguyen_21@sfuhs.org">Jeanette Nguyen '21</a>.</p>
+</div>

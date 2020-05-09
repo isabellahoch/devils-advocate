@@ -3,7 +3,7 @@ from flask import Flask, render_template, request, redirect, url_for, make_respo
 from flask import request
 import os
 import json
-from forms import RegForm
+from forms import RegForm, SubscribeForm
 
 app = Flask(__name__)
 
@@ -263,11 +263,29 @@ def about():
 
 @app.route('/about/privacy')
 def privacy_policy():
-    return render_template('index.html', data = get_info())
+    return render_template('privacy.html', data = get_info())
+
+@app.route('/contact')
+def contact():
+    return render_template('contact.html', data = get_info())
 
 @app.route('/crossword')
 def crossword():
     return render_template('crossword.html', data = get_info())
+
+@app.route('/subscribe', methods=['GET','POST'])
+def subscribe():
+    form = SubscribeForm()
+    if request.method == 'POST':
+        subscriber_info = {}
+        subscriber_info["name"] = form.name.data
+        subscriber_info["email"] = form.email.data
+        subscriber_info["name"] = form.name.data
+        subscriber_info["affiliation"] = form.affiliation.data
+        ref = db.reference('subscribers')
+        ref.set(subscriber_info)
+        return render_template('subscribe.html', confirmation = True, form = form, data = get_info())
+    return render_template('subscribe.html', form = form, data = get_info())
 
 @app.route('/sorry')
 def sorry():

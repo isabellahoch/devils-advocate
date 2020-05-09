@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Subscribe | THE DEVILS' ADVOCATE{% endblock %}
+{% block head %}
+<style>
+    .form-field {
+        padding-bottom:25px;
+    }
+</style>
+{% endblock %}
+{% block content %}
+{% if confirmation %}
+<div class="row align-items-center justify-content-center">
+    <p>You have successfully subscribed to <a href="/">The Devils' Advocate</a>!</p>
+</div>
+{% else %}
+<div class="row align-items-center justify-content-center">
+    <form method="POST" action="/subscribe">
+        <div class="form-field">{{ form.name.label }}* {{ form.name }}
+            {% if form.name.errors %}
+            <ul class="errors">
+                {% for error in form.name.errors %}
+                <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+        <div class="form-field">{{ form.email.label }}* {{ form.email }}
+            {% if form.email.errors %}
+            <ul class="errors">
+                {% for error in form.email.errors %}
+                <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+        <div class="form-field">{{ form.affiliation.label }}* {{ form.affiliation }}
+            {% if form.affiliation.errors %}
+            <ul class="errors">
+                {% for error in form.affiliation.errors %}
+                <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+        {{ form.submit }}
+    </form>
+</div>
+{% endif %}
+{% endblock %}
