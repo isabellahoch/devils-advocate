@@ -28,6 +28,18 @@ firebase_admin.initialize_app(cred, {
   'databaseURL': 'https://uhs-devils-advocate.firebaseio.com'
 })
 
+import pyrebase
+
+config = {
+  "apiKey": "AIzaSyARCliKyACLYhK_1qlK8a3IUSvQ4Do_3Jc",
+  "authDomain": "uhs-devils-advocate.firebaseapp.com",
+  "databaseURL": "https://uhs-devils-advocate.firebaseio.com",
+  "storageBucket": "uhs-devils-advocate.appspot.com",
+}
+
+firebase = pyrebase.initialize_app(config)
+dbp = firebase.database()
+
 # db = firestore.client()
 
 from forms import LoginForm
@@ -66,6 +78,29 @@ def get_info():
     # info["sections"] = ["Arts & Entertainment","Current Events","Food","Op-Ed","Sports","Back Page"]
     info["archive"] = [{"name":"February 2020","id":"february-2020"},{"name":"November 2019","id":"november-2019"}]
     return info
+
+def matches_query(will, query):
+    if "freshmen" in will:
+        for x in will["freshmen"]:
+            if query in x.lower():
+                return True
+    if "sophomores" in will:
+        for x in will["sophomores"]:
+            if query in x.lower():
+                return True
+    if "juniors" in will:
+        for x in will["juniors"]:
+            if query in x.lower():
+                return True
+    if "faculty" in will:
+        for x in will["faculty"]:
+            if query in x.lower():
+                return True
+    if "miscellaneous" in will:
+        for x in will["miscellaneous"]:
+            if query in x.lower():
+                return True
+    return False
 
 
 @app.errorhandler(404)
@@ -146,7 +181,11 @@ def get_author(author_id):
 
 @app.route('/sections/<section_id>')
 def get_section(section_id):
-    section_info = {"title":section_id,"id":section_id}
+    # section_info = {"title":section_id,"id":section_id}
+    section_info = {}
+    snapshot = db.reference('/sections').child(section_id).get()
+    for key, val in snapshot.items():
+        section_info[key] = val
     snapshot = db.reference('/articles').order_by_child('section').equal_to(section_id).get()
     if snapshot:
         section_info["articles"] = []
@@ -178,7 +217,15 @@ def get_edition(edition_id):
 
 @app.route('/2020-senior-wills')
 def senior_wills_2020():
+    query = request.args.get('query')
     senior_wills_info = db.reference('/archive').child("2020-senior-wills").child("senior-wills").order_by_key().get()
+    if(query):
+        query = query.lower()
+        old_senior_wills_info = senior_wills_info
+        senior_wills_info = {}
+        for this_will in old_senior_wills_info:
+            if(matches_query(old_senior_wills_info[this_will], query)):
+                senior_wills_info[old_senior_wills_info[this_will]["id"]] = old_senior_wills_info[this_will]
     count = 0
     for this_will in senior_wills_info:
         senior_wills_info[this_will]["index"] = count

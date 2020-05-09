@@ -167,6 +167,28 @@ a.active-sub-link {
     transform: translatex(-50%);
 }
 
+
+@media (max-width: 768px) {
+  #menu {
+    display: unset !important;
+  }
+  #header {
+    display:none;
+  }
+  #horizontal-menu {
+      display: none !important;
+  }
+  #sidebar-wrapper {
+    margin-top:75px !important;
+  }
+  #page-content-wrapper {
+    padding-top:120px;
+  }
+  #remove-border-mobile {
+    border-left:unset !important;
+  }
+}
+
   </style>
  {% block head %}{% endblock %}
 
@@ -178,10 +200,10 @@ a.active-sub-link {
 	<!-- <div class="container">
 		<a href="/"><img src="http://devils-advocate.herokuapp.com/static/img/logo.png" style="max-width: 100%;/* max-height: 100px; */padding-left: 50px;padding-right: 50px;"></a>
   </div> -->
-  <div class="row header align-items-center justify-content-center text-center" id="header">
+  <div class="row header align-items-center justify-content-center text-center hidden-sm-down	" id="header">
     <a href="/"><img id="logo_header" src="http://devils-advocate.herokuapp.com/static/img/evan_logo.jpg" style="max-width: 100%;/* max-height: 100px; */padding-left: 50px;padding-right: 50px;"></a>
   </div>
-	<nav class="navbar navbar-expand bg-primary navbar-light bg-light" style="background-color:#ab192d !important">
+	<nav class="navbar navbar-expand bg-primary navbar-light bg-light hidden-sm-down" style="background-color:#ab192d !important" id="horizontal-menu">
             <!--<div class="navbar-collapse collapse">-->
               <ul class="nav justify-content-center align-items-center" style="width:100%">
                   {% for section in data.sections %}
@@ -194,6 +216,18 @@ a.active-sub-link {
               </ul>
             <!--</div>-->
         </nav>
+        <nav class="navbar navbar-light bg-light navbar-fixed-top" id="menu" style="display:none">
+          <div class="container text-center justify-content-center align-items-center">
+            <div style="width:fit-content">
+              <a href="#menu-toggle" id="menu-toggle" class="navbar-brand" style="">
+                <span class="navbar-toggler-icon"></span>
+              </a>
+            </div>
+            <div class="col text-center justify-content-center align-items-center">
+              <a class="navbar-brand" style="width:100%; font-family: 'Libre Baskerville', serif !important; color:#ab192d !important" href="/">THE DEVILS' ADVOCATE</a>
+            </div>
+          </div>
+        </nav>
         <div id="wrapper" class="">
             <!-- Sidebar -->
             <div id="sidebar-wrapper" style="margin-top: -150px;">
@@ -202,6 +236,7 @@ a.active-sub-link {
                     {% for section in data.sections %}
                     <li> <a href="/sections/{{ data.sections[section]['id'] }}">{{ data.sections[section]['name'] }}</a> </li>
                     {% endfor %}
+                    <li> <a href="/2020-senior-wills">Senior Wills</a> </li>
                     <hr>
                     <li> <a href="/latest">Latest Edition</a> </li>
                     <li> <a href="/newsletter">Newsletter</a> </li>
@@ -211,18 +246,6 @@ a.active-sub-link {
             </div> <!-- /#sidebar-wrapper -->
             <!-- Page Content -->
             <div id="page-content-wrapper">
-              <nav class="navbar navbar-light bg-light navbar-fixed-top" id="menu" style="display:none">
-                <div class="container text-center justify-content-center align-items-center">
-                  <div style="width:fit-content">
-                    <a href="#menu-toggle" id="menu-toggle" class="navbar-brand" style="">
-                      <span class="navbar-toggler-icon"></span>
-                    </a>
-                  </div>
-                  <div class="col text-center justify-content-center align-items-center">
-                    <a class="navbar-brand" style="width:100%; font-family: 'Libre Baskerville', serif !important; color:#ab192d !important" href="/">THE DEVILS' ADVOCATE</a>
-                  </div>
-                </div>
-              </nav>
                 <div class="container-fluid">
                     {% block content %}
                     {% endblock %}
@@ -288,7 +311,7 @@ a.active-sub-link {
           {% endfor %}
 				</ul>
 			</div>
-			<div class="col-md-3 mb-md-0 mb-3" style="    border-left: #efefef 1px solid;">
+			<div class="col-md-3 mb-md-0 mb-3" id="remove-border-mobile" style="    border-left: #efefef 1px solid;">
 				<h5 class="text-uppercase">Subscribe</h5>
 				<ul class="list-unstyled">
 					<li style="padding:15px">
@@ -359,13 +382,13 @@ document.getElementById("copyright_year").innerHTML = year.toString();
                 $("#wrapper").toggleClass("toggled");
             });
 
-            $(window).resize(function(e) {
-              if($(window).width()<=768){
-                $("#wrapper").removeClass("toggled");
-              }else{
-                $("#wrapper").addClass("toggled");
-              }
-            });
+            // $(window).resize(function(e) {
+            //   if($(window).width()<=768){
+            //     $("#wrapper").removeClass("toggled");
+            //   }else{
+            //     $("#wrapper").addClass("toggled");
+            //   }
+            // });
           });
            
 </script>
@@ -382,12 +405,14 @@ document.getElementById("copyright_year").innerHTML = year.toString();
 <script type="text/javascript">
   (function($) {          
       $(document).ready(function(){                    
-          $(window).scroll(function(){                          
+          $(window).scroll(function(){  
+            if ($(window).width() > 768) {                        
               if ($(this).scrollTop() > 200) {
                   $('#menu').fadeIn(500);
               } else {
                   $('#menu').fadeOut(500);
               }
+            }
           });
       });
   })(jQuery);
