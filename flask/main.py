@@ -197,6 +197,7 @@ def get_section(section_id):
 def get_article(article_id):
     article_info = db.reference('/articles').child(article_id).get()
     article_info["author"] = db.reference('/authors').child(article_info["author"]).get()
+    article_info["author"]["img"] = "/static/img/authors/"+article_info["author"]["name"]+".png"
     return render_template('article.html', info = article_info, data = get_info())
 
 @app.route('/archive/<archive_id>')

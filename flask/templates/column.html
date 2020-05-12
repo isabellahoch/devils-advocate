@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}{{ info.title }} | DEVILS' ADVOCATE{% endblock %}
+{% block title %}{{ info.name }} | {% endblock %}
 {% block content %}
 <div class="container">
 	<h1>{{ info.name }}</h1>
@@ -15,4 +15,11 @@
 	</div>
 	{% endif %}
 </div>
+{% endblock %}
+{% block js %}
+<script>
+	$("document").ready(function(){
+		$("#{{ info.id }}-link").addClass("active");
+	});
+</script>
 {% endblock %}

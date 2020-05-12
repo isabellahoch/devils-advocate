@@ -1,6 +1,4 @@
 {% extends "base.html" %}
-{% block title %}THE DEVILS' ADVOCATE{% endblock %}
-{% block homeisactive %}active{% endblock %}
 {% if notification %}
 <div id="notification-bar" class="notification-bar row text-center align-items-center justify-content-center" style="background-color:#ab192D">
     <h3 style="color:#ffffff; padding-right:25px">{{ notification.message }} Visit this <a href="{{ notification.link }}" style="text-decoration:underline; color:#fff">link</a> for more info!</h3><button class="btn btn-close" data-dismiss="notification-bar" type="button" id="dismissbar">&times;</button>
