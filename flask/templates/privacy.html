@@ -1,5 +1,15 @@
 {% extends "base.html" %}
 {% block title %}Privacy Policy | {% endblock %}
+{% block head %}
+<style>
+    @media (min-width: 768px) {
+        #unsubscribe-heading {
+            margin-left: -345px;
+            padding-top: 20px;
+        }
+    }
+</style>
+{% endblock %}
 {% block content %}
 <div class="row" style="padding:25px">
     <h1>Privacy Policy</h1>
@@ -28,7 +38,7 @@
     <h2>California Privacy Rights</h2>
     <p>If you are a California resident, you have the right, under California Civil Code Section 1798.83, to request and obtain from us, once a year and free of charge, a list of the third parties to whom we have disclosed personal information for their direct marketing purposes in the prior calendar year. Please email requests for such information to <a href="mailto:devilsadvocate@sfuhs.org">devilsadvocate@sfuhs.org</a>.</p>
     <p>Please note that we do not honor Do Not Track requests.</p>
-    <h2>Unsubscribe Requests</h2>
+    <h2 id="unsubscribe-heading">Unsubscribe Requests</h2>
     <p>You can unsubscribe from any of our newsletters or email lists at any time by following the unsubscribe link at the bottom of each message. If you would like to update the personal information that you have provided to us, send an email to <a href="mailto:devilsadvocate@sfuhs.org">devilsadvocate@sfuhs.org</a>.</p>
     <p>We will retain your information for as long as we provide you with services. We will also retain and use your information as necessary to comply with our legal obligations, resolve disputes, and enforce our agreements. If you wish to cancel your account or request that we no longer use your information to provide you services, contact <a href="mailto:devilsadvocate@sfuhs.org">devilsadvocate@sfuhs.org</a>.</p>
 </div>
