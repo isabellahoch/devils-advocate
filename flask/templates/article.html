@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}{{ info.title }} | THE DEVILS' ADVOCATE{% endblock %}
+{% block title %}{{ info.title }} | {% endblock %}
 {% block head %}
 <style>
 	@import url('https://fonts.googleapis.com/css?family=EB+Garamond|Encode+Sans+Condensed|PT+Sans+Narrow|Saira+Extra+Condensed&display=swap');
@@ -20,38 +20,39 @@
 <div class="container">
 	<div class="row text-center align-items-center justify-content-center">
 		<h1 style="padding-bottom:25px">{{ info.formatted_title|safe }}</h1>
-		<br>
-		{% if info.img %}
-		<div class="row justify-content-center align-items-center text-center" style="width:100%">
-			<img src="{{ info.img }}" style="max-width:500px">
+	</div>
+	<div class="row text-center align-items-center justify-content-center">
+		<div class="col">
+			<img src="{{ info.author.img }}" style="border-radius:50%; width:100px; height: 100px; object-fit:cover;">
 		</div>
-		<br>
-		{% endif %}
-		<div class="row" style="width:60%">
-			<div class="col-sm-2">
-				<img src="{{ info.author.img }}" style="border-radius:50%; width:100px; height: 100px; object-fit:cover;">
-			</div>
-			<div class="col-sm-6">
-				<h4>By <a href="/authors/{{ info.author.id }}">{{ info.author.name }}</a></h4>
-				<p style="font-color:gray; font-size:12pt">{{ info.author.role }}</p>
-			</div>
-			<div class="col-sm-4">
-				<br>
-				<ul style="display:inline-block; list-style:none">
-					<li style="display:inline-block;">
-						<a class="share-icon" href="https://www.facebook.com/sharer/sharer.php?u=http://devils-advocate.herokuapp.com/articles/{{ info.id }}"><i class="fab fa-facebook-f"> </i></a>
-					</li>
-					<li style="display:inline-block;">
-						<a class="share-icon" href="https://twitter.com/home?status=http://devils-advocate.herokuapp.com/articles/{{ info.id }} {{ info.title }}"><i class="fab fa-twitter"> </i></a>
-					</li>
-					<li style="display:inline-block;">
-						<a class="share-icon" href="mailto:?subject={{ info.title }} | THE DEVILS' ADVOCATE &body=http://devils-advocate.herokuapp.com/articles/{{ info.id }}"><i class="fas fa-envelope"></i></a>
-					</li>
-				</ul>
-			</div>
+		<div class="col">
+			<h4>By <a href="/authors/{{ info.author.id }}">{{ info.author.name }}</a></h4>
+			<p style="font-color:gray; font-size:12pt">{{ info.author.role }}</p>
 		</div>
 	</div>
 	<hr>
+	<div class="row text-center align-items-center justify-content-center" style="margin-bottom:-10px">
+		<br>
+		<ul style="display:inline-block; list-style:none">
+			<li style="display:inline-block;">
+				<a class="share-icon" href="https://www.facebook.com/sharer/sharer.php?u=http://devils-advocate.herokuapp.com/articles/{{ info.id }}"><i class="fab fa-facebook-f"> </i></a>
+			</li>
+			<li style="display:inline-block;">
+				<a class="share-icon" href="https://twitter.com/home?status=http://devils-advocate.herokuapp.com/articles/{{ info.id }} {{ info.title }}"><i class="fab fa-twitter"> </i></a>
+			</li>
+			<li style="display:inline-block;">
+				<a class="share-icon" href="mailto:?subject={{ info.title }} | THE DEVILS' ADVOCATE &body=http://devils-advocate.herokuapp.com/articles/{{ info.id }}"><i class="fas fa-envelope"></i></a>
+			</li>
+		</ul>
+	</div>
+	<hr>
+	{% if info.img %}
+		<div class="row justify-content-center align-items-center text-center" style="width:100%">
+			<img src="{{ info.img }}" style="max-width:500px">
+		</div>
+		<hr>
+		<!-- <br> -->
+	{% endif %}
 	<div class="row">
 		<div class="content">
 			<p>{{ info.contents|safe }}</p>

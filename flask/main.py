@@ -198,6 +198,9 @@ def get_article(article_id):
     article_info = db.reference('/articles').child(article_id).get()
     article_info["author"] = db.reference('/authors').child(article_info["author"]).get()
     article_info["author"]["img"] = "/static/img/authors/"+article_info["author"]["name"]+".png"
+    if "img" in article_info:
+        if "drive.google.com/open" in article_info["img"]:
+            article_info["img"] = "https://drive.google.com/uc?export=view&id="+article_info["img"].split("le.com/open?id=")[1]
     return render_template('article.html', info = article_info, data = get_info())
 
 @app.route('/archive/<archive_id>')
