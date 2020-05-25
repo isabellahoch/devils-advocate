@@ -241,16 +241,16 @@ a.active-sub-link {
             <!-- Sidebar -->
             <div id="sidebar-wrapper" style="margin-top: -150px;">
                 <ul class="sidebar-nav">
-                    <li class="sidebar-brand"> Sections </li>
+                    <li class="sidebar-brand">Sections </li>
                     {% for section in data.sections %}
-                    <li> <a href="/sections/{{ data.sections[section]['id'] }}">{{ data.sections[section]['name'] }}</a> </li>
+                    <li><a href="/sections/{{ data.sections[section]['id'] }}">{{ data.sections[section]['name'] }}</a> </li>
                     {% endfor %}
-                    <li> <a href="/2020-senior-wills">Senior Wills</a> </li>
+                    <li><a href="/2020-senior-wills">Senior Wills</a></li>
                     <hr>
-                    <li> <a href="/latest">Latest Edition</a> </li>
-                    <li> <a href="/subscribe">Newsletter</a> </li>
-                    <li> <a href="{{ url_for('privacy_policy') }}">Privacy Policy</a> </li>
-                    <li> <a href="/contact">Contact Us</a> </li>
+                    <li><a href="/latest">Latest Edition</a></li>
+                    <li><a href="/subscribe">Newsletter</a></li>
+                    <li><a href="{{ url_for('privacy_policy') }}">Privacy Policy</a></li>
+                    <li><a href="/contact">Contact Us</a></li>
                 </ul>
             </div> <!-- /#sidebar-wrapper -->
             <!-- Page Content -->

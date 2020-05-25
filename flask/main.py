@@ -295,6 +295,31 @@ def subscribe():
 def sorry():
     return render_template('under_construction.html', data = get_info())
 
+from pdf_manager import make_pdf_from_url
+
+@app.route('/test-pdf')
+def test_pdf():
+    query = request.args.get('query')
+    senior_wills_info = db.reference('/archive').child("2020-senior-wills").child("senior-wills").order_by_key().get()
+    if(query):
+        query = query.lower()
+        old_senior_wills_info = senior_wills_info
+        senior_wills_info = {}
+        for this_will in old_senior_wills_info:
+            if(matches_query(old_senior_wills_info[this_will], query)):
+                senior_wills_info[old_senior_wills_info[this_will]["id"]] = old_senior_wills_info[this_will]
+    count = 0
+    for this_will in senior_wills_info:
+        senior_wills_info[this_will]["index"] = count
+        count = count + 1
+    return render_template('test_pdf.html', info = senior_wills_info, data = get_info())
+
+@app.route('/make-pdf')
+def make_pdf():
+    make_pdf_from_url(url_for("test_pdf"))
+
+
+
 @app.route('/sitemap.xml', methods=['GET'])
 def sitemap():
     """Generate sitemap.xml """
