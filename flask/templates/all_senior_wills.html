@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block title %}{{ info.name }}'s Senior Will | {% endblock %}
+{% block head %}
+<style>
+    .senior-will-list {
+        text-align: left !important;
+        padding: 20px;
+        line-height: 1.8;
+    }
+</style>
+{% endblock %}
+{% block content %}
+<div class="container">
+    {% for this_will in info %}
+    <div class="container align-items-center justify-content-center text-center">
+        <!-- <h1 style="margin-bottom:10px">{{ info[this_will].name }}'s Senior Will</h1> -->
+        <h1 style="margin-bottom:10px">{{ info[this_will].name }}</h1>
+        <hr>
+        {% if info[this_will].cause_of_death %}
+        <h3 id="cause-of-death">Cause of Death</h3>
+        <span>{{ info[this_will].cause_of_death|safe }}</span>
+        {% endif %}
+        {% if info[this_will].statement %}
+        <h3 id="statement">Statement</h3>
+        <p>{{ info[this_will].statement|safe }}</p>
+        {% endif %}
+        {% if info[this_will].freshmen %}
+        <h3 id="freshmen">Freshmen</h3>
+        <ul class= "senior-will-list">
+            {% for this_person in info[this_will].freshmen %}
+            <li><strong>{{ this_person|safe }}</strong>: {{ info[this_will].freshmen[this_person]|safe }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% if info[this_will].sophomores %}
+        <h3 id="sophomores">Sophomores</h3>
+        <ul class= "senior-will-list">
+            {% for this_person in info[this_will].sophomores %}
+            <li><strong>{{ this_person|safe }}</strong>: {{ info[this_will].sophomores[this_person]|safe }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% if info[this_will].juniors %}
+        <h3 id="juniors">Juniors</h3>
+        <ul class= "senior-will-list">
+            {% for this_person in info[this_will].juniors %}
+            <li><strong>{{ this_person|safe }}</strong>: {{ info[this_will].juniors[this_person]|safe }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% if info[this_will].faculty %}
+        <h3 id="faculty">Faculty</h3>
+        <ul class= "senior-will-list">
+            {% for this_person in info[this_will].faculty %}
+            <li><strong>{{ this_person|safe }}</strong>: {{ info[this_will].faculty[this_person]|safe }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% if info[this_will].miscellaneous %}
+        <h3 id="miscellaneous">Miscellaneous</h3>
+        <ul class= "senior-will-list">
+            {% for this_person in info[this_will].miscellaneous %}
+            <li><strong>{{ this_person|safe }}</strong>: {{ info[this_will].miscellaneous[this_person]|safe }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
+{% block js %}
+<script>$("#logo_header").attr("src","http://devils-advocate.herokuapp.com/static/img/senior_wills_header.jpg");</script>
+{% endblock %}

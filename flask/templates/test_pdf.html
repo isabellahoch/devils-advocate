@@ -189,10 +189,18 @@ a.active-sub-link {
 }
 
 </style>
+<style>
+    h1, h3 {
+        width:100% !important;
+    }
+</style>
 <title>2020 Senior Wills</title>
 </head>
 <body>
 <div class="container">
+    <div class="row text-center align-items-center justify-content-center" id="{{ info[this_will].id }}">
+        <h1>2020 SENIOR WILLS</h1>
+    </div>
     {% for this_will in info %}
     <div class="row text-center align-items-center justify-content-center" id="{{ info[this_will].id }}">
         <h1>{{ info[this_will].name }}</h1>

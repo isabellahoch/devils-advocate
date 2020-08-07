@@ -205,6 +205,7 @@ a.active-sub-link {
     </head>
 
 <body>
+  <div id="password-protected-area-wrapper" style="display:none">
   {% block notification %}{% endblock %}
 	<!-- <div class="container">
 		<a href="/"><img src="http://devils-advocate.herokuapp.com/static/img/logo.png" style="max-width: 100%;/* max-height: 100px; */padding-left: 50px;padding-right: 50px;"></a>
@@ -349,7 +350,14 @@ a.active-sub-link {
 </div> <!-- /#page-content-wrapper -->
         </div>
                     <!--/Footer-->
-
+ </div> <!-- wrapper to password protect-->
+ <div id="password-protect" style="width:100vw;height: 100vh; display: flex;justify-content: center;align-items: center; background-color:#fff" class="container align-items-center">
+    <div class="align-items-center justify-content-center text-center" style="height:fit-content; background-color:#efefef; padding:25px">
+      <h1>Welcome to the online version of the DA! Please enter the password to access the site.</h1>
+      <form clas="form"><input type="text" class="form-control" id="password-input" style="margin-top:20px;margin-bottom:20px">
+      <input type="submit" class="btn btn-custom" id="password-submit"></form>
+    </div>
+ </div>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-1.12.3.js" integrity="sha256-1XMpEtA4eKXNNpXcJ1pmMPs8JV+nwLdEqwiJeCQEkyc=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
@@ -385,6 +393,17 @@ document.getElementById("copyright_year").innerHTML = year.toString();
           }
       });
   });
+</script>
+<script>
+  $("#password-submit").click(function() {
+    if($("#password-input").val() == "killers kill") {
+      $("#password-protected-area-wrapper").show();
+      $("#password-protect").remove();
+    }
+    else {
+      alert("Invalid password. Please try again.");
+    }
+  })
 </script>
 
 <script type="text/javascript">

@@ -3,9 +3,14 @@ from flask import Flask, render_template, request, redirect, url_for, make_respo
 from flask import request
 import os
 import json
-from forms import RegForm, SubscribeForm
+from forms import SubscribeForm
+from flask_compress import Compress
 
 app = Flask(__name__)
+COMPRESS_MIMETYPES = ['text/html', 'text/css', 'application/json']
+COMPRESS_LEVEL = 6
+COMPRESS_MIN_SIZE = 500
+Compress(app)
 
 app.config['SECRET_KEY'] = os.urandom(24)
 
@@ -42,11 +47,11 @@ dbp = firebase.database()
 
 # db = firestore.client()
 
-from forms import LoginForm
+# from forms import LoginForm
 
-from werkzeug.security import generate_password_hash, check_password_hash
+# from werkzeug.security import generate_password_hash, check_password_hash
 
-import google.auth
+# import google.auth
 
 try:
     credentials, project = google.auth.default(
@@ -236,6 +241,23 @@ def senior_wills_2020():
         count = count + 1
     return render_template('senior_wills.html', info = senior_wills_info, data = get_info())
 
+# @app.route('/pdf-senior-wills')
+# def senior_wills_2020_pdf():
+#     query = request.args.get('query')
+#     senior_wills_info = db.reference('/archive').child("2020-senior-wills").child("senior-wills").order_by_key().get()
+#     if(query):
+#         query = query.lower()
+#         old_senior_wills_info = senior_wills_info
+#         senior_wills_info = {}
+#         for this_will in old_senior_wills_info:
+#             if(matches_query(old_senior_wills_info[this_will], query)):
+#                 senior_wills_info[old_senior_wills_info[this_will]["id"]] = old_senior_wills_info[this_will]
+#     count = 0
+#     for this_will in senior_wills_info:
+#         senior_wills_info[this_will]["index"] = count
+#         count = count + 1
+#     return render_template('all_senior_wills.html', info = senior_wills_info, data = get_info())
+
 @app.route('/2020-senior-wills/<senior_will_id>')
 def get_senior_will(senior_will_id):
     senior_will_info = db.reference('/archive').child("2020-senior-wills").child("senior-wills").child(senior_will_id).get()
@@ -295,28 +317,34 @@ def subscribe():
 def sorry():
     return render_template('under_construction.html', data = get_info())
 
-from pdf_manager import make_pdf_from_url
+# from pdf_manager import make_pdf_from_url
 
-@app.route('/test-pdf')
-def test_pdf():
-    query = request.args.get('query')
-    senior_wills_info = db.reference('/archive').child("2020-senior-wills").child("senior-wills").order_by_key().get()
-    if(query):
-        query = query.lower()
-        old_senior_wills_info = senior_wills_info
-        senior_wills_info = {}
-        for this_will in old_senior_wills_info:
-            if(matches_query(old_senior_wills_info[this_will], query)):
-                senior_wills_info[old_senior_wills_info[this_will]["id"]] = old_senior_wills_info[this_will]
-    count = 0
-    for this_will in senior_wills_info:
-        senior_wills_info[this_will]["index"] = count
-        count = count + 1
-    return render_template('test_pdf.html', info = senior_wills_info, data = get_info())
+# @app.route('/test-pdf')
+# def test_pdf():
+#     query = request.args.get('query')
+#     senior_wills_info = db.reference('/archive').child("2020-senior-wills").child("senior-wills").order_by_key().get()
+#     if(query):
+#         query = query.lower()
+#         old_senior_wills_info = senior_wills_info
+#         senior_wills_info = {}
+#         for this_will in old_senior_wills_info:
+#             if(matches_query(old_senior_wills_info[this_will], query)):
+#                 senior_wills_info[old_senior_wills_info[this_will]["id"]] = old_senior_wills_info[this_will]
+#     count = 0
+#     for this_will in senior_wills_info:
+#         senior_wills_info[this_will]["index"] = count
+#         count = count + 1
+#     return render_template('test_pdf.html', info = senior_wills_info, data = get_info())
 
-@app.route('/make-pdf')
-def make_pdf():
-    make_pdf_from_url(url_for("test_pdf"))
+
+# import pdfkit
+# config = pdfkit.configuration(wkhtmltopdf='/opt/bin/wkhtmltopdf')
+
+# @app.route('/make-pdf')
+# def make_pdf():
+#     pdfkit.from_url('http://devils-advocate.herokuapp.com/2020-senior-wills/tarak-duggal', 'test.pdf')
+#     # make_pdf_from_url("http://devils-advocate.herokuapp.com/2020-senior-wills/tarak-duggal")
+#     return redirect(url_for('index'))
 
 
 
