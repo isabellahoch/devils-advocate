@@ -13,10 +13,10 @@ from wtforms import StringField, PasswordField, SelectField, TextAreaField, Subm
 # 	submit=SubmitField("Submit")
 
 
-# class LoginForm(FlaskForm):
-#     email = StringField('Email',  validators=[Required(), Email(message='Invalid email'), Length(max=30)])
-#     password = PasswordField('Password', validators=[Required(), Length(min=4, max=25)])
-#     submit = SubmitField('Submit', render_kw={'class': 'form-control btn btn-custom','style':'width:100%'})
+class LoginForm(FlaskForm):
+    email = StringField('Email',  validators=[Required(), Email(message='Invalid email'), Length(max=30)],render_kw={'class': 'form-control'})
+    password = PasswordField('Password', validators=[Length(min=4, max=25)],render_kw={'class': 'form-control'})
+    submit = SubmitField('Submit', render_kw={'class': 'form-control btn btn-custom','style':'width:100%'})
 
 # class RegForm(FlaskForm):
 # 	email = StringField('Email',  validators=[InputRequired(), Email(message='Invalid email'), Length(max=30)], render_kw={'class': 'form-control'})

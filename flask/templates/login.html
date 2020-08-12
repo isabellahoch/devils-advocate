@@ -1,17 +1,32 @@
 {% extends "base.html" %}
-{% block title %}INCUB8 | Log In{% endblock %}
+{% block title %}Log In | Devils' Advocate{% endblock %}
 {% block content %}
 <!-- <h1>Registration</h1> -->
 <div class="row align-items-center justify-content-center">
-	<form action="/login" method="post" class="regForm">
-	  <p class="form_title">Email</p>
+	<div style="width:100%; text-align:center; padding-bottom:25px">
+			<h1>Log In</h1>
+	</div>
+	<br>
+	<form action="/login" method="post" class="form">
+	  <p>Email* (use your sfuhs.org email)</p>
 	  {{ form.email }}
-	  <p class="form_title">Password</p>
+	  <p style="padding-top:10px;">Access Code*</p>
 	  {{ form.password }}
 	  {{ form.hidden_tag() }}
 	  <br>
 	  <br>
 	  {{ form.submit }}
+	  <input type=hidden value="{{ next or '' }}" name=next>
 	</form>
 </div>
+{% endblock %}
+{% block js %}
+{% if if_alert %}
+<script>
+	$(document).ready(function() {
+	  alert("{{ alert }}");
+	  console.log("{{ alert }}")
+	});
+</script>
+{% endif %}
 {% endblock %}

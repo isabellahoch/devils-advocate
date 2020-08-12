@@ -13,6 +13,7 @@ COMPRESS_MIN_SIZE = 500
 Compress(app)
 
 app.config['SECRET_KEY'] = os.urandom(24)
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
 
 
 import firebase_admin
@@ -67,6 +68,89 @@ credentials = service_account.Credentials.from_service_account_file(
 
 scoped_credentials = credentials.with_scopes(
     ['https://www.googleapis.com/auth/cloud-platform'])
+
+
+from flask_login import LoginManager, current_user, login_user, login_required, logout_user
+from forms import LoginForm
+from creds import ACCESS_CODE
+login = LoginManager(app)
+login.login_view = 'login'
+
+from flask_sqlalchemy import SQLAlchemy
+
+sql_db = SQLAlchemy()
+
+sql_db.init_app(app)
+
+class User(sql_db.Model):
+    """An admin user capable of viewing reports.
+
+    :param str email: UHS email address of user
+
+    """
+    __tablename__ = 'user'
+
+    email = sql_db.Column(sql_db.String, primary_key=True)
+    authenticated = sql_db.Column(sql_db.Boolean, default=False)
+
+    def is_active(self):
+        """True, as all users are active."""
+        return True
+
+    def get_id(self):
+        """Return the email address to satisfy Flask-Login's requirements."""
+        return self.email
+
+    def is_authenticated(self):
+        """Return True if the user is authenticated."""
+        return self.authenticated
+
+    def is_anonymous(self):
+        """False, as anonymous users aren't supported."""
+        return False
+
+# @app.route('/temporary-test')
+# def temporary_test():
+#     sql_db.create_all()
+#     test_user = User(email="studentitteam@sfuhs.org")
+#     sql_db.session.add(test_user)
+#     sql_db.session.commit()
+
+@login.user_loader
+def load_user(user_id):
+    # return User.query.get(int(id))
+    return User.query.filter_by(email=user_id).first()
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    sql_db.create_all()
+    alert = request.args.get('alert')
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = LoginForm()
+    if form.validate_on_submit():
+        print("hi")
+        if form.password.data != ACCESS_CODE:
+            print(form.password.data)
+            alert='Invalid access code. Please try again or contact UHS administration for help.'
+            return redirect(url_for('login', alert=alert))
+        user = User.query.filter_by(email=form.email.data).first()
+        if not user:
+            user = User(email=form.email.data)
+            sql_db.session.add(user)
+            sql_db.session.commit()
+            login_user(user, remember=True)
+        else:
+            login_user(user, remember=True)
+        return redirect(url_for('index'))
+    if alert:
+        return render_template('login.html', form=form, data = get_info(), if_alert = True, alert = alert)
+    return render_template('login.html', form=form, data = get_info())
+
+@app.route('/logout')
+def logout():
+    logout_user()
+    return redirect(url_for('index'))
 
 def get_info():
     info = {}
@@ -141,6 +225,7 @@ def index():
 	# return render_template('index.html', feature_no = feature_indexes, features = features, logged_in=current_user.is_authenticated)
 
 @app.route('/authors')
+@login_required
 def authors():
     test_ref = db.reference('/authors')
     snapshot = test_ref.get()
@@ -158,7 +243,10 @@ def authors():
         if author["role"] == "Editor in Chief":
             info["sections"]["EICs"]["editors"].append(author)
         else:
-            info["sections"][author["role"].split(" Editor")[0]]["editors"].append(author)
+            try:
+                info["sections"][author["role"].split(" Editor")[0]]["editors"].append(author)
+            except Exception as e:
+                print(e)
     return render_template('authors.html', info = info, all_authors = all_authors, data = get_info())
 
 @app.route('/articles')
@@ -378,5 +466,6 @@ app.jinja_env.cache = {}
 
 
 if __name__ == "__main__":
+    sql_db.init_app(app)
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port)

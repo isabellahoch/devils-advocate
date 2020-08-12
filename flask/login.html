@@ -7,10 +7,10 @@
 			<h1>Log In</h1>
 	</div>
 	<br>
-	<form action="/login" method="post" class="regForm">
-	  <p>Email</p>
+	<form action="/login" method="post" class="form">
+	  <p>Email* (use your sfuhs.org email)</p>
 	  {{ form.email }}
-	  <p style="padding-top:10px;">Password</p>
+	  <p style="padding-top:10px;">Access Code*</p>
 	  {{ form.password }}
 	  {{ form.hidden_tag() }}
 	  <br>
@@ -19,4 +19,14 @@
 	  <input type=hidden value="{{ next or '' }}" name=next>
 	</form>
 </div>
+{% endblock %}
+{% block js %}
+{% if if_alert %}
+<script>
+	$(document).ready(function() {
+	  alert("{{ alert }}");
+	  console.log("{{ alert }}")
+	});
+</script>
+{% endif %}
 {% endblock %}
