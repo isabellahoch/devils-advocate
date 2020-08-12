@@ -1,3 +1,5 @@
 {
-    "python.pythonPath": "/Users/isabellahochschild/Documents/GitHub/devils-advocate/devils-advocate/bin/python3"
+    "python.pythonPath": "/Users/isabellahochschild/Documents/GitHub/devils-advocate/devils-advocate/bin/python3",
+    "python.linting.pylintEnabled": true,
+    "python.linting.enabled": true
 }
