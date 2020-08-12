@@ -129,7 +129,8 @@ def login():
         return redirect(url_for('index'))
     form = LoginForm()
     if form.validate_on_submit():
-        print("hi")
+        next_url = request.args.get("next")
+        print(next_url)
         if form.password.data != ACCESS_CODE:
             print(form.password.data)
             alert='Invalid access code. Please try again or contact UHS administration for help.'
@@ -142,6 +143,8 @@ def login():
             login_user(user, remember=True)
         else:
             login_user(user, remember=True)
+        if next_url:
+            return redirect(next_url)
         return redirect(url_for('index'))
     if alert:
         return render_template('login.html', form=form, data = get_info(), if_alert = True, alert = alert)
@@ -250,6 +253,7 @@ def authors():
     return render_template('authors.html', info = info, all_authors = all_authors, data = get_info())
 
 @app.route('/articles')
+@login_required
 def articles():
     ref = db.reference('/articles')
     snapshot = ref.get()
@@ -259,10 +263,12 @@ def articles():
     return render_template('index.html', data = get_info())
 
 @app.route('/latest')
+@login_required
 def latest():
     return redirect(url_for("get_edition", edition_id = "2020-senior-wills"))
 
 @app.route('/authors/<author_id>')
+@login_required
 def get_author(author_id):
     author_info = db.reference('/authors').child(author_id).get()
     snapshot = db.reference('/articles').order_by_child('author').equal_to(author_id).get()
@@ -273,6 +279,7 @@ def get_author(author_id):
     return render_template('author.html', author = author_info, data = get_info())
 
 @app.route('/sections/<section_id>')
+@login_required
 def get_section(section_id):
     # section_info = {"title":section_id,"id":section_id}
     section_info = {}
@@ -287,6 +294,7 @@ def get_section(section_id):
     return render_template('column.html', info = section_info, data = get_info())
 
 @app.route('/articles/<article_id>')
+@login_required
 def get_article(article_id):
     article_info = db.reference('/articles').child(article_id).get()
     article_info["author"] = db.reference('/authors').child(article_info["author"]).get()
@@ -297,11 +305,13 @@ def get_article(article_id):
     return render_template('article.html', info = article_info, data = get_info())
 
 @app.route('/archive/<archive_id>')
+@login_required
 def get_archive(archive_id):
     archive_info = db.reference('/archive').child(archive_id).get()
     return render_template('archive.html', info = archive_info, data = get_info())
 
 @app.route('/editions/<edition_id>')
+@login_required
 def get_edition(edition_id):
     if(edition_id == "february-2020"):
         return redirect(url_for("get_archive", archive_id = edition_id))
@@ -313,6 +323,7 @@ def get_edition(edition_id):
     return render_template('issue.html', info = edition_info, data = get_info())
 
 @app.route('/2020-senior-wills')
+@login_required
 def senior_wills_2020():
     query = request.args.get('query')
     senior_wills_info = db.reference('/archive').child("2020-senior-wills").child("senior-wills").order_by_key().get()
@@ -347,15 +358,18 @@ def senior_wills_2020():
 #     return render_template('all_senior_wills.html', info = senior_wills_info, data = get_info())
 
 @app.route('/2020-senior-wills/<senior_will_id>')
+@login_required
 def get_senior_will(senior_will_id):
     senior_will_info = db.reference('/archive').child("2020-senior-wills").child("senior-wills").child(senior_will_id).get()
     return render_template('senior_will.html', info = senior_will_info, data = get_info())
 
 @app.route('/youtube')
+@login_required
 def youtube():
     return render_template('youtube.html', data = get_info())
 
 @app.route('/about')
+@login_required
 def about():
     test_ref = db.reference('/authors')
     snapshot = test_ref.get()
@@ -376,18 +390,22 @@ def about():
     return render_template('authors.html', info = info, authors = all_authors, data = get_info())
 
 @app.route('/about/privacy')
+@login_required
 def privacy_policy():
     return render_template('privacy.html', data = get_info())
 
 @app.route('/contact')
+@login_required
 def contact():
     return render_template('contact.html', data = get_info())
 
 @app.route('/crossword')
+@login_required
 def crossword():
     return render_template('crossword.html', data = get_info())
 
 @app.route('/subscribe', methods=['GET','POST'])
+@login_required
 def subscribe():
     form = SubscribeForm()
     if request.method == 'POST':
@@ -402,6 +420,7 @@ def subscribe():
     return render_template('subscribe.html', form = form, data = get_info())
 
 @app.route('/sorry')
+@login_required
 def sorry():
     return render_template('under_construction.html', data = get_info())
 
