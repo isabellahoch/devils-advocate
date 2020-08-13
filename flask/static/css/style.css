@@ -322,7 +322,24 @@ hr {
     width: 200px !important;
 }
 
-#aarushipic, #isabellapic, #sriyapic {
-    height: 200px !important;
-    width: 200px !important;
+.section-header {
+    border-bottom: 1px solid #000;
+    line-height: 0px;
+    -webkit-letter-spacing: 5px;
+    -moz-letter-spacing: 5px;
+    -ms-letter-spacing: 5px;
+    letter-spacing: 5px;
+    margin-left: 50px;
+    padding-left: 10px;
+    padding-right: 10px;
 }
+
+.section-header-link {
+  font-family: 'Lato',sans-serif;
+  font-weight: 300;
+  font-size: 28px;
+  text-transform: uppercase;
+  background: #fff;
+  padding: 0px 20px;
+  margin-left: 75px;
+  }

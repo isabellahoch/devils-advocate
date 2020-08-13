@@ -380,14 +380,22 @@ def about():
             all_authors.append(val)
     info = {}
     info["sections"] = {}
-    for section in get_info()["sections"]:
-        info["sections"][section] = {"title":section,"editors":[]}
+    for section in get_info()["sections"].values():
+        print(section)
+        if section["name"]=="A&E":
+            section["name"] = "Arts & Entertainment"
+        elif section["name"]=="Backpage":
+            section["name"] = "Back Page"
+        info["sections"][section["name"]] = {"title":section["name"],"editors":[]}
     info["sections"]["EICs"] = {"title":"Editors in Chief","editors":[]}
     for author in all_authors:
+        print(author)
         if author["role"] == "Editor in Chief":
             info["sections"]["EICs"]["editors"].append(author)
         else:
             info["sections"][author["role"].split(" Editor")[0]]["editors"].append(author)
+        author["img"] = "/static/img/authors/"+author["name"]+".png"
+    print(info["sections"])
     return render_template('authors.html', info = info, authors = all_authors, data = get_info())
 
 @app.route('/about/privacy')

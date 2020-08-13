@@ -3,9 +3,10 @@
 {% block content %}
 <div class="container">
 <!-- 	<h1>AUTHORS</h1> -->
-	{% for section in info.sections %}
+	{% for section in info.sections.values() %}
 	<div class="row">
 		<h1>{{ section.title }}</h1>
+		<!-- <p>{{ section|safe }}</p> -->
 		<div class="row" style="width:100%">
 			{% for author in section.editors %}
 			<div class="col text-center">
