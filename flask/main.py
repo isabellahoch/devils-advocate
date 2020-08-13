@@ -405,10 +405,12 @@ def contact():
 def crossword():
     return render_template('crossword.html', data = get_info())
 
+from werkzeug.datastructures import MultiDict
+
 @app.route('/subscribe', methods=['GET','POST'])
 @login_required
 def subscribe():
-    form = SubscribeForm(formdata=MultiDict({'email': current_user.email})))
+    form = SubscribeForm(formdata=MultiDict({'email': current_user.email}))
     if request.method == 'POST':
         subscriber_info = {}
         subscriber_info["name"] = form.name.data

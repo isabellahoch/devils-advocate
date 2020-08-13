@@ -28,4 +28,4 @@ class SubscribeForm(FlaskForm):
 	name=StringField('Name',validators=[Required()], render_kw={'class': 'form-control'})
 	email=StringField('Email',validators=[Required(), Email(message='Invalid email')], render_kw={'class': 'form-control'})
 	affiliation = SelectField(u'Affiliation', choices=[('student', 'Student'), ('alum', 'Alum'), ('faculty', 'Faculty/Staff'), ('family', 'Parent/Family'), ('prospective_student', 'Prospective Student'), ('other', 'Other/Multiple Affiliations')], render_kw={'class': 'form-control'})
-	submit = SubmitField('SUBSCRIBE', render_kw={'class': 'form-control btn btn-custom','style':'width:100%'})
+	submit = SubmitField('SUBSCRIBE', render_kw={'class': 'form-control btn btn-custom','style':'width:100%; height:fit-content'})
