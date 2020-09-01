@@ -21,6 +21,23 @@
 	<div class="row text-center align-items-center justify-content-center">
 		<h1 style="padding-bottom:25px">{{ info.formatted_title|safe }}</h1>
 	</div>
+
+	<div class="row text-center align-items-center justify-content-center">
+		<div style="
+		width: fit-content;
+		max-width:calc(fit-content+100px);
+	" class="row">
+			<div class="col-md-4">
+				<img src="{{ info.author.img }}" style="border-radius:50%; width:100px; height: 100px; object-fit:cover;">
+			</div>
+			<div class="col-md-8 align-items-center justify-content-center">
+				<h4 style="
+		padding-top: 15px;
+	">By <a href="/authors/{{ info.author.id }}">{{ info.author.name }}</a></h4>
+				<p style="font-color:gray; font-size:12pt">{{ info.author.role }}</p>
+			</div>
+		</div></div>
+<!-- 
 	<div class="row text-center align-items-center justify-content-center">
 		<div class="col-md-8">
 			<img src="{{ info.author.img }}" style="border-radius:50%; width:100px; height: 100px; object-fit:cover;">
@@ -29,7 +46,7 @@
 			<h4>By <a href="/authors/{{ info.author.id }}">{{ info.author.name }}</a></h4>
 			<p style="font-color:gray; font-size:12pt">{{ info.author.role }}</p>
 		</div>
-	</div>
+	</div> -->
 	<hr>
 	<div class="row text-center align-items-center justify-content-center" style="margin-bottom:-10px">
 		<br>
