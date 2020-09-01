@@ -22,10 +22,10 @@
 		<h1 style="padding-bottom:25px">{{ info.formatted_title|safe }}</h1>
 	</div>
 	<div class="row text-center align-items-center justify-content-center">
-		<div class="col">
+		<div class="col-md-8">
 			<img src="{{ info.author.img }}" style="border-radius:50%; width:100px; height: 100px; object-fit:cover;">
 		</div>
-		<div class="col">
+		<div class="col-md-4">
 			<h4>By <a href="/authors/{{ info.author.id }}">{{ info.author.name }}</a></h4>
 			<p style="font-color:gray; font-size:12pt">{{ info.author.role }}</p>
 		</div>
@@ -56,6 +56,7 @@
 	<div class="row">
 		<div class="content">
 			<p>{{ info.contents|safe }}</p>
+			<p><strong>Want to keep up with breaking news?</strong> <a href="/subscribe">Subscribe to our email newsletter</a>.</p>
 		</div>
 	</div>
 </div>
