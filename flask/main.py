@@ -312,7 +312,7 @@ def get_archive(archive_id):
     return render_template('archive.html', info = archive_info, data = get_info())
 
 @app.route('/editions/<edition_id>')
-# @login_required
+@login_required
 def get_edition(edition_id):
     if(edition_id == "february-2020"):
         return redirect(url_for("get_archive", archive_id = edition_id))
@@ -327,7 +327,11 @@ def get_edition(edition_id):
             this_article_info["preview"] = this_article_info["contents"][:500]
             if this_article_info["title"] == "Max Weil’s Guide to Bubble DFS excellence" or this_article_info["title"] == "California Ablaze":
                  this_article_info["preview"] = this_article_info["contents"][:300]
-            this_article_info["author"] = db.reference('/authors').child(this_article_info["author"]).get()
+            this_article_info["author_info"] = db.reference('/authors').child(this_article_info["author"]).get()
+            if this_article["author_info"]:
+                this_article["author"] = this_article["author_info"]
+            else:
+                this_article["author"] = {"name":this_article["author"].replace("-"," ").title(),role:"Contributing Writer","id":this_article["author"]}
             edition_info["articles"].append(this_article_info)
     edition_info["features"] = [edition_info["articles"][0],edition_info["articles"][1],edition_info["articles"][2]]
     # edition_info["features"] = [{"title":"Sorrel: UHS's Michelin-Starred Neighbor","id":"sorrel"}, {"title":"Eve Leupold '20 Breaks Down Her Favorite Holiday Movies","id":"eve_movies"},{"title": "Lukas Bacho '20's Guide to College Etiquette","id":"lukas_coletiquette"}]
