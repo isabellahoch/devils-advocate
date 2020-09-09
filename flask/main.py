@@ -266,7 +266,7 @@ def articles():
 @app.route('/latest')
 @login_required
 def latest():
-    return redirect(url_for("get_edition", edition_id = "2020-senior-wills"))
+    return redirect(url_for("get_edition", edition_id = "september-2020"))
 
 @app.route('/authors/<author_id>')
 @login_required
