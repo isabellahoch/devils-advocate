@@ -54,7 +54,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-10">
-                <h1 style="color:#ab192d; font-weight:bold; font-size:50pt">THE DEVILS' ADVOCATE</h1>
+                <a href="/" style="text-decoration: none;"><h1 style="color:#ab192d; font-weight:bold; font-size:50pt">THE DEVILS' ADVOCATE</h1></a>
                 <h2 style="font-weight:bold; text-transform:uppercase;">{{ info.title }}</h3>
                 <h3>{{ info.date }}</h5>
             </div>
@@ -97,10 +97,13 @@
                 <h2 style="color:gray">by {{ this_article.author.name }}</h2>
             </div>
             <div class="col-sm-2">
-                <img src="{{ this_article.author.img }}" style="max-height:100%">
+                <img src="/static/img/authors/{{ this_article.author.name }}.png" style="max-height:100px">
             </div>
-            <p class="article-preview" style="padding-top:25px; line-height:2.0">This is a preview of {{ this_article.author.name }}'s amazing article about {{ this_article.title }}! To finish reading this article, click <a href="{ url_for('get_article', article_id='this_article.id') }}">here</a>!</p>
+            <div class="article-preview" style="padding-top:50px; line-height:2.0; font-size:14pt">
+                <p>{{ this_article.preview|safe }}...<strong> To read the rest of {{ this_article.author.name }}'s article, click <a href="{{ url_for('get_article', article_id=this_article.id) }}">here</a>!</strong></p>
+            </div>
         </div>
+        <hr>
         {% endfor %}
     </div>
 </body>
