@@ -299,7 +299,14 @@ def get_section(section_id):
 def get_article(article_id):
     article_info = db.reference('/articles').child(article_id).get()
     article_info["author"] = db.reference('/authors').child(article_info["author"]).get()
-    article_info["author"]["img"] = "/static/img/authors/"+article_info["author"]["name"]+".png"
+    if article_info["author"]:
+        article_info["author"]["img"] = "/static/img/authors/"+article_info["author"]["name"]+".png"
+    else:
+        author_dict = {}
+        author_dict["img"] = "/static/img/authors/anonymous.png"
+        author_dict["name"] = article_info["author"].title().replace("-"," ")
+        author_dict["id"] = article_info["author"]
+        article_info["author"] = author_dict
     if "img" in article_info:
         if "drive.google.com/open" in article_info["img"]:
             article_info["img"] = "https://drive.google.com/uc?export=view&id="+article_info["img"].split("le.com/open?id=")[1]
@@ -325,8 +332,10 @@ def get_edition(edition_id):
         for key, val in snapshot.items():
             this_article_info = val
             this_article_info["preview"] = this_article_info["contents"][:500]
-            if this_article_info["title"] == "Max Weil’s Guide to Bubble DFS excellence" or this_article_info["title"] == "California Ablaze":
+            if this_article_info["title"] == "Max Weil’s Guide to Bubble DFS excellence":
                 this_article_info["preview"] = this_article_info["contents"][:300]
+            elif this_article_info["title"] == "California Ablaze" or this_article_info["title"] == "Hidden Gems in San Francisco":
+                this_article_info["preview"] = this_article_info["contents"][:250]
             this_article_info["author_info"] = db.reference('/authors').child(this_article_info["author"]).get()
             if this_article_info["author_info"]:
                 this_article_info["author"] = this_article_info["author_info"]

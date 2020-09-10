@@ -4,7 +4,7 @@
 <div class="container">
 	<div class="row">
 		<div class="col-sm-3">
-			<img src="{{ url_for('static', filename='img/authors/'+author.name+'.png') }}" style="border-radius:50%; width:150px; height: 150px; object-fit:cover;">
+			<img class="author-img" src="{{ url_for('static', filename='img/authors/'+author.name+'.png') }}" style="border-radius:50%; width:150px; height: 150px; object-fit:cover;">
 		</div>
 		<div class="col-md-9">
 			<h1>{{ author.name }} ({{ author.class }})</h1>

@@ -9,7 +9,7 @@
     <meta name="p:domain_verify" content="ea53476f43b5e9c95ee0b0b8ede58130"/> -->
     {% block meta %}{% endblock %}
     <title>{% block title %}{% endblock %}THE DEVILS' ADVOCATE</title>
-    <link rel="canonical" href="http://devils-advocate.herokuapp.com">
+    <link rel="canonical" href="http://da.sfuhs.org">
     <link rel="icon" type="image/png" href="https://www.sfuhs.org/uploaded/favicon.ico">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
@@ -460,7 +460,26 @@ document.getElementById("copyright_year").innerHTML = year.toString();
 
 <!-- Initialize Firebase -->
 <!-- <script src="/__/firebase/init.js"></script> -->
+<script>
+  function ImageExists(selector) {
+var imageFound = $(selector); 
 
+if (!imageFound.get(0).complete) {
+  return false;
+}
+else if (imageFound.height() === 0) {
+  return false;
+}
+
+return true;
+}
+$( ".author-img" ).each(function( index ) {
+  if(!ImageExists($(this))) {
+      $(this).attr("src","/static/img/authors/anonymous.png");
+  }
+});
+
+</script>
 
 </body>
 </html>
