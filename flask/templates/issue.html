@@ -48,6 +48,14 @@
         .article-preview {
             font-size:13pt;
         }
+        @media screen and (max-width: 600px) {
+            .border-div {
+                border-style:none !important
+            }
+        }
+        a {
+            color: #ab192d !important;
+        }
     </style>
 </head>
 <body>
@@ -68,11 +76,11 @@
                 <br>
                 <span style="width:100%; font-size:50pt; font-family: 'Encode Sans Condensed', sans-serif;">DA</span>
             </div>
-            <div class="col-sm-3" style="border-right:solid">
+            <div class="col-sm-3 border-div" style="border-right:solid">
                 <p class="feature-title">{{ info.features[0].title }}</p>
                 <p class="feature-subtitle"><a href="#{{ info.features[0].id }}">Jump to article</a></p>
             </div>
-            <div class="col-sm-3" style="border-right:solid">
+            <div class="col-sm-3 border-div" style="border-right:solid">
                 <p class="feature-title">{{ info.features[1].title }}</p>
                 <p class="feature-subtitle"><a href="#{{ info.features[1].id }}">Jump to article</a></p>
             </div>

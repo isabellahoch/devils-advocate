@@ -328,10 +328,10 @@ def get_edition(edition_id):
             if this_article_info["title"] == "Max Weil’s Guide to Bubble DFS excellence" or this_article_info["title"] == "California Ablaze":
                 this_article_info["preview"] = this_article_info["contents"][:300]
             this_article_info["author_info"] = db.reference('/authors').child(this_article_info["author"]).get()
-            if this_article["author_info"]:
-                this_article["author"] = this_article["author_info"]
+            if this_article_info["author_info"]:
+                this_article_info["author"] = this_article_info["author_info"]
             else:
-                this_article["author"] = {"name":this_article["author"].replace("-"," ").title(),role:"Contributing Writer","id":this_article["author"]}
+                this_article_info["author"] = {"name":this_article_info["author"].replace("-"," ").title(),role:"Contributing Writer","id":this_article_info["author"]}
             edition_info["articles"].append(this_article_info)
     edition_info["features"] = [edition_info["articles"][0],edition_info["articles"][1],edition_info["articles"][2]]
     # edition_info["features"] = [{"title":"Sorrel: UHS's Michelin-Starred Neighbor","id":"sorrel"}, {"title":"Eve Leupold '20 Breaks Down Her Favorite Holiday Movies","id":"eve_movies"},{"title": "Lukas Bacho '20's Guide to College Etiquette","id":"lukas_coletiquette"}]
