@@ -168,7 +168,7 @@ def get_info():
     for (key,val) in snapshot.items():
          info["sections"][key] = val
     # info["sections"] = ["Arts & Entertainment","Current Events","Food","Op-Ed","Sports","Back Page"]
-    info["archive"] = [{"name":"September 2020","id":"september-2019"},{"name":"February 2020","id":"february-2020"},{"name":"November 2019","id":"november-2019"}]
+    info["archive"] = [{"name":"September 2020","id":"september-2020"},{"name":"February 2020","id":"february-2020"},{"name":"November 2019","id":"november-2019"}]
     return info
 
 def matches_query(will, query):
@@ -326,7 +326,7 @@ def get_edition(edition_id):
             this_article_info = val
             this_article_info["preview"] = this_article_info["contents"][:500]
             if this_article_info["title"] == "Max Weil’s Guide to Bubble DFS excellence" or this_article_info["title"] == "California Ablaze":
-                 this_article_info["preview"] = this_article_info["contents"][:300]
+                this_article_info["preview"] = this_article_info["contents"][:300]
             this_article_info["author_info"] = db.reference('/authors').child(this_article_info["author"]).get()
             if this_article["author_info"]:
                 this_article["author"] = this_article["author_info"]
