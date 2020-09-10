@@ -298,8 +298,9 @@ def get_section(section_id):
 @login_required
 def get_article(article_id):
     article_info = db.reference('/articles').child(article_id).get()
-    article_info["author"] = db.reference('/authors').child(article_info["author"]).get()
-    if article_info["author"]:
+    article_info["author_dict"] = db.reference('/authors').child(article_info["author"]).get()
+    if article_info["author_dict"]:
+        article_info["author"] = article_info["author_dict"]
         article_info["author"]["img"] = "/static/img/authors/"+article_info["author"]["name"]+".png"
     else:
         author_dict = {}
