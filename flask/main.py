@@ -280,7 +280,7 @@ def get_author(author_id):
     return render_template('author.html', author = author_info, data = get_info())
 
 @app.route('/sections/<section_id>')
-@login_required
+# @login_required
 def get_section(section_id):
     # section_info = {"title":section_id,"id":section_id}
     section_info = {}
@@ -291,7 +291,16 @@ def get_section(section_id):
     if snapshot:
         section_info["articles"] = []
         for key, val in snapshot.items():
-            section_info["articles"].append(val)
+            article_info = val
+            if "img" in article_info:
+                if "drive.google.com/open" in article_info["img"]:
+                    article_info["img"] = "https://drive.google.com/uc?export=view&id="+article_info["img"].split("le.com/open?id=")[1]
+            author_info = db.reference('/authors').child(article_info["author"]).get()
+            if author_info:
+                article_info["author"] = author_info
+            else:
+                article_info["author"] = {"name":article_info["author"].replace("-"," ").title(),"role":"Contributing Writer","id":article_info["author"]}
+            section_info["articles"].append(article_info)
     return render_template('column.html', info = section_info, data = get_info())
 
 @app.route('/articles/<article_id>')
@@ -316,6 +325,8 @@ def get_article(article_id):
 @app.route('/archive/<archive_id>')
 @login_required
 def get_archive(archive_id):
+    if archive_id == "september-2020":
+        return redirect(url_for('get_edition',edition_id = archive_id))
     archive_info = db.reference('/archive').child(archive_id).get()
     return render_template('archive.html', info = archive_info, data = get_info())
 
@@ -332,11 +343,6 @@ def get_edition(edition_id):
         edition_info["articles"] = []
         for key, val in snapshot.items():
             this_article_info = val
-            this_article_info["preview"] = this_article_info["contents"][:500]
-            if this_article_info["title"] == "Max Weil’s Guide to Bubble DFS excellence":
-                this_article_info["preview"] = this_article_info["contents"][:300]
-            elif this_article_info["title"] == "California Ablaze" or this_article_info["title"] == "Hidden Gems in San Francisco":
-                this_article_info["preview"] = this_article_info["contents"][:250]
             this_article_info["author_info"] = db.reference('/authors').child(this_article_info["author"]).get()
             if this_article_info["author_info"]:
                 this_article_info["author"] = this_article_info["author_info"]

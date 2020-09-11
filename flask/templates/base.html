@@ -16,10 +16,15 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/nav.css') }}">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville&family=Spinnaker&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville&family=Spinnaker&family=Lato&display=swap" rel="stylesheet">
     <style>
     :root {
     --main-color: #ab192d !important; 
+  }
+
+  h1 {
+    font: lighter 48px Lato,sans-serif;
+	text-transform: uppercase;
   }
 
   @import url('https://fonts.googleapis.com/css?family=Spinnaker');
@@ -258,8 +263,10 @@ a.active-sub-link {
             <!-- Page Content -->
             <div id="page-content-wrapper">
                 <div class="container-fluid">
+                  <div class="container">
                     {% block content %}
                     {% endblock %}
+                  </div>
                 </div>
 
 <footer class="page-footer deep-purple center-on-small-only pt-0">
@@ -321,17 +328,17 @@ a.active-sub-link {
       <div class="col">
         <div class="social-footer mb-5 flex-center social-links" id="social-media-links" style="font-size:25px">
           <!--Facebook-->
-          <a class="icons-sm fb-ic" href="https://www.facebook.com/UHS_Student_IT"><i class="fab fa-facebook-f"> </i></a>
+          <!-- <a class="icons-sm fb-ic" href="https://www.facebook.com/UHS_Student_IT"><i class="fab fa-facebook-f"> </i></a> -->
           <!--Twitter-->
-          <a class="icons-sm tw-ic" href="https://twitter.com/uhs_IT"><i class="fab fa-twitter"> </i></a>
+          <a class="icons-sm tw-ic" href="https://twitter.com/sfuhsda"><i class="fab fa-twitter"> </i></a>
           <!--Google +-->
-          <a class="icons-sm gplus-ic" href="https://plus.google.com/106958539680238184412"><i class="fab fa-google-plus"> </i></a>
+          <!-- <a class="icons-sm gplus-ic" href="https://plus.google.com/106958539680238184412"><i class="fab fa-google-plus"> </i></a> -->
           <!--Linkedin-->
-          <a class="icons-sm li-ic" href="https://www.linkedin.com/company/Devils-Advocate/"><i class="fab fa-linkedin-in"> </i></a>
+          <!-- <a class="icons-sm li-ic" href="https://www.linkedin.com/company/Devils-Advocate/"><i class="fab fa-linkedin-in"> </i></a> -->
           <!--Instagram-->
-          <a class="icons-sm ins-ic" href="https://www.instagram.com/uhs.student.it/"><i class="fab fa-instagram"> </i></a>
+          <a class="icons-sm ins-ic" href="https://www.instagram.com/uhsdevilsadvocate/"><i class="fab fa-instagram"> </i></a>
           <!--Pinterest-->
-          <a class="icons-sm pin-ic" href="https://www.pinterest.com/uhs-student-it-team/"><i class="fab fa-pinterest"> </i></a>
+          <!-- <a class="icons-sm pin-ic" href="https://www.pinterest.com/uhs-student-it-team/"><i class="fab fa-pinterest"> </i></a> -->
         </div>
       </div>
     </div>
