@@ -2,8 +2,10 @@
 {% block title %}Crossword | DEVILS' ADVOCATE{% endblock %}
 {% block content %}
 <div class="container">
-	<div class="row justify-content-center align-items-center text-center">
-		<script type="text/javascript" src="https://CrosswordHobbyist.com/embedjs?puzzle_id=150138"></script>
+	<h1>{{ crossword.name }}</h1>
+	<hr>
+	<div class="row justify-content-center align-items-center text-center" style="padding-top:50px; min-height:500px">
+		<script type="text/javascript" src="{{ crossword.link }}"></script>
 	</div>
 </div>
 {% endblock %}

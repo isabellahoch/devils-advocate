@@ -280,7 +280,7 @@ def get_author(author_id):
     return render_template('author.html', author = author_info, data = get_info())
 
 @app.route('/sections/<section_id>')
-# @login_required
+@login_required
 def get_section(section_id):
     # section_info = {"title":section_id,"id":section_id}
     section_info = {}
@@ -445,7 +445,8 @@ def contact():
 @app.route('/crossword')
 @login_required
 def crossword():
-    return render_template('crossword.html', data = get_info())
+    crossword_info = db.reference('/info').child("crossword").get()
+    return render_template('crossword.html', crossword = crossword_info, data = get_info())
 
 from werkzeug.datastructures import MultiDict
 
