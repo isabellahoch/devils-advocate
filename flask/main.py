@@ -310,7 +310,10 @@ def get_article(article_id):
     article_info["author_dict"] = db.reference('/authors').child(article_info["author"]).get()
     if article_info["author_dict"]:
         article_info["author"] = article_info["author_dict"]
-        article_info["author"]["img"] = "/static/img/authors/"+article_info["author"]["name"]+".png"
+        if "img" in article_info["author_dict"] and "drive.google.com" in article_info["author_dict"]["img"]:
+            article_info["author"]["img"] = article_info["author_dict"]["img"]
+        else:
+            article_info["author"]["img"] = "/static/img/authors/"+article_info["author"]["name"]+".png"
     else:
         author_dict = {}
         author_dict["img"] = "/static/img/authors/anonymous.png"
@@ -404,7 +407,7 @@ def youtube():
     return render_template('youtube.html', data = get_info())
 
 @app.route('/about')
-@login_required
+#@login_required
 def about():
     test_ref = db.reference('/authors')
     snapshot = test_ref.get()

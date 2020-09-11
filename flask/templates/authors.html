@@ -10,7 +10,7 @@
 		<div class="row" style="width:100%">
 			{% for author in section.editors %}
 			<div class="col text-center">
-				<img class="author-img" src="{{ author.img }}" style="border-radius:50%; width:150px; height: 150px; object-fit:cover;"><br>
+				<img class="author-img-2" src="{{ author.img }}" style="border-radius:50%; width:150px; height: 150px; object-fit:cover;"><br>
 				<a style="margin-top:20px; font-weight:bold; font-size:20pt" href="{{ url_for('get_author',author_id=author.id) }}">{{ author.name }} ({{ author.class }})</a>
 			</div>
 			{% endfor %}
