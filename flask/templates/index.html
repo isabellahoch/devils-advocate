@@ -9,47 +9,37 @@
 	<!-- <div class="row justify-content-center">
 		<p style="font-size:13px;padding:35px">WELCOME TO THE (IN PROGRESS) DIGITAL VERSION OF THE DEVILS' ADVOCATE! 👹📰</p>
 	</div> -->
-    <hr>
     <!-- <h2 class="section-header"><a class="section-header-link">About Us</a></h2> -->
-	<div class="row text-center align-items-center justify-content-center">
+	<!-- <div class="row text-center align-items-center justify-content-center">
         <img style="max-width:400px" src="{{ url_for('static', filename='img/EICs.PNG') }}">
-    </div>
-    <div class="row text-center align-items-center justify-content-center">
-        <h1>Welcome to the online version of the DA!</h1>
-<!--         
-            <div class="col-sm-3 align-items-center justify-content-center text-center">
-                <span style="width:100%; font-size:20pt; font-family: 'Encode Sans Condensed', sans-serif;">INSIDE THE</span>
-                <br>
-                <span style="width:100%; font-size:50pt; font-family: 'Encode Sans Condensed', sans-serif;">DA</span>
-            </div>
-            <div class="col-sm-3" style="border-right:solid">
-                <p class="feature-title">{{ info.features[0].title }}</p>
-                <p class="feature-subtitle"><a href="#{{ info.features[0].id }}">Jump to article</a></p>
-            </div>
-            <div class="col-sm-3" style="border-right:solid">
-                <p class="feature-title">{{ info.features[1].title }}</p>
-                <p class="feature-subtitle"><a href="#{{ info.features[1].id }}">Jump to article</a></p>
-            </div>
-            <div class="col-sm-3">
-                <p class="feature-title">{{ info.features[2].title }}</p>
-                <p class="feature-subtitle"><a href="#{{ info.features[2].id }}">Jump to article</a></p>
-            </div>
+    </div> -->
+    <div class="row">
+        <h1 class="main-heading">Featured Articles</h1>
+        <div class="card-columns" style="width:100%; padding-top:50px">
+        {% for article in info.features %}
+        <div class="card d-flex" style="border:none; margin: 0 auto; max-width:100%; max-height:100%; /* Added */
+        float: none; /* Added */
+        margin-bottom: 10px; /* Added */; min-height:500px;background:url('{{ article.img }}') no-repeat center; background-repeat: no-repeat; background-size:cover ">
+		  <div class="card-body align-items-center d-flex justify-content-center" style="flex-wrap: wrap; height:fit-content">
+			<h3 class="card-title"><a  style="font-family:'Libre Baskerville', serif !important; color: #fff; font-weight:bold; text-decoration:none" href="/articles/{{ article.id }}">{{ article.title }}</a></h3>
+			<div class="break"></div><h5><a href="/authors/{{ article.author.id }}" class="card-link" style="text-transform:uppercase; color: #fff">{{ article.author.name }}</a></h5>
+			<!-- <p class="card-text">{{ article.preview|safe }}</p> -->
+		  </div>
         </div>
-        <hr>
-        {% for this_article in info.articles %}
-        <div class="row" class="article" id="{{ this_article.id }}">
-            <div class="col-md-10">
-                <h1>{{ this_article.title }}</h1>
-                <h2 style="color:gray">by {{ this_article.author.name }}</h2>
-            </div>
-            <div class="col-sm-2">
-                <img src="{{ this_article.author.img }}" style="max-height:100%">
-            </div>
-            <p class="article-preview" style="padding-top:25px; line-height:2.0">This is a preview of {{ this_article.author.name }}'s amazing article about {{ this_article.title }}! To finish reading this article, click <a href="{ url_for('get_article', article_id='this_article.id') }}">here</a>!</p>
-        </div>
-        {% endfor %} -->
+        {% endfor %}
     </div>
-                                              
+    <div class="row">
+        <h1 class="main-heading">Sections</h1>
+        <div class="row align-items-center justify-content-center text-center">
+            {% for section in data.sections %}
+            <a class="btn btn-custom" style="width:fit-content; font-size:20pt; text-transform:uppercase; margin:25px; padding:15px" id="{{ data.sections[section]['id'] }}-btn" href="/sections/{{ data.sections[section]['id'] }}">{% if data.sections[section]['name']=="A&E" %}arts & entertainment{% else %}{{ data.sections[section]['name'] }}{% endif %}</a>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="row" style="width:100%">
+        <h1 class="main-heading" style="width:100%">More</h1>
+    </div>
+                              
 
 
 
@@ -60,6 +50,37 @@
 {% endblock %}
 {% block head %}
 <style>
+
+@media (min-width: 34em) {
+    .card-columns {
+        -webkit-column-count: 2;
+        -moz-column-count: 2;
+        column-count: 2;
+    }
+
+@media (min-width: 48em) {
+    .card-columns {
+        -webkit-column-count: 2;
+        -moz-column-count: 2;
+        column-count: 2;
+    }
+}
+
+@media (min-width: 62em) {
+    .card-columns {
+        -webkit-column-count: 2;
+        -moz-column-count: 2;
+        column-count: 2;
+    }
+}
+
+@media (min-width: 75em) {
+    .card-columns {
+        -webkit-column-count: 2;
+        -moz-column-count: 2;
+        column-count: 2;
+    }
+}
 
 .btn-outline-custom {
     color: var(--main-color) !important;
@@ -106,6 +127,16 @@
 hr {
 	color: #656969;
 	border-width: 2px;
+}
+
+.main-heading {
+    border-bottom:2px solid #656969;
+    width:100%;
+}
+
+.break {
+  flex-basis: 100%;
+  height: 0;
 }
 </style>
 {% endblock %}

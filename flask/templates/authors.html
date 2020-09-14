@@ -3,6 +3,19 @@
 {% block content %}
 <div class="container">
 <!-- 	<h1>AUTHORS</h1> -->
+	<div class="row">
+		<h1>{{ info.EICs.title }}</h1>
+		<!-- <p>{{ section|safe }}</p> -->
+		<div class="row" style="width:100%">
+			{% for author in info.EICs.editors %}
+			<div class="col text-center">
+				<img class="author-img-2" src="{{ author.img }}" style="border-radius:50%; width:150px; height: 150px; object-fit:cover;"><br>
+				<a style="margin-top:20px; font-weight:bold; font-size:20pt" href="{{ url_for('get_author',author_id=author.id) }}">{{ author.name }} ({{ author.class }})</a>
+			</div>
+			{% endfor %}
+		</div>
+	</div>
+	<hr>
 	{% for section in info.sections.values() %}
 	<div class="row">
 		<h1>{{ section.title }}</h1>

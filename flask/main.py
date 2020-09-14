@@ -217,12 +217,22 @@ def internal_server_error(e):
     return render_template('error.html', title = title, code = code, message = message, data = get_info()), 500
 
 @app.route('/')
-@login_required
+# @login_required
 def index():
     # notif = {"message":"The SENIOR WILLS are out in the latest edition!", "link":"/latest"}
     info = {}
-    info["features"] = [{"title":"Sorrel: UHS's Michelin-Starred Neighbor","id":"sorrel"}, {"title":"Eve Leupold '20 Breaks Down Her Favorite Holiday Movies","id":"eve_movies"},{"title": "Lukas Bacho '20's Guide to College Etiquette","id":"lukas_coletiquette"}]
-    info["articles"] = [{"title":"Eve Leupold '20 Breaks Down Her Favorite Holiday Movies","id":"eve_movies","author":{"name":"Eve Leupold","img":"https://previews.dropbox.com/p/thumb/AAtSmlmLIMt_5Rw4jAaAu_bQcWxfEJNqwYsRy8grIObRuOgNLLFCrZ-_V8Ck3YxZ7DmNP9MrjeAIKq4S5vIFXw8BlS9354PnNjQP2_tI2wAThcQ8P_CVwIlgendC_6yp9SrMZmSxtKwIbRvL4Gd4jJ4bRtHtxRXb676981DDagTcbzfohDjTbZNDGlH874BSB6RbmEGJzXtHsPHXRQup-60Usa8MaYXSUxBHy-za6pP-d_VT1XqmV754rx2rrOOePzcEDwMkdv8qH1p5g7RC5wXx-xHF6dTckG_na8UVC7QRRNRtoPLqx4jLzNmyug8tbViDlXIUiGeg5YWYrskS3_KJL1fDqlGf5KYuTT8Z35Ov6Q/p.jpeg?size=2048x1536&size_mode=3"}}]
+    snapshot = db.reference('/articles').order_by_child('featured').equal_to(True).get()
+    if snapshot:
+        info["features"] = []
+        for key, val in snapshot.items():
+            this_article_info = val
+            this_article_info["author_info"] = db.reference('/authors').child(this_article_info["author"]).get()
+            if this_article_info["author_info"]:
+                this_article_info["author"] = this_article_info["author_info"]
+            info["features"].append(this_article_info)
+    # info["features"].append({"title":"Sorrel: UHS's Michelin-Starred Neighbor","id":"sorrel","img":"no","author":"no","edition":"no"})
+    # info["features"].append({"title":"Eve Leupold '20 Breaks Down Her Favorite Holiday Movies","id":"eve_movies","img":"no","author":"no","edition":"no"})
+    # info["articles"] = [{"title":"Eve Leupold '20 Breaks Down Her Favorite Holiday Movies","id":"eve_movies","author":{"name":"Eve Leupold","img":"https://previews.dropbox.com/p/thumb/AAtSmlmLIMt_5Rw4jAaAu_bQcWxfEJNqwYsRy8grIObRuOgNLLFCrZ-_V8Ck3YxZ7DmNP9MrjeAIKq4S5vIFXw8BlS9354PnNjQP2_tI2wAThcQ8P_CVwIlgendC_6yp9SrMZmSxtKwIbRvL4Gd4jJ4bRtHtxRXb676981DDagTcbzfohDjTbZNDGlH874BSB6RbmEGJzXtHsPHXRQup-60Usa8MaYXSUxBHy-za6pP-d_VT1XqmV754rx2rrOOePzcEDwMkdv8qH1p5g7RC5wXx-xHF6dTckG_na8UVC7QRRNRtoPLqx4jLzNmyug8tbViDlXIUiGeg5YWYrskS3_KJL1fDqlGf5KYuTT8Z35Ov6Q/p.jpeg?size=2048x1536&size_mode=3"}}]
     return render_template('index.html', notification = False, info = info, data = get_info())
     # archive_info = db.reference('/archive').child("february-2020").get()
     # return render_template('archive.html', info = archive_info, data = get_info())
@@ -406,9 +416,9 @@ def get_senior_will(senior_will_id):
 def youtube():
     return render_template('youtube.html', data = get_info())
 
-@app.route('/about')
-#@login_required
-def about():
+@app.route('/staff')
+@login_required
+def staff():
     test_ref = db.reference('/authors')
     snapshot = test_ref.get()
     all_authors = []
@@ -424,16 +434,21 @@ def about():
         elif section["name"]=="Backpage":
             section["name"] = "Back Page"
         info["sections"][section["name"]] = {"title":section["name"],"editors":[]}
-    info["sections"]["EICs"] = {"title":"Editors in Chief","editors":[]}
+    info["EICs"] = {"title":"Editors in Chief","editors":[]}
     for author in all_authors:
         print(author)
         if author["role"] == "Editor in Chief":
-            info["sections"]["EICs"]["editors"].append(author)
+            info["EICs"]["editors"].append(author)
         else:
             info["sections"][author["role"].split(" Editor")[0]]["editors"].append(author)
         author["img"] = "/static/img/authors/"+author["name"]+".png"
     print(info["sections"])
     return render_template('authors.html', info = info, authors = all_authors, data = get_info())
+
+@app.route('/about')
+@login_required
+def about():
+    return redirect(url_for('staff'))
 
 @app.route('/about/privacy')
 @login_required
