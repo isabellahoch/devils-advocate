@@ -442,22 +442,22 @@ def staff():
     info = {}
     info["sections"] = {}
     for section in get_info()["sections"].values():
-        print(section)
         if section["name"]=="A&E":
             section["name"] = "Arts & Entertainment"
         elif section["name"]=="Backpage":
             section["name"] = "Back Page"
         info["sections"][section["name"]] = {"title":section["name"],"editors":[]}
     info["EICs"] = {"title":"Editors in Chief","editors":[]}
+    info["tech"] = {"title":"Technical Support","editors":[]}
     for author in all_authors:
-        print(author)
-        if author["role"] == "Editor in Chief":
-            info["EICs"]["editors"].append(author)
-        else:
-            info["sections"][author["role"].split(" Editor")[0]]["editors"].append(author)
         if "img" not in author:
             author["img"] = "/static/img/authors/"+author["name"]+".png"
-    print(info["sections"])
+        if author["role"] == "Editor in Chief":
+            info["EICs"]["editors"].append(author)
+        elif author["role"] == "Technical Support":
+            info["tech"]["editors"].append(author)
+        else:
+            info["sections"][author["role"].split(" Editor")[0]]["editors"].append(author)
     return render_template('authors.html', info = info, authors = all_authors, data = get_info())
 
 @app.route('/about')
