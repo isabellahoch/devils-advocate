@@ -455,7 +455,8 @@ def staff():
             info["EICs"]["editors"].append(author)
         else:
             info["sections"][author["role"].split(" Editor")[0]]["editors"].append(author)
-        author["img"] = "/static/img/authors/"+author["name"]+".png"
+        if "img" not in author:
+            author["img"] = "/static/img/authors/"+author["name"]+".png"
     print(info["sections"])
     return render_template('authors.html', info = info, authors = all_authors, data = get_info())
 
