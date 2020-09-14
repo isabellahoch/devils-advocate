@@ -12,6 +12,11 @@
 		</div>
 		<hr>
 	</div>
+	{% if author.bio %}
+	<div class="row" style="padding-top:50px">
+		<p>{{ bio|safe }}</p>
+	</div>
+	{% endif %}
 	{% if author.articles %}
 	<div class="row" style="padding-top:50px">
 		<h1 style="width:100%">Recent Articles</h1>
