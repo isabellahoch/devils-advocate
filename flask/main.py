@@ -314,7 +314,7 @@ def get_section(section_id):
     return render_template('column.html', info = section_info, data = get_info())
 
 @app.route('/articles/<article_id>')
-@login_required
+# @login_required
 def get_article(article_id):
     article_info = db.reference('/articles').child(article_id).get()
     article_info["author_dict"] = db.reference('/authors').child(article_info["author"]).get()
@@ -330,6 +330,15 @@ def get_article(article_id):
         author_dict["name"] = article_info["author"].title().replace("-"," ")
         author_dict["id"] = article_info["author"]
         article_info["author"] = author_dict
+    snapshot = db.reference('/articles').order_by_child('featured').equal_to(True).get()
+    if snapshot:
+        article_info["features"] = []
+        for key, val in snapshot.items():
+            this_article_info = val
+            this_article_info["author_info"] = db.reference('/authors').child(this_article_info["author"]).get()
+            if this_article_info["author_info"]:
+                this_article_info["author"] = this_article_info["author_info"]
+            article_info["features"].append(this_article_info)
     if "img" in article_info:
         if "drive.google.com/open" in article_info["img"]:
             article_info["img"] = "https://drive.google.com/uc?export=view&id="+article_info["img"].split("le.com/open?id=")[1]

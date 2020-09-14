@@ -14,66 +14,120 @@
 		line-height: 2.0;
 		font-family: 'EB Garamond', serif;
 	}
+
+	.article-sidebar {
+		border-style:solid;
+		padding: 15px;
+		margin: 10px;
+	}
+	.article-sidebar div {
+		max-height:150px;
+	}
+
+	@media (max-width: 768px) { 
+		#sidebar-column {
+			display: -ms-flexbox!important;
+    		display: flex!important;
+		}
+		.article-sidebar {
+			width:100%;
+		}
+
+		.card-body {
+			text-align: center!important;
+		}
+
+		.card-title {
+			width:100%;
+		}
+	 }
+
 </style>
 {% endblock %}
 {% block content %}
 <div class="container">
-	<div class="row text-center align-items-center justify-content-center">
-		<h1 style="padding-bottom:25px">{{ info.formatted_title|safe }}</h1>
-	</div>
+	<div class="col-lg-8">
+		<div class="row text-center align-items-center justify-content-center">
+			<h1 style="padding-bottom:25px">{{ info.formatted_title|safe }}</h1>
+		</div>
 
-	<div class="row text-center align-items-center justify-content-center">
-		<div style="
-		width: fit-content;
-		max-width:calc(fit-content+100px);
-	" class="row">
-			<div class="col-md-4">
+		<div class="row text-center align-items-center justify-content-center">
+			<div style="
+			width: fit-content;
+			max-width:calc(fit-content+100px);
+		" class="row">
+				<div class="col-md-4">
+					<img src="{{ info.author.img }}" style="border-radius:50%; width:100px; height: 100px; object-fit:cover;">
+				</div>
+				<div class="col-md-8 align-items-center justify-content-center">
+					<h4 style="
+			padding-top: 15px;
+		">By <a href="/authors/{{ info.author.id }}">{{ info.author.name }}</a></h4>
+					<p style="font-color:gray; font-size:12pt">{{ info.author.role }}</p>
+				</div>
+			</div></div>
+	<!-- 
+		<div class="row text-center align-items-center justify-content-center">
+			<div class="col-md-8">
 				<img src="{{ info.author.img }}" style="border-radius:50%; width:100px; height: 100px; object-fit:cover;">
 			</div>
-			<div class="col-md-8 align-items-center justify-content-center">
-				<h4 style="
-		padding-top: 15px;
-	">By <a href="/authors/{{ info.author.id }}">{{ info.author.name }}</a></h4>
+			<div class="col-md-4">
+				<h4>By <a href="/authors/{{ info.author.id }}">{{ info.author.name }}</a></h4>
 				<p style="font-color:gray; font-size:12pt">{{ info.author.role }}</p>
 			</div>
-		</div></div>
-<!-- 
-	<div class="row text-center align-items-center justify-content-center">
-		<div class="col-md-8">
-			<img src="{{ info.author.img }}" style="border-radius:50%; width:100px; height: 100px; object-fit:cover;">
-		</div>
-		<div class="col-md-4">
-			<h4>By <a href="/authors/{{ info.author.id }}">{{ info.author.name }}</a></h4>
-			<p style="font-color:gray; font-size:12pt">{{ info.author.role }}</p>
-		</div>
-	</div> -->
-	<hr>
-	<div class="row text-center align-items-center justify-content-center" style="margin-bottom:-10px">
-		<br>
-		<ul style="display:inline-block; list-style:none;">
-			<li style="display:inline-block;">
-				<a class="share-icon" href="https://www.facebook.com/sharer/sharer.php?u=http://da.sfuhs.org/articles/{{ info.id }}"><i class="fab fa-facebook-f"> </i></a>
-			</li>
-			<li style="display:inline-block;">
-				<a class="share-icon" href="https://twitter.com/home?status=http://da.sfuhs.org/articles/{{ info.id }} {{ info.title }}"><i class="fab fa-twitter"> </i></a>
-			</li>
-			<li style="display:inline-block;">
-				<a class="share-icon" href="mailto:?subject={{ info.title }} | THE DEVILS' ADVOCATE &body=http://da.sfuhs.org/articles/{{ info.id }}"><i class="fas fa-envelope"></i></a>
-			</li>
-		</ul>
-	</div>
-	<hr>
-	{% if info.img %}
-		<div class="row justify-content-center align-items-center text-center" style="width:100%">
-			<img src="{{ info.img }}" style="max-width:500px">
+		</div> -->
+		<hr>
+		<div class="row text-center align-items-center justify-content-center" style="margin-bottom:-10px">
+			<br>
+			<ul style="display:inline-block; list-style:none;">
+				<li style="display:inline-block;">
+					<a class="share-icon" href="https://www.facebook.com/sharer/sharer.php?u=http://da.sfuhs.org/articles/{{ info.id }}"><i class="fab fa-facebook-f"> </i></a>
+				</li>
+				<li style="display:inline-block;">
+					<a class="share-icon" href="https://twitter.com/home?status=http://da.sfuhs.org/articles/{{ info.id }} {{ info.title }}"><i class="fab fa-twitter"> </i></a>
+				</li>
+				<li style="display:inline-block;">
+					<a class="share-icon" href="mailto:?subject={{ info.title }} | THE DEVILS' ADVOCATE &body=http://da.sfuhs.org/articles/{{ info.id }}"><i class="fas fa-envelope"></i></a>
+				</li>
+			</ul>
 		</div>
 		<hr>
-		<!-- <br> -->
-	{% endif %}
-	<div class="row">
-		<div class="content">
-			<p>{{ info.contents|safe }}</p>
-			<p><strong style="font-family: 'Libre Baskerville', serif !important;">Want to keep up with breaking news?</strong> <a style="font-family: 'Libre Baskerville', serif !important;" href="/subscribe">Subscribe to our email newsletter</a>.</p>
+		{% if info.img %}
+			<div class="row justify-content-center align-items-center text-center" style="width:100%">
+				<img src="{{ info.img }}" style="max-width:500px">
+			</div>
+			<hr>
+			<!-- <br> -->
+		{% endif %}
+		<div class="row">
+			<div class="content">
+				<p>{{ info.contents|safe }}</p>
+				<p><strong style="font-family: 'Libre Baskerville', serif !important;">Want to keep up with breaking news?</strong> <a style="font-family: 'Libre Baskerville', serif !important;" href="/subscribe">Subscribe to our email newsletter</a>.</p>
+			</div>
+		</div>
+	</div>
+	<div class="col-lg-4" id="sidebar-column">
+		<div class="article-sidebar"><h2 style="margin-left:10px">MORE FROM:</h2>
+			<ul style="padding:15px">
+				<li><a href="/sections/{{ info.section }}">{{ info.section.replace("-"," ").title() }}</a></li>
+				<li><a href="/editions/{{ info.edition }}">{{ info.edition.replace("-"," ").title() }}</a></li>
+			</ul>
+		</div>
+		<div class="article-sidebar">
+		{% for article in info.features %}
+        <div class="card d-flex" style="border:none; margin: 0 auto; max-width:100%; max-height:100%; /* Added */
+        float: none; /* Added */
+        margin-bottom: 10px; /* Added */; min-height:500px;background:url('{{ article.img }}') no-repeat center; background-repeat: no-repeat; background-size:cover ">
+		  <div class="card-body align-items-center d-flex justify-content-center" style="flex-wrap: wrap; height:fit-content">
+			<h3 class="card-title"><a  style="font-family:'Libre Baskerville', serif !important; color: #fff; font-weight:bold; text-decoration:none" href="/articles/{{ article.id }}">{{ article.title }}</a></h3>
+			<div class="break"></div><h5><a href="/authors/{{ article.author.id }}" class="card-link" style="text-transform:uppercase; color: #fff">{{ article.author.name }}</a></h5>
+			<!-- <p class="card-text">{{ article.preview|safe }}</p> -->
+		  </div>
+        </div>
+        {% endfor %}
+		</div>
+		<div class="article-sidebar">
+			<a href="/subscribe" class="btn btn-custom">EMAIL NEWSLETTER</a>
 		</div>
 	</div>
 </div>
