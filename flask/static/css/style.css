@@ -13,6 +13,12 @@ body {
   font-size: 12pt;
 }
 
+
+.main-heading {
+  border-bottom:2px solid #656969;
+  width:100%;
+}
+
 :root {
     --main-color: #005b96 !important;
     --background-color:   #e8e8e8 !important; 
