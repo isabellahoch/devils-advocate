@@ -10,7 +10,7 @@
 			{% for author in info.EICs.editors %}
 			<div class="col text-center">
 				<img class="author-img-2" src="{{ author.img }}" style="border-radius:50%; width:150px; height: 150px; object-fit:cover;"><br>
-				<a style="margin-top:20px; font-weight:bold; font-size:20pt" href="{{ url_for('get_author',author_id=author.id) }}">{{ author.name }} ({{ author.class }})</a>
+				<a style="margin-top:20px; font-weight:bold; font-size:20pt" href="{{ url_for('get_author',author_id=author.id) }}">{{ author.name }} '{{ author.class }}</a>
 			</div>
 			{% endfor %}
 		</div>
@@ -24,7 +24,7 @@
 			{% for author in section.editors %}
 			<div class="col text-center">
 				<img class="author-img-2" src="{{ author.img }}" style="border-radius:50%; width:150px; height: 150px; object-fit:cover;"><br>
-				<a style="margin-top:20px; font-weight:bold; font-size:20pt" href="{{ url_for('get_author',author_id=author.id) }}">{{ author.name }} ({{ author.class }})</a>
+				<a style="margin-top:20px; font-weight:bold; font-size:20pt" href="{{ url_for('get_author',author_id=author.id) }}">{{ author.name }} '{{ author.class }}</a>
 			</div>
 			{% endfor %}
 		</div>
@@ -38,7 +38,7 @@
 			{% for author in info.tech.editors %}
 			<div class="col text-center">
 				<img class="author-img-2" src="{{ author.img }}" style="border-radius:50%; width:150px; height: 150px; object-fit:cover;"><br>
-				<a style="margin-top:20px; font-weight:bold; font-size:20pt" href="{{ url_for('get_author',author_id=author.id) }}">{{ author.name }} ({{ author.class }})</a>
+				<a style="margin-top:20px; font-weight:bold; font-size:20pt" href="{{ url_for('get_author',author_id=author.id) }}">{{ author.name }} '{{ author.class }}</a>
 			</div>
 			{% endfor %}
 		</div>
@@ -48,7 +48,7 @@
 		{% for author in info %}
 		<div class="col-sm-3 text-center">
 			<img src="{{ author.img }}" style="border-radius:50%; width:150px; height: 150px; object-fit:cover;"><br>
-			<a style="margin-top:20px; font-weight:bold; font-size:20pt" href="{{ url_for('get_author',author_id=author.id) }}">{{ author.name }} ({{ author.class }})</a>
+			<a style="margin-top:20px; font-weight:bold; font-size:20pt" href="{{ url_for('get_author',author_id=author.id) }}">{{ author.name }} '{{ author.class }}</a>
 			<p style="font-color:gray; font-size:15pt">{{ author.role }}</p>
 		</div>
 		<hr>
