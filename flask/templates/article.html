@@ -45,7 +45,7 @@
 </style>
 {% endblock %}
 {% block content %}
-<div class="container">
+<div class="container" style="">
 	<div class="col-lg-8">
 		<div class="row text-center align-items-center justify-content-center">
 			<h1 style="padding-bottom:25px">{{ info.formatted_title|safe }}</h1>
@@ -55,7 +55,11 @@
 			<div style="
 			width: fit-content;
 			max-width:calc(fit-content+100px);
-		" class="row">
+		" class="row">{% if info.author_count == 2 %}
+		<h4 style="
+		padding-top: 15px;
+	">By <a href="/authors/{{ info.authors[0].id }}">{{ info.authors[0].name }}</a> and <a href="/authors/{{ info.authors[1].id }}">{{ info.authors[1].name }}</a></h4>
+		{% else %}
 				<div class="col-md-4">
 					<img src="{{ info.author.img }}" style="border-radius:50%; width:100px; height: 100px; object-fit:cover;">
 				</div>
@@ -65,6 +69,7 @@
 		">By <a href="/authors/{{ info.author.id }}">{{ info.author.name }}</a></h4>
 					<p style="font-color:gray; font-size:12pt">{{ info.author.role }}</p>
 				</div>
+				{% endif %}
 			</div></div>
 	<!-- 
 		<div class="row text-center align-items-center justify-content-center">
@@ -120,7 +125,7 @@
         margin-bottom: 10px; /* Added */; min-height:500px;background:url('{{ article.img }}') no-repeat center; background-repeat: no-repeat; background-size:cover ">
 		  <div class="card-body align-items-center d-flex justify-content-center" style="flex-wrap: wrap; height:fit-content">
 			<h3 class="card-title"><a  style="font-family:'Libre Baskerville', serif !important; color: #fff; background-color:#ab192d; opacity:0.7;  font-weight:bold; text-decoration:none" href="/articles/{{ article.id }}">{{ article.title }}</a></h3>
-			<div class="break"></div><h5><a href="/authors/{{ article.author.id }}" class="card-link" style="text-transform:uppercase; color: #fff; background-color:#ab192d; opacity:0.7; ">{{ article.author.name }}</a></h5>
+			<div class="break"></div><h5>{% if article.author_count == 2 %}<a href="/authors/{{ article['authors'][0]['id'] }}" class="card-link" style="text-transform:uppercase; color: #fff; background-color:#ab192d; opacity:0.7; ">{{ article['authors'][0].name }} '{{ article['authors'][0].class }}</a><span style="color: #fff; background-color:#ab192d; opacity:0.7; "> & </span><a href="/authors/{{ article['authors'][1].id }}" class="card-link" style="text-transform:uppercase; color: #fff; background-color:#ab192d; opacity:0.7; ">{{ article['authors'][1].name }} '{{ article['authors'][1].class }}</a>{% else %}<a href="/authors/{{ article.author.id }}" class="card-link" style="text-transform:uppercase; color: #fff; background-color:#ab192d; opacity:0.7; ">{{ article.author.name }} '{{ article.author.class }}</a>{% endif %}</h5>
 			<!-- <p class="card-text">{{ article.preview|safe }}</p> -->
 		  </div>
         </div>
