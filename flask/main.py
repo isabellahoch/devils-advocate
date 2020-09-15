@@ -217,7 +217,7 @@ def internal_server_error(e):
     return render_template('error.html', title = title, code = code, message = message, data = get_info()), 500
 
 @app.route('/')
-@login_required
+# @login_required
 def index():
     # notif = {"message":"The SENIOR WILLS are out in the latest edition!", "link":"/latest"}
     info = {}
