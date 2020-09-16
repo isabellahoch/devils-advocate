@@ -371,7 +371,6 @@ def get_article(article_id):
             article_authors = []
             if not article_info2["authors"]:
                 article_info2o["authors"] = [article_info2["author"]]
-            for this_author in this_article_info["authors"]:
             for this_author in article_info2["authors"]:
                 print(this_author)
                 this_author_dict = db.reference('/authors').child(this_author).get()
