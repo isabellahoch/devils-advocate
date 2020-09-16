@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}DEVILS' ADVOCATE{% endblock %}
+{% block head %}
+<style>
+    .section-list {
+        line-height:3em;
+    }
+</style>
+{% endblock %}
+{% block content %}
+<div class="container">
+<!-- 	<h1>AUTHORS</h1> -->
+	<div class="row">
+		<h1>{{ info.EICs.title }}</h1>
+		<!-- <p>{{ section|safe }}</p> -->
+		<div class="row" style="width:100%">
+            <ul style="list-style:none" class="section-list">
+                {% for author in info.EICs.editors %}
+                <li><a style="margin-top:20px; font-weight:bold; font-size:20pt" href="{{ url_for('get_author',author_id=author.id) }}">{{ author.name }} '{{ author.class }}</a></li>
+                {% endfor %}
+            </ul>
+            {% for author in info.EICs.editors %}
+			<!-- <div class="col text-center">
+				<img class="author-img-2" src="{{ author.img }}" style="border-radius:50%; width:150px; height: 150px; object-fit:cover;"><br>
+				<a style="margin-top:20px; font-weight:bold; font-size:20pt" href="{{ url_for('get_author',author_id=author.id) }}">{{ author.name }} '{{ author.class }}</a>
+			</div> -->
+			{% endfor %}
+		</div>
+	</div>
+    <hr>
+    <div class="row">
+        <h1 style="width:100%">SECTION EDITORS</h1>
+        {% for section in info.sections.values() %}
+        <div class="col-md-4">
+            <h2>{{ section.title }}</h2>
+            <!-- <p>{{ section|safe }}</p> -->
+            <div class="row" style="width:100%">
+                <ul style="list-style:none" class="section-list">
+                    {% for author in section.editors %}
+                    <li><a style="margin-top:20px; font-weight:bold; font-size:20pt" href="{{ url_for('get_author',author_id=author.id) }}">{{ author.name }} '{{ author.class }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        {% endfor %}
+        <hr>
+    </div>
+	<div class="row">
+		<h1>{{ info.tech.title }}</h1>
+		<!-- <p>{{ section|safe }}</p> -->
+		<div class="row" style="width:100%">
+            <ul style="list-style:none" class="section-list">
+                {% for author in info.tech.editors %}
+                <li><a style="margin-top:20px; font-weight:bold; font-size:20pt" href="{{ url_for('get_author',author_id=author.id) }}">{{ author.name }} '{{ author.class }}</a></li>
+                {% endfor %}
+            </ul>
+		</div>
+	</div>
+	<hr>
+	<!-- <div class="row">
+		{% for author in info %}
+		<div class="col-sm-3 text-center">
+			<img src="{{ author.img }}" style="border-radius:50%; width:150px; height: 150px; object-fit:cover;"><br>
+			<a style="margin-top:20px; font-weight:bold; font-size:20pt" href="{{ url_for('get_author',author_id=author.id) }}">{{ author.name }} '{{ author.class }}</a>
+			<p style="font-color:gray; font-size:15pt">{{ author.role }}</p>
+		</div>
+		<hr>
+		{% endfor %}
+	</div> -->
+</div>
+{% endblock %}

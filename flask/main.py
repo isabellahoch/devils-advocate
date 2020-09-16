@@ -486,7 +486,7 @@ def contribute():
     return render_template('contribute.html', data = get_info())
 
 @app.route('/staff')
-@login_required
+# @login_required
 def staff():
     test_ref = db.reference('/authors')
     snapshot = test_ref.get()
@@ -513,7 +513,7 @@ def staff():
             info["tech"]["editors"].append(author)
         else:
             info["sections"][author["role"].split(" Editor")[0]]["editors"].append(author)
-    return render_template('authors.html', info = info, authors = all_authors, data = get_info())
+    return render_template('staff.html', info = info, authors = all_authors, data = get_info())
 
 @app.route('/about')
 @login_required
