@@ -408,13 +408,21 @@ def get_archive(archive_id):
     return render_template('archive.html', info = archive_info, data = get_info())
 
 @app.route('/editions/<edition_id>')
-@login_required
+# @login_required
 def get_edition(edition_id):
     if(edition_id == "february-2020"):
         return redirect(url_for("get_archive", archive_id = edition_id))
     elif(edition_id == "2020-senior-wills"):
         return redirect(url_for("senior_wills_2020"))
     edition_info = {"title":edition_id.replace("-"," ").title(),"id":edition_id,"date":edition_id.replace("-"," ").title()}
+    edition_info["sections"] = {}
+    for section in get_info()["sections"].values():
+        if section["name"]=="A&E":
+            section["name"] = "Arts & Entertainment"
+        elif section["name"]=="Backpage":
+            section["name"] = "Back Page"
+        edition_info["sections"][section["id"]] = {"title":section["name"],"articles":[]}
+    edition_info["features"] = []
     snapshot = db.reference('/articles').order_by_child('edition').equal_to(edition_id).get()
     if snapshot:
         edition_info["articles"] = []
@@ -428,11 +436,14 @@ def get_edition(edition_id):
                     this_article_info["author"] = {"name":this_article_info["author"].replace("-"," ").title(),"role":"Contributing Writer","id":this_article_info["author"]}
                 else:
                     this_article_info["author"] = {"name":"Anonymous","role":"Contributing Writer","id":"anonymous"}
-            edition_info["articles"].append(this_article_info)
-    edition_info["features"] = [edition_info["articles"][0],edition_info["articles"][1],edition_info["articles"][2]]
+            edition_info["sections"][this_article_info["section"]]["articles"].append(this_article_info)
+            if "featured" in this_article_info:
+                if this_article_info["featured"] == True:
+                    this_article_info["index"] = len(edition_info["features"])
+                    edition_info["features"].append(this_article_info)
     # edition_info["features"] = [{"title":"Sorrel: UHS's Michelin-Starred Neighbor","id":"sorrel"}, {"title":"Eve Leupold '20 Breaks Down Her Favorite Holiday Movies","id":"eve_movies"},{"title": "Lukas Bacho '20's Guide to College Etiquette","id":"lukas_coletiquette"}]
     # edition_info["articles"] = [{"title":"Eve Leupold '20 Breaks Down Her Favorite Holiday Movies","id":"eve_movies","author":{"name":"Eve Leupold","img":"https://previews.dropbox.com/p/thumb/AAtSmlmLIMt_5Rw4jAaAu_bQcWxfEJNqwYsRy8grIObRuOgNLLFCrZ-_V8Ck3YxZ7DmNP9MrjeAIKq4S5vIFXw8BlS9354PnNjQP2_tI2wAThcQ8P_CVwIlgendC_6yp9SrMZmSxtKwIbRvL4Gd4jJ4bRtHtxRXb676981DDagTcbzfohDjTbZNDGlH874BSB6RbmEGJzXtHsPHXRQup-60Usa8MaYXSUxBHy-za6pP-d_VT1XqmV754rx2rrOOePzcEDwMkdv8qH1p5g7RC5wXx-xHF6dTckG_na8UVC7QRRNRtoPLqx4jLzNmyug8tbViDlXIUiGeg5YWYrskS3_KJL1fDqlGf5KYuTT8Z35Ov6Q/p.jpeg?size=2048x1536&size_mode=3"}}]
-    return render_template('issue.html', info = edition_info, data = get_info())
+    return render_template('edition.html', info = edition_info, data = get_info())
 
 @app.route('/2020-senior-wills')
 @login_required
