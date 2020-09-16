@@ -171,6 +171,49 @@ def get_info():
     info["archive"] = [{"name":"September 2020","id":"september-2020"},{"name":"February 2020","id":"february-2020"},{"name":"November 2019","id":"november-2019"}]
     return info
 
+def get_article_info(article_id):
+    article = db.reference('/articles').child(article_id).get()
+    article["authors"] = get_author_info(article["authors"])
+    article["author"] = article["authors"][0]
+    if "img" in article:
+        if "drive.google.com/open" in article["img"]:
+            article["img"] = "https://drive.google.com/uc?export=view&id="+article["img"].split("le.com/open?id=")[1]
+    return article
+
+def get_author_info(author_list):
+    authors = []
+    for author_id in author_list:
+        author_info = db.reference('/authors').child(author_id).get()
+        if author_info:
+            if "img" in author_info:
+                author_info["img"] = author_info["img"]
+            else:
+                author_info["img"] = "/static/img/authors/"+author_info["name"]+".png"
+            authors.append(author_info)
+        else:
+            author_info = {}
+            author_info["img"] = "/static/img/authors/anonymous.png"
+            author_info["name"] = author_id.title().replace("-"," ")
+            author_info["id"] = author_id
+        authors.append(author_info)
+    return authors
+
+def get_featured_articles():
+    snapshot = db.reference('/articles').order_by_child('featured').equal_to(True).get()
+    if snapshot:
+        features = []
+        for key, val in snapshot.items():
+            article = val
+            article["authors"] = get_author_info(article["authors"])
+            article["author"] = article["authors"][0]
+            if "img" in article:
+                if "drive.google.com/open" in article["img"]:
+                    article["img"] = "https://drive.google.com/uc?export=view&id="+article["img"].split("le.com/open?id=")[1]
+            features.append(article)
+        return features
+    else:
+        return None
+
 def matches_query(will, query):
     if "freshmen" in will:
         for x in will["freshmen"]:
@@ -221,32 +264,7 @@ def internal_server_error(e):
 def index():
     # notif = {"message":"The SENIOR WILLS are out in the latest edition!", "link":"/latest"}
     info = {}
-    snapshot = db.reference('/articles').order_by_child('featured').equal_to(True).get()
-    if snapshot:
-        info["features"] = []
-        for key, val in snapshot.items():
-            this_article_info = val
-            article_authors = []
-            if not "authors" in this_article_info:
-                this_article_info["authors"] = [this_article_info["author"]]
-            for this_author in this_article_info["authors"]:
-                print(this_author)
-                this_author_dict = db.reference('/authors').child(this_author).get()
-                if this_author_dict:
-                    if "img" in this_author_dict and "drive.google.com" in this_author_dict["img"]:
-                        this_author_dict["img"] = this_author_dict["img"]
-                    else:
-                        this_author_dict["img"] = "/static/img/authors/"+this_author_dict["name"]+".png"
-                    article_authors.append(this_author_dict)
-                else:
-                    author_dict = {}
-                    author_dict["img"] = "/static/img/authors/anonymous.png"
-                    author_dict["name"] = this_author.title().replace("-"," ")
-                    author_dict["id"] = this_author
-                    article_authors.append(author_dict)
-            this_article_info["authors"] = article_authors
-            this_article_info["author"] = this_article_info["authors"][0]
-            info["features"].append(this_article_info)
+    info["features"] = get_featured_articles()
     # info["features"].append({"title":"Sorrel: UHS's Michelin-Starred Neighbor","id":"sorrel","img":"no","author":"no","edition":"no"})
     # info["features"].append({"title":"Eve Leupold '20 Breaks Down Her Favorite Holiday Movies","id":"eve_movies","img":"no","author":"no","edition":"no"})
     # info["articles"] = [{"title":"Eve Leupold '20 Breaks Down Her Favorite Holiday Movies","id":"eve_movies","author":{"name":"Eve Leupold","img":"https://previews.dropbox.com/p/thumb/AAtSmlmLIMt_5Rw4jAaAu_bQcWxfEJNqwYsRy8grIObRuOgNLLFCrZ-_V8Ck3YxZ7DmNP9MrjeAIKq4S5vIFXw8BlS9354PnNjQP2_tI2wAThcQ8P_CVwIlgendC_6yp9SrMZmSxtKwIbRvL4Gd4jJ4bRtHtxRXb676981DDagTcbzfohDjTbZNDGlH874BSB6RbmEGJzXtHsPHXRQup-60Usa8MaYXSUxBHy-za6pP-d_VT1XqmV754rx2rrOOePzcEDwMkdv8qH1p5g7RC5wXx-xHF6dTckG_na8UVC7QRRNRtoPLqx4jLzNmyug8tbViDlXIUiGeg5YWYrskS3_KJL1fDqlGf5KYuTT8Z35Ov6Q/p.jpeg?size=2048x1536&size_mode=3"}}]
@@ -322,81 +340,15 @@ def get_section(section_id):
             if "img" in article_info:
                 if "drive.google.com/open" in article_info["img"]:
                     article_info["img"] = "https://drive.google.com/uc?export=view&id="+article_info["img"].split("le.com/open?id=")[1]
-            author_info = db.reference('/authors').child(article_info["author"]).get()
-            if author_info:
-                article_info["author"] = author_info
-            else:
-                article_info["author"] = {"name":article_info["author"].replace("-"," ").title(),"role":"Contributing Writer","id":article_info["author"]}
+            article_info["authors"] = get_author_info(article_info["authors"])
             section_info["articles"].append(article_info)
     return render_template('column.html', info = section_info, data = get_info())
 
 @app.route('/articles/<article_id>')
 @login_required
 def get_article(article_id):
-    article_info = db.reference('/articles').child(article_id).get()
-    # if not "authors" in article_info:
-    #     article_info["authors"] = [article_info["author"]]
-    # print(article_info["authors"])
-    if article_info["author_count"] == 2:
-        article_info["author"] = article_info["authors"][0].title().replace("-"," ")+" & "+article_info["authors"][1].title().replace("-"," ")
-    else:
-        article_info["author"] = article_info["authors"][0].title().replace("-"," ")
-    article_authors = []
-    for this_author in article_info["authors"]:
-        print(this_author)
-        this_author_dict = db.reference('/authors').child(this_author).get()
-        if this_author_dict:
-            if "img" in this_author_dict and "drive.google.com" in this_author_dict["img"]:
-                this_author_dict["img"] = this_author_dict["img"]
-            else:
-                this_author_dict["img"] = "/static/img/authors/"+this_author_dict["name"]+".png"
-            article_authors.append(this_author_dict)
-        else:
-            author_dict = {}
-            author_dict["img"] = "/static/img/authors/anonymous.png"
-            author_dict["name"] = this_author.title().replace("-"," ")
-            author_dict["id"] = this_author
-            article_authors.append(author_dict)
-    article_info["authors"] = article_authors
-    article_info["author"] = article_info["authors"][0]
-    print(article_info["authors"])
-    print(article_info["author_count"])
-    snapshot = db.reference('/articles').order_by_child('featured').equal_to(True).get()
-    if snapshot:
-        article_info["features"] = []
-        for key, val in snapshot.items():
-            article_info2 = val
-            if article_info2["author_count"] == 2:
-                article_info2["author"] = article_info2["authors"][0].title().replace("-"," ")+" & "+article_info2["authors"][1].title().replace("-"," ")
-            else:
-                article_info2["author"] = article_info2["authors"][0].title().replace("-"," ")
-            article_authors = []
-            if not "authors" in article_info2:
-                article_info2o["authors"] = [article_info2["author"]]
-            for this_author in article_info2["authors"]:
-                print(this_author)
-                this_author_dict = db.reference('/authors').child(this_author).get()
-                if this_author_dict:
-                    if "img" in this_author_dict and "drive.google.com" in this_author_dict["img"]:
-                        this_author_dict["img"] = this_author_dict["img"]
-                    else:
-                        this_author_dict["img"] = "/static/img/authors/"+this_author_dict["name"]+".png"
-                    article_authors.append(this_author_dict)
-                else:
-                    author_dict = {}
-                    author_dict["img"] = "/static/img/authors/anonymous.png"
-                    author_dict["name"] = this_author.title().replace("-"," ")
-                    author_dict["id"] = this_author
-                    article_authors.append(author_dict)
-            article_info2["authors"] = article_authors
-            article_info2["author"] = article_info2["authors"][0]
-            # this_article_info["author_info"] = db.reference('/authors').child(this_article_info["author"]).get()
-            # if this_article_info["author_info"]:
-            #     this_article_info["author"] = this_article_info["author_info"]
-            article_info["features"].append(article_info2)
-    if "img" in article_info:
-        if "drive.google.com/open" in article_info["img"]:
-            article_info["img"] = "https://drive.google.com/uc?export=view&id="+article_info["img"].split("le.com/open?id=")[1]
+    article_info = get_article_info(article_id)
+    article_info["features"] = get_featured_articles()
     return render_template('article.html', info = article_info, data = get_info())
 
 @app.route('/archive/<archive_id>')

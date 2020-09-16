@@ -48,6 +48,11 @@ body {
   color: var(--main-color)
 }
 
+.nav>li>a:focus {
+  color: var(--main-color) !important;
+  text-decoration: underline !important;
+}
+
 .incognito-link, .incognito_link {
   color: inherit !important;
 }
