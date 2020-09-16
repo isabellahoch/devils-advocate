@@ -217,7 +217,7 @@ def internal_server_error(e):
     return render_template('error.html', title = title, code = code, message = message, data = get_info()), 500
 
 @app.route('/')
-# @login_required
+@login_required
 def index():
     # notif = {"message":"The SENIOR WILLS are out in the latest edition!", "link":"/latest"}
     info = {}
@@ -227,6 +227,8 @@ def index():
         for key, val in snapshot.items():
             this_article_info = val
             article_authors = []
+            if not this_article_info["authors"]:
+                this_article_info["authors"] = [this_article_info["author"]]
             for this_author in this_article_info["authors"]:
                 print(this_author)
                 this_author_dict = db.reference('/authors').child(this_author).get()
@@ -509,7 +511,7 @@ def staff():
 @app.route('/about')
 @login_required
 def about():
-    return redirect(url_for('staff'))
+    return render_template('about.html', data = get_info())
 
 @app.route('/about/privacy')
 @login_required
