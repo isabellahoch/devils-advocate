@@ -408,7 +408,7 @@ def get_archive(archive_id):
     return render_template('archive.html', info = archive_info, data = get_info())
 
 @app.route('/editions/<edition_id>')
-# @login_required
+@login_required
 def get_edition(edition_id):
     if(edition_id == "february-2020"):
         return redirect(url_for("get_archive", archive_id = edition_id))
@@ -497,7 +497,7 @@ def contribute():
     return render_template('contribute.html', data = get_info())
 
 @app.route('/staff')
-# @login_required
+@login_required
 def staff():
     test_ref = db.reference('/authors')
     snapshot = test_ref.get()
