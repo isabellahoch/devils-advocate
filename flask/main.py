@@ -245,6 +245,7 @@ def index():
                     author_dict["id"] = this_author
                     article_authors.append(author_dict)
             this_article_info["authors"] = article_authors
+            this_article_info["author"] = this_article_info["authors"][0]
             info["features"].append(this_article_info)
     # info["features"].append({"title":"Sorrel: UHS's Michelin-Starred Neighbor","id":"sorrel","img":"no","author":"no","edition":"no"})
     # info["features"].append({"title":"Eve Leupold '20 Breaks Down Her Favorite Holiday Movies","id":"eve_movies","img":"no","author":"no","edition":"no"})
@@ -333,9 +334,9 @@ def get_section(section_id):
 @login_required
 def get_article(article_id):
     article_info = db.reference('/articles').child(article_id).get()
-    if not "authors" in article_info:
-        article_info["authors"] = [article_info["author"]]
-    print(article_info["authors"])
+    # if not "authors" in article_info:
+    #     article_info["authors"] = [article_info["author"]]
+    # print(article_info["authors"])
     if article_info["author_count"] == 2:
         article_info["author"] = article_info["authors"][0].title().replace("-"," ")+" & "+article_info["authors"][1].title().replace("-"," ")
     else:
@@ -357,6 +358,7 @@ def get_article(article_id):
             author_dict["id"] = this_author
             article_authors.append(author_dict)
     article_info["authors"] = article_authors
+    article_info["author"] = article_info["authors"][0]
     print(article_info["authors"])
     print(article_info["author_count"])
     snapshot = db.reference('/articles').order_by_child('featured').equal_to(True).get()
@@ -387,6 +389,7 @@ def get_article(article_id):
                     author_dict["id"] = this_author
                     article_authors.append(author_dict)
             article_info2["authors"] = article_authors
+            article_info2["author"] = article_info2["authors"][0]
             # this_article_info["author_info"] = db.reference('/authors').child(this_article_info["author"]).get()
             # if this_article_info["author_info"]:
             #     this_article_info["author"] = this_article_info["author_info"]
