@@ -227,7 +227,7 @@ def index():
         for key, val in snapshot.items():
             this_article_info = val
             article_authors = []
-            if not this_article_info["authors"]:
+            if not "authors" in this_article_info
                 this_article_info["authors"] = [this_article_info["author"]]
             for this_author in this_article_info["authors"]:
                 print(this_author)
@@ -333,7 +333,7 @@ def get_section(section_id):
 @login_required
 def get_article(article_id):
     article_info = db.reference('/articles').child(article_id).get()
-    if not article_info["authors"]:
+    if not "authors" in article_info
         article_info["authors"] = [article_info["author"]]
     print(article_info["authors"])
     if article_info["author_count"] == 2:
@@ -369,7 +369,7 @@ def get_article(article_id):
             else:
                 article_info2["author"] = article_info2["authors"][0].title().replace("-"," ")
             article_authors = []
-            if not article_info2["authors"]:
+            if not "authors" in article_info2
                 article_info2o["authors"] = [article_info2["author"]]
             for this_author in article_info2["authors"]:
                 print(this_author)
