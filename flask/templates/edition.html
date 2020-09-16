@@ -25,7 +25,7 @@
           <div class="carousel-item">
             <img class="d-block w-100" src="{{ this_club.img }}" alt="{{ this_club.title }}">
             <div class="carousel-caption d-none d-md-block" style="background-color:#ab192d; opacity:0.75">
-                <h3 style="color:darkgray"><strong><a href="/articles/{{ this_club.id }}" id="{{ this_club.id }}-link" style="color:#fff ! important">{{ this_club.title }}</a></strong> by {{ this_club.author.name }} '{{ this_club.author.class }}</h3>
+                <h3 style="color:#fff"><strong><a href="/articles/{{ this_club.id }}" id="{{ this_club.id }}-link" style="color:#fff ! important; text-decoration:underline">{{ this_club.title }}</a></strong> by {{ this_club.author.name }} '{{ this_club.author.class }}</h3>
                 <p>{{ this_club.preview|safe }}</p>
               </div>
           </div>
