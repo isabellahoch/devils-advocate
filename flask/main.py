@@ -349,6 +349,72 @@ def get_section(section_id):
 def get_article(article_id):
     article_info = get_article_info(article_id)
     article_info["features"] = get_featured_articles()
+# =======
+#     article_info = db.reference('/articles').child(article_id).get()
+#     # if not "authors" in article_info:
+#     #     article_info["authors"] = [article_info["author"]]
+#     # print(article_info["authors"])
+#     print(article_info["author_count"])
+#     if article_info["author_count"] == 2:
+#         article_info["author"] = article_info["authors"][0].title().replace("-"," ")+" & "+article_info["authors"][1].title().replace("-"," ")
+#     else:
+#         article_info["author"] = article_info["authors"][0].title().replace("-"," ")
+#     article_authors = []
+#     for this_author in article_info["authors"]:
+#         print(this_author)
+#         this_author_dict = db.reference('/authors').child(this_author).get()
+#         if this_author_dict:
+#             if "img" in this_author_dict and "drive.google.com" in this_author_dict["img"]:
+#                 this_author_dict["img"] = this_author_dict["img"]
+#             else:
+#                 this_author_dict["img"] = "/static/img/authors/"+this_author_dict["name"]+".png"
+#             article_authors.append(this_author_dict)
+#         else:
+#             author_dict = {}
+#             author_dict["img"] = "/static/img/authors/anonymous.png"
+#             author_dict["name"] = this_author.title().replace("-"," ")
+#             author_dict["id"] = this_author
+#             article_authors.append(author_dict)
+#     article_info["authors"] = article_authors
+#     article_info["author"] = article_info["authors"][0]
+#     print(article_info["authors"])
+#     print(article_info["author_count"])
+#     snapshot = db.reference('/articles').order_by_child('featured').equal_to(True).get()
+#     if snapshot:
+#         article_info["features"] = []
+#         for key, val in snapshot.items():
+#             article_info2 = val
+#             if article_info2["author_count"] == 2:
+#                 article_info2["author"] = article_info2["authors"][0].title().replace("-"," ")+" & "+article_info2["authors"][1].title().replace("-"," ")
+#             else:
+#                 article_info2["author"] = article_info2["authors"][0].title().replace("-"," ")
+#             article_authors = []
+#             if not "authors" in article_info2:
+#                 article_info2o["authors"] = [article_info2["author"]]
+#             for this_author in article_info2["authors"]:
+#                 print(this_author)
+#                 this_author_dict = db.reference('/authors').child(this_author).get()
+#                 if this_author_dict:
+#                     if "img" in this_author_dict and "drive.google.com" in this_author_dict["img"]:
+#                         this_author_dict["img"] = this_author_dict["img"]
+#                     else:
+#                         this_author_dict["img"] = "/static/img/authors/"+this_author_dict["name"]+".png"
+#                     article_authors.append(this_author_dict)
+#                 else:
+#                     author_dict = {}
+#                     author_dict["img"] = "/static/img/authors/anonymous.png"
+#                     author_dict["name"] = this_author.title().replace("-"," ")
+#                     author_dict["id"] = this_author
+#                     article_authors.append(author_dict)
+#             article_info2["authors"] = article_authors
+#             article_info2["author"] = article_info2["authors"][0]
+#             # this_article_info["author_info"] = db.reference('/authors').child(this_article_info["author"]).get()
+#             # if this_article_info["author_info"]:
+#             #     this_article_info["author"] = this_article_info["author_info"]
+#             article_info["features"].append(article_info2)
+#     if "img" in article_info:
+#         if "drive.google.com/open" in article_info["img"]:
+#             article_info["img"] = "https://drive.google.com/uc?export=view&id="+article_info["img"].split("le.com/open?id=")[1]
     return render_template('article.html', info = article_info, data = get_info())
 
 @app.route('/archive/<archive_id>')
