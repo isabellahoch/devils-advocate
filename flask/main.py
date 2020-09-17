@@ -337,6 +337,7 @@ def get_article(article_id):
     # if not "authors" in article_info:
     #     article_info["authors"] = [article_info["author"]]
     # print(article_info["authors"])
+    print(article_info["author_count"])
     if article_info["author_count"] == 2:
         article_info["author"] = article_info["authors"][0].title().replace("-"," ")+" & "+article_info["authors"][1].title().replace("-"," ")
     else:
