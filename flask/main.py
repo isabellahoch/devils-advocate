@@ -189,7 +189,7 @@ def get_author_info(author_list):
                 author_info["img"] = author_info["img"]
             else:
                 author_info["img"] = "/static/img/authors/"+author_info["name"]+".png"
-            authors.append(author_info)
+            # authors.append(author_info)
         else:
             author_info = {}
             author_info["img"] = "/static/img/authors/anonymous.png"
