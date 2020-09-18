@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="The Devils' Advocate is the school newspaper of San Francisco University High School!">
+    <meta name="keywords" content="Devils' Advocate, UHS, SFUHS, University High School, newspaper, Red Devils, {% block keywords %}{% endblock %}" />
+    <!-- <meta name="google-site-verification" content="Ss04r2RuHsIZudXXchAJPMfK612nDTXvgSj6cWb80Uo" />
+    <meta name="p:domain_verify" content="ea53476f43b5e9c95ee0b0b8ede58130"/> -->
+    {% block meta %}{% endblock %}
+    <title>{% block title %}{% endblock %}INTERNAL SEARCH | THE DEVILS' ADVOCATE</title>
+    <link rel="canonical" href="http://da.sfuhs.org">
+    <link rel="icon" type="image/png" href="https://www.sfuhs.org/uploaded/favicon.ico">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/nav.css') }}">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville&family=Spinnaker&family=Lato&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Candal&family=Libre+Baskerville&family=Montserrat&display=swap" rel="stylesheet">
+    <style>
+    :root {
+    --main-color: #ab192d !important; 
+  }
+
+  h1 {
+  text-transform: uppercase;
+  line-height: 2em;
+  }
+
+  #page-content-wrapper p, li, span {
+    font-family: 'Libre Baskerville', serif !important;
+  }
+
+[class^="entypo-"]:before,
+[class*="entypo-"]:before {
+  font-family: 'entypo', sans-serif;
+}
+
+.form_title {
+  padding-top: 20px !important;
+  font-size:10pt !important;
+}
+
+/* mobile fix */
+@media (max-width: 768px) {
+  .dropdown-lr h3 {
+    color: #eee;
+  }
+  .dropdown-lr label {
+    color: #eee;
+  }
+
+  #logo {
+  	padding-right:75px
+  }
+
+}
+
+.link {
+  color: var(--main-color)
+}
+
+.nav li .active > a {
+  /* color: #000 !important; */
+}
+
+.nav-sublink {
+  text-transform:uppercase;
+  color:#fff;
+}
+
+.navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:focus, .navbar-inverse .navbar-nav>.active>a:hover {
+    background-color: inherit;
+    color: var(--main-color);
+}
+
+.nav li .active {
+  color: #d6d6d6;
+}
+
+.navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:focus, .navbar-inverse .navbar-nav>.active>a:hover {
+    background-color: inherit;
+    /*color: #4eb7c0;*/
+    color: var(--main-color)
+}
+
+a:hover {
+  color: var(--main-color) !important;
+  text-decoration: underline !important;
+}
+
+.link:hover {
+  color: var(--main-color) !important;
+  text-decoration: underline !important;
+}
+
+.link {
+  color: var(--main-color)
+}
+
+a {
+  color: var(--main-color)
+}
+
+.title {
+  width:100%;
+}
+
+.btn-custom {
+    color: #fff;
+    background-color: var(--main-color) !important;
+    border-color: var(--main-color) !important;
+    width:100%;
+    min-width:fit-content !important;
+}
+
+.btn-custom:hover {
+  color: #efefef !important;
+}
+
+.navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form {
+  border-style: none !important;
+}
+
+a.active-sub-link {
+  color: #A8A8A8 !important;
+}
+
+.divider {
+	margin-top: 5px;
+    font-size: 25px;
+}
+
+/*@media (min-width: 768px) {
+
+  .navbar-collapse.collapse {
+  width: 95vw !important;
+}
+
+@media (min-width: 830px) {
+
+  .navbar-collapse.collapse {
+  width: 90vw !important;
+}*/
+
+
+@media (min-width: 768px) {
+.navbar-expand-md .navbar-toggler {
+    display: none !important;
+}
+}
+
+@media screen and (min-width: 769px) {
+  #navbar {
+    font-size: 11px;
+  }
+}
+
+@media screen and (min-width: 788px) {
+  #navbar {
+    font-size: 12px !important;
+  }
+}
+
+#navbar li {
+	padding: 20px;
+}
+
+.navbar-nav.navbar-center {
+    position: absolute;
+    left: 50%;
+    transform: translatex(-50%);
+}
+
+
+@media (max-width: 768px) {
+  #menu {
+    display: unset !important;
+  }
+  #header {
+    display:none;
+  }
+  #horizontal-menu {
+      display: none !important;
+  }
+  #sidebar-wrapper {
+    margin-top:75px !important;
+  }
+  #page-content-wrapper {
+    padding-top:120px;
+  }
+  #remove-border-mobile {
+    border-left:unset !important;
+  }
+}
+
+.nav-link {
+  padding: 0px !important;
+}
+
+  </style>
+  </head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <ul style="list-style:none">
+                {% if if_articles %}
+                    {% for article in info %}<li style="color:darkgray"><a href="/articles/{{ article.id }}">{{ article.title }}</a> by {% if article.author_count == 2 %}{{ article.authors[0].name }} '{{ article.authors[0].class }} and {{ article.authors[1].name }} '{{ article.authors[1].class }}{% else %}{{ article.authors[0].name }} '{{ article.authors[0].class }}{% endif %}</li>{% endfor %}
+                {% else %}
+                <p>No results found.</p>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+  
+
+
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/7.1.0/firebase-app.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<script src="https://www.gstatic.com/firebasejs/7.1.0/firebase-analytics.js"></script>
+
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyARCliKyACLYhK_1qlK8a3IUSvQ4Do_3Jc",
+    authDomain: "uhs-devils-advocate.firebaseapp.com",
+    databaseURL: "https://uhs-devils-advocate.firebaseio.com",
+    projectId: "uhs-devils-advocate",
+    storageBucket: "uhs-devils-advocate.appspot.com",
+    messagingSenderId: "71141609151",
+    appId: "1:71141609151:web:910e765f140fdf5625c00a",
+    measurementId: "G-463S3TM4JZ"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
+</script>
+
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<!-- <script src="/__/firebase/7.1.0/firebase-app.js"></script> -->
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<!-- <script src="/__/firebase/7.1.0/firebase-analytics.js"></script> -->
+
+<!-- Initialize Firebase -->
+<!-- <script src="/__/firebase/init.js"></script> -->
+<script>
+  function ImageExists(selector) {
+var imageFound = $(selector); 
+
+if (!imageFound.get(0).complete) {
+  return false;
+}
+else if (imageFound.height() === 0) {
+  return false;
+}
+
+return true;
+}
+$( ".author-img" ).each(function( index ) {
+  if(!ImageExists($(this))) {
+      $(this).attr("src","/static/img/authors/anonymous.png");
+  }
+});
+
+</script>
+
+</body>
+</html>

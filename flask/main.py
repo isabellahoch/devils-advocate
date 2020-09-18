@@ -587,6 +587,41 @@ def subscribe():
 def sorry():
     return render_template('under_construction.html', data = get_info())
 
+@app.route('/internal_search/<query>')
+def internal_search(query):
+    snapshot = db.reference("/articles").order_by_child("title").start_at(query.title()).end_at(query.title()+"\uf8ff").get()
+    if snapshot:
+        articles = []
+        for key, val in snapshot.items():
+            article = val
+            article["authors"] = get_author_info(article["authors"])
+            article["author"] = article["authors"][0]
+            if "img" in article:
+                if "drive.google.com/open" in article["img"]:
+                    article["img"] = "https://drive.google.com/uc?export=view&id="+article["img"].split("le.com/open?id=")[1]
+            articles.append(article)
+            if_articles = True
+    else:
+        articles = None
+        if_articles = False
+    return render_template('internal_search.html', info = articles, if_articles = if_articles)
+
+@app.route('/search')
+@login_required
+def search():
+    snapshot = db.reference('/articles').get()
+    articles = []
+    if snapshot:
+        for key, val in snapshot.items():
+            article = val
+            article["authors"] = get_author_info(article["authors"])
+            article["author"] = article["authors"][0]
+            if "img" in article:
+                if "drive.google.com/open" in article["img"]:
+                    article["img"] = "https://drive.google.com/uc?export=view&id="+article["img"].split("le.com/open?id=")[1]
+            articles.append(article)
+    return render_template('search.html', data = get_info(), info = articles)
+
 # from pdf_manager import make_pdf_from_url
 
 # @app.route('/test-pdf')
