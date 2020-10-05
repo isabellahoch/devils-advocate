@@ -1,0 +1,241 @@
+{% extends "base.html" %}
+{% block title %}{{ info.title }} | {% endblock %}
+{% block head %}
+<style>
+	@import url('https://fonts.googleapis.com/css?family=EB+Garamond|Encode+Sans+Condensed|PT+Sans+Narrow|Saira+Extra+Condensed&display=swap');
+	.share-icon {
+		font-size:30px;
+		color: gray;
+		padding:10px;
+		margin-top:20px;
+	}
+	.content p {
+		font-size: 14pt;
+		line-height: 2.0;
+		font-family: 'EB Garamond', serif;
+	}
+
+	.article-sidebar {
+		border-style:solid;
+		padding: 15px;
+		margin: 10px;
+	}
+	.article-sidebar div {
+		max-height:150px;
+	}
+
+	@media (max-width: 768px) { 
+		#sidebar-column {
+			display: -ms-flexbox!important;
+    		display: flex!important;
+		}
+		.article-sidebar {
+			width:100%;
+		}
+
+		.card-body {
+			text-align: center!important;
+		}
+
+		.card-title {
+			width:100%;
+		}
+	 }
+
+</style>
+{% endblock %}
+{% block content %}
+<div class="container" style="">
+	<div class="col-lg-8">
+		<div class="row text-center align-items-center justify-content-center">
+			<h1 style="padding-bottom:25px">{{ info.formatted_title|safe }}</h1>
+		</div>
+
+		<div class="row text-center align-items-center justify-content-center">
+			<div style="
+			width: fit-content;
+			max-width:calc(fit-content+100px);
+		" class="row">{% if info.author_count == 2 %}
+		<h4 style="
+		padding-top: 15px;
+	">By <a href="/authors/{{ info.authors[0].id }}">{{ info.authors[0].name }}</a> and <a href="/authors/{{ info.authors[1].id }}">{{ info.authors[1].name }}</a></h4>
+		{% else %}
+				<div class="col-md-4">
+					<img src="{{ info.author.img }}" style="border-radius:50%; width:100px; height: 100px; object-fit:cover;">
+				</div>
+				<div class="col-md-8 align-items-center justify-content-center">
+					<h4 style="
+			padding-top: 15px;
+		">By <a href="/authors/{{ info.author.id }}">{{ info.author.name }}</a></h4>
+					<p style="font-color:gray; font-size:12pt">{{ info.author.role }}</p>
+				</div>
+				{% endif %}
+			</div></div>
+	<!-- 
+		<div class="row text-center align-items-center justify-content-center">
+			<div class="col-md-8">
+				<img src="{{ info.author.img }}" style="border-radius:50%; width:100px; height: 100px; object-fit:cover;">
+			</div>
+			<div class="col-md-4">
+				<h4>By <a href="/authors/{{ info.author.id }}">{{ info.author.name }}</a></h4>
+				<p style="font-color:gray; font-size:12pt">{{ info.author.role }}</p>
+			</div>
+		</div> -->
+		<hr>
+		<div class="row text-center align-items-center justify-content-center" style="margin-bottom:-10px">
+			<br>
+			<ul style="display:inline-block; list-style:none; padding-left: 0; margin-left:0">
+				<li style="display:inline-block;">
+					<a class="share-icon" href="https://www.facebook.com/sharer/sharer.php?u=http://da.sfuhs.org/articles/{{ info.id }}"><i class="fab fa-facebook-f"> </i></a>
+				</li>
+				<li style="display:inline-block;">
+					<a class="share-icon" href="https://twitter.com/home?status=http://da.sfuhs.org/articles/{{ info.id }} {{ info.title }}"><i class="fab fa-twitter"> </i></a>
+				</li>
+				<li style="display:inline-block;">
+					<a class="share-icon" href="mailto:?subject={{ info.title }} | THE DEVILS' ADVOCATE &body=http://da.sfuhs.org/articles/{{ info.id }}"><i class="fas fa-envelope"></i></a>
+				</li>
+			</ul>
+		</div>
+		<hr>
+		{% if info.img %}
+			<div class="row justify-content-center align-items-center text-center" style="width:100%">
+				<img src="{{ info.img }}" style="max-width:500px">
+			</div>
+			<hr>
+			<!-- <br> -->
+		{% endif %}
+		<div class="row">
+			<div class="content">
+				<p>{{ info.contents|safe }}</p>
+				<p><strong style="font-family: 'Libre Baskerville', serif !important;">Want to keep up with breaking news?</strong> <a style="font-family: 'Libre Baskerville', serif !important;" href="/subscribe">Subscribe to our email newsletter</a>.</p>
+			</div>
+        </div>
+        <hr>
+
+
+
+        <div class="container" id="comments">
+            <div class="col-md-8 col-sm-12">
+                <div class="comment-wrapper">
+                    <div class="panel-heading">
+                        <h2>Comments</h2>
+                    </div>
+                    <div class="panel-body">
+                        <form id="comment-form" style="line-height:2.0">
+                            <label>Name</label>
+                            <input type="text" id="comment-name" class="form-control">
+                            <label>Email</label>
+                            <input type="text" id="comment-email" class="form-control" value="{{ current_user }}" disabled>
+                            <label>Comment</label>
+                            <textarea id="comment-body" class="form-control" placeholder="write a comment..." rows="3"></textarea>
+                            <br>
+                            <button type="button" id="comment-form-submit" class="btn btn-custom pull-right" style="width:auto !important">Post</button>
+                            <div class="clearfix"></div>
+                        </form>
+                        <hr>
+                        <ul class="media-list" id="comment-list">
+                            {% if info.comments %}
+                            {% for comment in info.comments %}
+                            <li class="media">
+                                <div class="media-body">
+                                    <span class="text-muted pull-right">
+                                        <small class="text-muted">{{ comment.date }}</small>
+                                    </span>
+                                    <strong class="text-success" style="color:#ab192d !important">{% if comment.name %}{{ comment.name }} (<a href="mailto:{{ comment.email }}">{{ comment.email }}</a>){% else %}<a href="mailto:{{ comment.email }}">{{ comment.email }}</a>{% endif %}</strong>
+                                    <p>
+                                        {{ comment.body }}
+                                    </p>
+                                </div>
+                            </li>
+                            {% endfor %}
+                            {% endif %}
+                        </ul>
+                    </div>
+            
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+        <!-- <div class="row justify-content-center align-items-center" id="comments">
+            <form class = "form-control">
+                <div class="form-group"></div>
+            </form>
+        </div> -->
+	<!-- </div> -->
+	<div class="col-lg-4" id="sidebar-column">
+		<div class="article-sidebar"><h2 style="margin-left:10px">MORE FROM:</h2>
+			<ul style="padding:15px">
+				<li><a href="/sections/{{ info.section }}">{{ info.section.replace("-"," ").title() }}</a></li>
+				<li><a href="/editions/{{ info.edition }}">{{ info.edition.replace("-"," ").title() }}</a></li>
+			</ul>
+		</div>
+		<div class="article-sidebar">
+		{% for article in info.features %}
+        <div class="card d-flex" style="border:none; margin: 0 auto; max-width:100%; max-height:100%; /* Added */
+        float: none; /* Added */
+        margin-bottom: 10px; /* Added */; min-height:500px;background:url('{{ article.img }}') no-repeat center; background-repeat: no-repeat; background-size:cover ">
+		  <div class="card-body align-items-center d-flex justify-content-center" style="flex-wrap: wrap; height:fit-content">
+			<h3 class="card-title"><a  style="font-family:'Libre Baskerville', serif !important; color: #fff; background-color:#ab192d; opacity:0.7;  font-weight:bold; text-decoration:none" href="/articles/{{ article.id }}">{{ article.title }}</a></h3>
+			<div class="break"></div><h5>{% if article.author_count == 2 %}<a href="/authors/{{ article['authors'][0]['id'] }}" class="card-link" style="text-transform:uppercase; color: #fff; background-color:#ab192d; opacity:0.7; ">{{ article['authors'][0].name }} '{{ article['authors'][0].class }}</a><span style="color: #fff; background-color:#ab192d; opacity:0.7; "> & </span><a href="/authors/{{ article['authors'][1].id }}" class="card-link" style="text-transform:uppercase; color: #fff; background-color:#ab192d; opacity:0.7; ">{{ article['authors'][1].name }} '{{ article['authors'][1].class }}</a>{% else %}<a href="/authors/{{ article.author.id }}" class="card-link" style="text-transform:uppercase; color: #fff; background-color:#ab192d; opacity:0.7; ">{{ article.author.name }} '{{ article.author.class }}</a>{% endif %}</h5>
+			<!-- <p class="card-text">{{ article.preview|safe }}</p> -->
+		  </div>
+        </div>
+        {% endfor %}
+		</div>
+		<div class="article-sidebar">
+			<a href="/subscribe" class="btn btn-custom">EMAIL NEWSLETTER</a>
+		</div>
+	</div>
+</div>
+{% endblock %}
+{% block js %}
+<script>
+
+        var database = firebase.database();
+        {% if info.comments %}
+        var article_comments = {{ info.comments| safe }};
+        {% else %}
+        var article_comments = [];
+        {% endif %}
+    $("#comment-form-submit").click(function(){
+
+        var date = new Date(); 
+
+        var formatted_date = ("00" + (date.getMonth() + 1)).slice(-2) 
+				+ "/" + ("00" + date.getDate()).slice(-2) 
+				+ "/" + date.getFullYear() + " " 
+				+ ("00" + date.getHours()).slice(-2) + ":" 
+				+ ("00" + date.getMinutes()).slice(-2) 
+				+ ":" + ("00" + date.getSeconds()).slice(-2); 
+        
+        var comment = {
+            "email":$("#comment-email").val(),
+            "name":$("#comment-name").val(),
+            "body":$("#comment-body").val(),
+            "date": formatted_date,
+            "article":"{{ info.id }}"
+        }
+        console.log(comment);
+        article_comments.push(comment)
+
+        var updates = {};
+        updates['comments'] = { "{{ info.id }}":article_comments };
+        firebase.database().ref().update(updates);
+        $('#comment-list').append('<li class="media"><div class="media-body"><span class="text-muted pull-right"><small class="text-muted">'+comment.date+'</small></span><strong class="text-success" style="color:#ab192d !important">'+comment.name+' (<a href="mailto:'+comment.email+'">'+ comment.email+'</a>)</strong><p>'+ comment.body +'</p></div></li>');    
+    });
+    // var database = firebase.database();
+    
+    // // return firebase.database().ref('/articles/{{ info.id }}').once('comments').then(function(snapshot) {
+    // //     var article_comments = snapshot.val();
+    // // });
+
+    // var article_comments = {{ info.comments| safe }};
+
+    // var userId = {{ current_user }};
+    // firebase.database().ref('articles/{{ info.id }}').set({
+    //     comments: article_comments
+    // });
+</script>
+{% endblock %}

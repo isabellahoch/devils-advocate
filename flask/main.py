@@ -174,11 +174,18 @@ def get_info():
 def get_article_info(article_id):
     article = db.reference('/articles').child(article_id).get()
     article["authors"] = get_author_info(article["authors"])
+    article["comments"] = get_comments(article_id)
     article["author"] = article["authors"][0]
     if "img" in article:
         if "drive.google.com/open" in article["img"]:
             article["img"] = "https://drive.google.com/uc?export=view&id="+article["img"].split("le.com/open?id=")[1]
     return article
+
+def get_comments(article_id):
+    comment_info = db.reference('/comments').child(article_id).get()
+    if comment_info:
+        return comment_info
+    return []
 
 def get_author_info(author_list):
     authors = []
@@ -262,13 +269,12 @@ def internal_server_error(e):
 @app.route('/')
 @login_required
 def index():
-    # notif = {"message":"The SENIOR WILLS are out in the latest edition!", "link":"/latest"}
     info = {}
     info["features"] = get_featured_articles()
     # info["features"].append({"title":"Sorrel: UHS's Michelin-Starred Neighbor","id":"sorrel","img":"no","author":"no","edition":"no"})
     # info["features"].append({"title":"Eve Leupold '20 Breaks Down Her Favorite Holiday Movies","id":"eve_movies","img":"no","author":"no","edition":"no"})
     # info["articles"] = [{"title":"Eve Leupold '20 Breaks Down Her Favorite Holiday Movies","id":"eve_movies","author":{"name":"Eve Leupold","img":"https://previews.dropbox.com/p/thumb/AAtSmlmLIMt_5Rw4jAaAu_bQcWxfEJNqwYsRy8grIObRuOgNLLFCrZ-_V8Ck3YxZ7DmNP9MrjeAIKq4S5vIFXw8BlS9354PnNjQP2_tI2wAThcQ8P_CVwIlgendC_6yp9SrMZmSxtKwIbRvL4Gd4jJ4bRtHtxRXb676981DDagTcbzfohDjTbZNDGlH874BSB6RbmEGJzXtHsPHXRQup-60Usa8MaYXSUxBHy-za6pP-d_VT1XqmV754rx2rrOOePzcEDwMkdv8qH1p5g7RC5wXx-xHF6dTckG_na8UVC7QRRNRtoPLqx4jLzNmyug8tbViDlXIUiGeg5YWYrskS3_KJL1fDqlGf5KYuTT8Z35Ov6Q/p.jpeg?size=2048x1536&size_mode=3"}}]
-    return render_template('index.html', notification = False, info = info, data = get_info())
+    return render_template('index.html', if_notification = False, notification = {"message":"The SENIOR WILLS are out in the latest edition!", "link":"/latest"}, info = info, data = get_info())
     # archive_info = db.reference('/archive').child("february-2020").get()
     # return render_template('archive.html', info = archive_info, data = get_info())
 	# return render_template('index.html', feature_no = feature_indexes, features = features, logged_in=current_user.is_authenticated)
@@ -311,7 +317,7 @@ def articles():
 @app.route('/latest')
 @login_required
 def latest():
-    return redirect(url_for("get_edition", edition_id = "september-2020"))
+    return redirect(url_for("get_edition", edition_id = "october-2020"))
 
 @app.route('/authors/<author_id>')
 @login_required
@@ -415,7 +421,11 @@ def get_article(article_id):
 #     if "img" in article_info:
 #         if "drive.google.com/open" in article_info["img"]:
 #             article_info["img"] = "https://drive.google.com/uc?export=view&id="+article_info["img"].split("le.com/open?id=")[1]
-    return render_template('article.html', info = article_info, data = get_info())
+    if current_user.is_authenticated:
+        user_email = current_user.get_id()
+    else:
+        user_email = "test@sfuhs.org"
+    return render_template('article_comments.html', info = article_info, data = get_info(), current_user = user_email)
 
 @app.route('/archive/<archive_id>')
 @login_required

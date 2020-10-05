@@ -435,9 +435,6 @@ document.getElementById("copyright_year").innerHTML = year.toString();
   })(jQuery);
   </script>
 
-{% block js %}
-{% endblock %}
-
 
 <!-- The core Firebase JS SDK is always required and must be listed first -->
 <script src="https://www.gstatic.com/firebasejs/7.1.0/firebase-app.js"></script>
@@ -445,6 +442,8 @@ document.getElementById("copyright_year").innerHTML = year.toString();
 <!-- TODO: Add SDKs for Firebase products that you want to use
      https://firebase.google.com/docs/web/setup#available-libraries -->
 <script src="https://www.gstatic.com/firebasejs/7.1.0/firebase-analytics.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/3.1.0/firebase-database.js"></script>
 
 <script>
   // Your web app's Firebase configuration
@@ -461,7 +460,11 @@ document.getElementById("copyright_year").innerHTML = year.toString();
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
   firebase.analytics();
+  var database = firebase.database();
 </script>
+
+{% block js %}
+{% endblock %}
 
 <!-- The core Firebase JS SDK is always required and must be listed first -->
 <!-- <script src="/__/firebase/7.1.0/firebase-app.js"></script> -->
