@@ -221,7 +221,7 @@
         article_comments.push(comment)
 
         var updates = {};
-		updates["comments"] = {{ all_comments }};
+		updates["comments"] = {{ info.all_comments|safe }};
         updates['comments']["{{ info.id }}"] = article_comments;
         firebase.database().ref().update(updates);
         $('#comment-list').append('<li class="media"><div class="media-body"><span class="text-muted pull-right"><small class="text-muted">'+comment.date+'</small></span><strong class="text-success" style="color:#ab192d !important">'+comment.name+' (<a href="mailto:'+comment.email+'">'+ comment.email+'</a>)</strong><p>'+ comment.body +'</p></div></li>');    
