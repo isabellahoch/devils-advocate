@@ -175,6 +175,7 @@ def get_article_info(article_id):
     article = db.reference('/articles').child(article_id).get()
     article["authors"] = get_author_info(article["authors"])
     article["comments"] = get_comments(article_id)
+    article["all_comments"] = db.reference('/comments').get()
     article["author"] = article["authors"][0]
     if "img" in article:
         if "drive.google.com/open" in article["img"]:
