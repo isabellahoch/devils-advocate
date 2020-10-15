@@ -5,8 +5,10 @@ import os
 import json
 from forms import SubscribeForm
 from flask_compress import Compress
+from flask_caching import Cache
 
 app = Flask(__name__)
+cache = Cache(app, config={'CACHE_TYPE': 'simple'})
 COMPRESS_MIMETYPES = ['text/html', 'text/css', 'application/json']
 COMPRESS_LEVEL = 6
 COMPRESS_MIN_SIZE = 500
@@ -155,6 +157,7 @@ def logout():
     logout_user()
     return redirect(url_for('index'))
 
+@cache.cached(timeout=50, key_prefix='all_info')
 def get_info():
     info = {}
     # snapshot = db.reference('/authors').get()
@@ -269,6 +272,7 @@ def internal_server_error(e):
 
 @app.route('/')
 @login_required
+@cache.cached(timeout=50)
 def index():
     info = {}
     info["features"] = get_featured_articles()
