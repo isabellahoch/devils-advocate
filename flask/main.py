@@ -248,6 +248,7 @@ def matches_query(will, query):
                 return True
     return False
 
+latest_edition = "october-2020"
 
 @app.errorhandler(404)
 def page_not_found(e):
@@ -322,7 +323,7 @@ def articles():
 @app.route('/latest')
 @login_required
 def latest():
-    return redirect(url_for("get_edition", edition_id = "october-2020"))
+    return redirect(url_for("get_edition", edition_id = latest_edition))
 
 @app.route('/authors/<author_id>')
 @login_required
@@ -344,15 +345,17 @@ def get_section(section_id):
     for key, val in snapshot.items():
         section_info[key] = val
     snapshot = db.reference('/articles').order_by_child('section').equal_to(section_id).get()
+    #snapshot = db.reference('/articles').order_by_child('section').equal_to(section_id).order_by_child('edition').equal_to(latest_edition).get()
     if snapshot:
         section_info["articles"] = []
         for key, val in snapshot.items():
             article_info = val
-            if "img" in article_info:
-                if "drive.google.com/open" in article_info["img"]:
-                    article_info["img"] = "https://drive.google.com/uc?export=view&id="+article_info["img"].split("le.com/open?id=")[1]
-            article_info["authors"] = get_author_info(article_info["authors"])
-            section_info["articles"].append(article_info)
+            if article_info["edition"] == latest_edition:
+                if "img" in article_info:
+                    if "drive.google.com/open" in article_info["img"]:
+                        article_info["img"] = "https://drive.google.com/uc?export=view&id="+article_info["img"].split("le.com/open?id=")[1]
+                article_info["authors"] = get_author_info(article_info["authors"])
+                section_info["articles"].append(article_info)
     return render_template('column.html', info = section_info, data = get_info())
 
 @app.route('/articles/<article_id>')
