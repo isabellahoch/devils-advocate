@@ -16,7 +16,7 @@
 		  {% endif %}
 			<div class="card-body">
 				<h3 class="card-title"><a style="font-family:'Libre Baskerville', serif !important; color: #000; font-weight:bold; text-decoration:none" href="/articles/{{ article.id }}">{{ article.title }}</a></h3>
-				<h5><a href="/authors/{{ article.author.id }}" class="card-link" style="text-transform:uppercase; color: #000">{{ article.author.name }}</a> • <a href="/editions/{{ article.edition }}" class="card-link" style="text-transform:uppercase">{{ article.edition.replace("-"," ") }}</a></h5>
+				<h5>{% if article.author_count == 2 %}<a href="/authors/{{ article['authors'][0]['id'] }}" class="card-link" style="text-transform:uppercase; color: #000">{{ article['authors'][1].name }} '{{ article['authors'][1].class }}</a>{% else %}<a href="/authors/{{ article.authors[0].id }}" class="card-link" style="text-transform:uppercase; color: #000" ">{{ article.authors[0].name }} '{{ article.authors[0].class }}</a>{% endif %} • <a href="/editions/{{ article.edition }}" class="card-link" style="text-transform:uppercase">{{ article.edition.replace("-"," ") }}</a></h5>
 				<p class="card-text">{{ article.preview|safe }}</p>
 			</div>
 		</div>
