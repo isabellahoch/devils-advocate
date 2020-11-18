@@ -248,7 +248,7 @@ def matches_query(will, query):
                 return True
     return False
 
-latest_edition = "october-2020"
+latest_edition = "november-2020"
 
 @app.errorhandler(404)
 def page_not_found(e):
