@@ -171,7 +171,7 @@ def get_info():
     for (key,val) in snapshot.items():
          info["sections"][key] = val
     # info["sections"] = ["Arts & Entertainment","Current Events","Food","Op-Ed","Sports","Back Page"]
-    info["archive"] = [{“name”: “March 2021”, “id”: “march-2021”},{"name":"October 2020","id":"october-2020"},{"name":"September 2020","id":"september-2020"},{"name":"February 2020","id":"february-2020"},{"name":"November 2019","id":"november-2019"}]
+    info["archive"] = [{"name": "March 2021", "id": "march-2021"},{"name":"October 2020","id":"october-2020"},{"name":"September 2020","id":"september-2020"},{"name":"February 2020","id":"february-2020"},{"name":"November 2019","id":"november-2019"}]
     return info
 
 def get_article_info(article_id):
