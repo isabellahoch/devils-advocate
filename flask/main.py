@@ -558,6 +558,8 @@ def staff():
             info["EICs"]["editors"].append(author)
         elif author["role"] == "Technical Support":
             info["tech"]["editors"].append(author)
+	elif author["role"] == "Digital Editor":
+            info["tech"]["editors"].append(author)
         else:
             info["sections"][author["role"].split(" Editor")[0]]["editors"].append(author)
     return render_template('staff.html', info = info, authors = all_authors, data = get_info())
