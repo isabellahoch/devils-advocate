@@ -71,6 +71,7 @@ credentials = service_account.Credentials.from_service_account_file(
 scoped_credentials = credentials.with_scopes(
     ['https://www.googleapis.com/auth/cloud-platform'])
 
+# port = int(os.environ.get('PORT', 5000))
 
 from flask_login import LoginManager, current_user, login_user, login_required, logout_user
 from forms import LoginForm
@@ -171,7 +172,7 @@ def get_info():
     for (key,val) in snapshot.items():
          info["sections"][key] = val
     # info["sections"] = ["Arts & Entertainment","Current Events","Food","Op-Ed","Sports","Back Page"]
-    info["archive"] = [{"name":"October 2020","id":"october-2020"},{"name":"September 2020","id":"september-2020"},{"name":"February 2020","id":"february-2020"},{"name":"November 2019","id":"november-2019"}]
+    info["archive"] = [{"name": "March 2021", "id": "march-2021"},{"name":"October 2020","id":"october-2020"},{"name":"September 2020","id":"september-2020"},{"name":"February 2020","id":"february-2020"},{"name":"November 2019","id":"november-2019"}]
     return info
 
 def get_article_info(article_id):
@@ -248,7 +249,7 @@ def matches_query(will, query):
                 return True
     return False
 
-latest_edition = "november-2020"
+latest_edition = "march-2021"
 
 @app.errorhandler(404)
 def page_not_found(e):
@@ -558,6 +559,8 @@ def staff():
             info["EICs"]["editors"].append(author)
         elif author["role"] == "Technical Support":
             info["tech"]["editors"].append(author)
+	elif author["role"] == "Digital Editor":
+		info["tech"]["editors"].append(author)
         else:
             info["sections"][author["role"].split(" Editor")[0]]["editors"].append(author)
     return render_template('staff.html', info = info, authors = all_authors, data = get_info())
