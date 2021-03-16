@@ -71,7 +71,7 @@ credentials = service_account.Credentials.from_service_account_file(
 scoped_credentials = credentials.with_scopes(
     ['https://www.googleapis.com/auth/cloud-platform'])
 
-port = int(os.environ.get('PORT', 5000))
+# port = int(os.environ.get('PORT', 5000))
 
 from flask_login import LoginManager, current_user, login_user, login_required, logout_user
 from forms import LoginForm
