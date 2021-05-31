@@ -175,6 +175,39 @@ def get_info():
     info["archive"] = [{"name": "March 2021", "id": "march-2021"},{"name":"October 2020","id":"october-2020"},{"name":"September 2020","id":"september-2020"},{"name":"February 2020","id":"february-2020"},{"name":"November 2019","id":"november-2019"}]
     return info
 
+def get_senior_wills_info():
+    sh = gc.open("Senior Wills! (Responses)")
+    wk = sh.sheet1
+    senior_wills_info_old = wk.get_all_values().pop(0).pop(0)
+    senior_wills_info_old = wk.get_all_records()
+    senior_wills_info = {}
+    count = 0
+    for this_will in senior_wills_info_old:
+        try:
+            print(this_will)
+            will_id = this_will["name"].lower().replace(" ","-")
+            # senior_wills_info[will_id] = {"timestamp":this_will[0],"email":this_will[1],	"name":this_will[2],	"cause_of_death":this_will[3],	"freshmen":this_will[4],	"sophomores":this_will[5],	"juniors":this_will[6],	"faculty":this_will[7]}
+            senior_wills_info[will_id] = {}
+            senior_wills_info[will_id]["index"] = count
+            senior_wills_info[will_id]["cause_of_death"] = this_will["senior will - cause of death (optional, but encouraged)"]
+            senior_wills_info[will_id]["id"] = will_id
+            senior_wills_info[will_id]["name"] = this_will["name"]
+            senior_wills_info[will_id]["email"] = this_will["Email Address"]
+            if this_will["freshmen"]:
+                senior_wills_info[will_id]["freshmen"] = this_will["freshmen"].split("\n")
+            if this_will["sophomores"]:
+                senior_wills_info[will_id]["sophomores"] = this_will["sophomores"].split("\n")
+            if this_will["juniors"]:
+                senior_wills_info[will_id]["juniors"] = this_will["juniors"].split("\n")
+            if this_will["faculty"]:
+                senior_wills_info[will_id]["faculty"] = this_will["faculty"].split("\n")
+            count = count + 1
+            print(senior_wills_info[will_id])
+        except Exception as e:
+            print("nope")
+            print(e)
+    return senior_wills_info
+
 def get_article_info(article_id):
     article = db.reference('/articles').child(article_id).get()
     article["authors"] = get_author_info(article["authors"])
@@ -508,37 +541,8 @@ gc = gspread.service_account(filename='service_account.json')
 
 @app.route('/2021-senior-wills')
 def senior_wills_2021():
-    sh = gc.open("Senior Wills! (Responses)")
-    wk = sh.sheet1
-    senior_wills_info_old = wk.get_all_values().pop(0).pop(0)
-    senior_wills_info_old = wk.get_all_records()
-    senior_wills_info = {}
-    count = 0
-    for this_will in senior_wills_info_old:
-        try:
-            print(this_will)
-            will_id = this_will["name"].lower().replace(" ","-")
-            # senior_wills_info[will_id] = {"timestamp":this_will[0],"email":this_will[1],	"name":this_will[2],	"cause_of_death":this_will[3],	"freshmen":this_will[4],	"sophomores":this_will[5],	"juniors":this_will[6],	"faculty":this_will[7]}
-            senior_wills_info[will_id] = {}
-            senior_wills_info[will_id]["index"] = count
-            senior_wills_info[will_id]["cause_of_death"] = this_will["senior will - cause of death (optional, but encouraged)"]
-            senior_wills_info[will_id]["id"] = will_id
-            senior_wills_info[will_id]["name"] = this_will["name"]
-            senior_wills_info[will_id]["email"] = this_will["Email Address"]
-            if this_will["freshmen"]:
-                senior_wills_info[will_id]["freshmen"] = this_will["freshmen"].split("\n")
-            if this_will["sophomores"]:
-                senior_wills_info[will_id]["sophomores"] = this_will["sophomores"].split("\n")
-            if this_will["juniors"]:
-                senior_wills_info[will_id]["juniors"] = this_will["juniors"].split("\n")
-            if this_will["faculty"]:
-                senior_wills_info[will_id]["faculty"] = this_will["faculty"].split("\n")
-            count = count + 1
-            print(senior_wills_info[will_id])
-        except Exception as e:
-            print("nope")
-            print(e)
-    return render_template('formatted_senior_wills.html', info = senior_wills_info, data = get_info())
+    senior_wills_info = get_senior_wills_info()
+    return render_template('senior_wills.html', info = senior_wills_info, data = get_info())
 
 # @app.route('/pdf-senior-wills')
 # def senior_wills_2020_pdf():
@@ -557,10 +561,11 @@ def senior_wills_2021():
 #         count = count + 1
 #     return render_template('all_senior_wills.html', info = senior_wills_info, data = get_info())
 
-@app.route('/2020-senior-wills/<senior_will_id>')
-@login_required
+@app.route('/2021-senior-wills/<senior_will_id>')
+# @login_required
 def get_senior_will(senior_will_id):
-    senior_will_info = db.reference('/archive').child("2020-senior-wills").child("senior-wills").child(senior_will_id).get()
+    senior_will_info = get_senior_wills_info()
+    senior_will_info = senior_will_info[senior_will_id]
     return render_template('senior_will.html', info = senior_will_info, data = get_info())
 
 @app.route('/youtube')
