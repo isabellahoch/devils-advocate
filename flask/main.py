@@ -500,6 +500,46 @@ def senior_wills_2020():
         count = count + 1
     return render_template('senior_wills.html', info = senior_wills_info, data = get_info())
 
+import gspread
+gc = gspread.service_account(filename='service_account.json')
+
+# Open a spreadsheet by title
+
+
+@app.route('/2021-senior-wills')
+def senior_wills_2021():
+    sh = gc.open("Senior Wills! (Responses)")
+    wk = sh.sheet1
+    senior_wills_info_old = wk.get_all_values().pop(0).pop(0)
+    senior_wills_info_old = wk.get_all_records()
+    senior_wills_info = {}
+    count = 0
+    for this_will in senior_wills_info_old:
+        try:
+            print(this_will)
+            will_id = this_will["name"].lower().replace(" ","-")
+            # senior_wills_info[will_id] = {"timestamp":this_will[0],"email":this_will[1],	"name":this_will[2],	"cause_of_death":this_will[3],	"freshmen":this_will[4],	"sophomores":this_will[5],	"juniors":this_will[6],	"faculty":this_will[7]}
+            senior_wills_info[will_id] = {}
+            senior_wills_info[will_id]["index"] = count
+            senior_wills_info[will_id]["cause_of_death"] = this_will["senior will - cause of death (optional, but encouraged)"]
+            senior_wills_info[will_id]["id"] = will_id
+            senior_wills_info[will_id]["name"] = this_will["name"]
+            senior_wills_info[will_id]["email"] = this_will["Email Address"]
+            if this_will["freshmen"]:
+                senior_wills_info[will_id]["freshmen"] = this_will["freshmen"].split("\n")
+            if this_will["sophomores"]:
+                senior_wills_info[will_id]["sophomores"] = this_will["sophomores"].split("\n")
+            if this_will["juniors"]:
+                senior_wills_info[will_id]["juniors"] = this_will["juniors"].split("\n")
+            if this_will["faculty"]:
+                senior_wills_info[will_id]["faculty"] = this_will["faculty"].split("\n")
+            count = count + 1
+            print(senior_wills_info[will_id])
+        except Exception as e:
+            print("nope")
+            print(e)
+    return render_template('formatted_senior_wills.html', info = senior_wills_info, data = get_info())
+
 # @app.route('/pdf-senior-wills')
 # def senior_wills_2020_pdf():
 #     query = request.args.get('query')

@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="The Devils' Advocate is the school newspaper of San Francisco University High School!">
+    <meta name="keywords" content="Devils' Advocate, UHS, SFUHS, University High School, newspaper, Red Devils, {% block keywords %}{% endblock %}" />
+    <!-- <meta name="google-site-verification" content="Ss04r2RuHsIZudXXchAJPMfK612nDTXvgSj6cWb80Uo" />
+    <meta name="p:domain_verify" content="ea53476f43b5e9c95ee0b0b8ede58130"/> -->
+    {% block meta %}{% endblock %}
+    <title>{% block title %}{% endblock %}THE DEVILS' ADVOCATE</title>
+    <link rel="canonical" href="http://da.sfuhs.org">
+    <link rel="icon" type="image/png" href="https://www.sfuhs.org/uploaded/favicon.ico">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    <!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"> -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/nav.css') }}">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville&family=Spinnaker&family=Lato&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Candal&family=Libre+Baskerville&family=Montserrat&display=swap" rel="stylesheet">
+    <style>
+    :root {
+    --main-color: #ab192d !important; 
+  }
+
+  h1 {
+  text-transform: uppercase;
+  line-height: 2em;
+  }
+
+  #page-content-wrapper p, li, span {
+    font-family: 'Libre Baskerville', serif !important;
+  }
+
+[class^="entypo-"]:before,
+[class*="entypo-"]:before {
+  font-family: 'entypo', sans-serif;
+}
+
+.form_title {
+  padding-top: 20px !important;
+  font-size:10pt !important;
+}
+
+/* mobile fix */
+@media (max-width: 768px) {
+  .dropdown-lr h3 {
+    color: #eee;
+  }
+  .dropdown-lr label {
+    color: #eee;
+  }
+
+  #logo {
+  	padding-right:75px
+  }
+
+}
+
+.link {
+  color: var(--main-color)
+}
+
+.nav li .active > a {
+  /* color: #000 !important; */
+}
+
+.nav-sublink {
+  text-transform:uppercase;
+  color:#fff;
+}
+
+.navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:focus, .navbar-inverse .navbar-nav>.active>a:hover {
+    background-color: inherit;
+    color: var(--main-color);
+}
+
+.nav li .active {
+  color: #d6d6d6;
+}
+
+.navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:focus, .navbar-inverse .navbar-nav>.active>a:hover {
+    background-color: inherit;
+    /*color: #4eb7c0;*/
+    color: var(--main-color)
+}
+
+a:hover {
+  color: var(--main-color) !important;
+  text-decoration: underline !important;
+}
+
+.link:hover {
+  color: var(--main-color) !important;
+  text-decoration: underline !important;
+}
+
+.link {
+  color: var(--main-color)
+}
+
+a {
+  color: var(--main-color)
+}
+
+.title {
+  width:100%;
+}
+
+.btn-custom {
+    color: #fff;
+    background-color: var(--main-color) !important;
+    border-color: var(--main-color) !important;
+    width:100%;
+    min-width:fit-content !important;
+}
+
+.btn-custom:hover {
+  color: #efefef !important;
+}
+
+.navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form {
+  border-style: none !important;
+}
+
+a.active-sub-link {
+  color: #A8A8A8 !important;
+}
+
+.divider {
+	margin-top: 5px;
+    font-size: 25px;
+}
+
+/*@media (min-width: 768px) {
+
+  .navbar-collapse.collapse {
+  width: 95vw !important;
+}
+
+@media (min-width: 830px) {
+
+  .navbar-collapse.collapse {
+  width: 90vw !important;
+}*/
+
+
+@media (min-width: 768px) {
+.navbar-expand-md .navbar-toggler {
+    display: none !important;
+}
+}
+
+@media screen and (min-width: 769px) {
+  #navbar {
+    font-size: 11px;
+  }
+}
+
+@media screen and (min-width: 788px) {
+  #navbar {
+    font-size: 12px !important;
+  }
+}
+
+#navbar li {
+	padding: 20px;
+}
+
+.navbar-nav.navbar-center {
+    position: absolute;
+    left: 50%;
+    transform: translatex(-50%);
+}
+
+
+@media (max-width: 768px) {
+  #menu {
+    display: unset !important;
+  }
+  #header {
+    display:none;
+  }
+  #horizontal-menu {
+      display: none !important;
+  }
+  #sidebar-wrapper {
+    margin-top:75px !important;
+  }
+  #page-content-wrapper {
+    padding-top:120px;
+  }
+  #remove-border-mobile {
+    border-left:unset !important;
+  }
+}
+
+.nav-link {
+  padding: 0px !important;
+}
+
+  </style>
+
+<!--  <script id="mcjs">!function(c,h,i,m,p){m=c.createElement(h),p=c.getElementsByTagName(h)[0],m.async=1,m.src=i,p.parentNode.insertBefore(m,p)}(document,"script","https://chimpstatic.com/mcjs-connected/js/users/49c78097cadb509a2727708cc/022a632cd4b59967de78c0ad5.js");</script> -->
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap" rel="stylesheet">
+<style>
+    .senior-will-list {
+        text-align: left !important;
+        padding: 20px;
+        line-height: 1.8;
+    }
+    h1, h3 {
+        font-family: 'Playfair Display', serif !important;
+        margin-top:10px;
+    }
+    h1 {
+        color:#ab192d !important;
+        text-align:center;
+        align-self:center;
+    }
+    * {
+        font-family: 'Playfair Display', serif !important;
+    }
+</style>
+
+</head>
+
+<body>
+<div class="container">
+    {% for this_will in info %}
+    <div class="container align-items-center justify-content-center text-center">
+        <!-- <h1 style="margin-bottom:10px">{{ info[this_will].name }}'s Senior Will</h1> -->
+        <h1 style="margin-bottom:10px; color:#ab192d !important;
+        text-align:center;
+        align-self:center;">{{ info[this_will].name }}</h1>
+        <hr>
+        {% if info[this_will].cause_of_death %}
+        <h3 id="cause-of-death">Cause of Death</h3>
+        <span>{{ info[this_will].cause_of_death|safe }}</span>
+        {% endif %}
+        {% if info[this_will].statement %}
+        <h3 id="statement">Statement</h3>
+        <p>{{ info[this_will].statement|safe }}</p>
+        {% endif %}
+        {% if info[this_will].freshmen %}
+        <h3 id="freshmen">Freshmen</h3>
+        <ul class= "senior-will-list">
+            {% for this_person in info[this_will].freshmen %}
+            <li>{{ this_person }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% if info[this_will].sophomores %}
+        <h3 id="sophomores">Sophomores</h3>
+        <ul class= "senior-will-list">
+            {% for this_person in info[this_will].sophomores %}
+            <li>{{ this_person }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% if info[this_will].juniors %}
+        <h3 id="juniors">Juniors</h3>
+        <ul class= "senior-will-list">
+            {% for this_person in info[this_will].juniors %}
+            <li>{{ this_person }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% if info[this_will].faculty|length > 0 %}
+        <h3 id="faculty">Faculty</h3>
+        <ul class= "senior-will-list">
+            {% for this_person in info[this_will].faculty %}
+            <li>{{ this_person }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% if info[this_will].miscellaneous %}
+        <h3 id="miscellaneous">Miscellaneous</h3>
+        <ul class= "senior-will-list">
+            <p class="bequests">{{ info[this_will].miscellaneous|safe }}</p>
+        </ul>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+<script>$("#logo_header").attr("src","http://devils-advocate.herokuapp.com/static/img/senior_wills_header.jpg");</script>
+</body>
+</html>
