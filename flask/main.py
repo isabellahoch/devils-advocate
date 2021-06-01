@@ -544,6 +544,11 @@ def senior_wills_2021():
     senior_wills_info = get_senior_wills_info()
     return render_template('senior_wills.html', info = senior_wills_info, data = get_info())
 
+@app.route('/formatted-senior-wills')
+def senior_wills_2021_formatted():
+    senior_wills_info = get_senior_wills_info()
+    return render_template('formatted_senior_wills.html', info = senior_wills_info, data = get_info())
+
 # @app.route('/pdf-senior-wills')
 # def senior_wills_2020_pdf():
 #     query = request.args.get('query')
