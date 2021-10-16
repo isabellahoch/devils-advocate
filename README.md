@@ -4,6 +4,7 @@ The Devils' Advocate is the student-run newspaper of San Francisco University Hi
 
 ## How to Access
 The DA website is currently hosted on Heroku. Please visit [da.sfuhs.org](http://da.sfuhs.org)—you can use the credentials *test@sfuhs.org* and *sfuhsda* to access.
+Please also see the accompanying mobile app repo: [https://github.com/isabellahoch/devils-advocate-app](https://github.com/isabellahoch/devils-advocate-app).
 
 ## Installation
 
