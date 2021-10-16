@@ -6,13 +6,6 @@
 {% endif %}
 {% block content %}
 <div class="container">
-	<!-- <div class="row justify-content-center">
-		<p style="font-size:13px;padding:35px">WELCOME TO THE (IN PROGRESS) DIGITAL VERSION OF THE DEVILS' ADVOCATE! 👹📰</p>
-	</div> -->
-    <!-- <h2 class="section-header"><a class="section-header-link">About Us</a></h2> -->
-	<!-- <div class="row text-center align-items-center justify-content-center">
-        <img style="max-width:400px" src="{{ url_for('static', filename='img/EICs.PNG') }}">
-    </div> -->
     <div class="row">
         <h1 class="main-heading">Featured Articles</h1>
         <div class="card-columns" style="width:100%; padding-top:50px">
@@ -24,7 +17,6 @@
           <div class="card-body align-items-center d-flex justify-content-center" style="flex-wrap: wrap; height:fit-content; margin-top: -180px;">
 			<h3 class="card-title"><a  style="font-family:'Libre Baskerville', serif !important; color: #fff; background-color:#ab192d; opacity:0.7; font-weight:bold; text-decoration:none" href="/articles/{{ article.id }}">{{ article.title }}</a></h3>
 			<div class="break"></div><h5>{% if article.author_count == 2 %}<a href="/authors/{{ article['authors'][0]['id'] }}" class="card-link" style="text-transform:uppercase; color: #fff; background-color:#ab192d; opacity:0.7; ">{{ article['authors'][0].name }} '{{ article['authors'][0].class }}</a><span style="color: #fff; background-color:#ab192d; opacity:0.7; "> and </span><a href="/authors/{{ article['authors'][1].id }}" class="card-link" style="text-transform:uppercase; color: #fff; background-color:#ab192d; opacity:0.7; ">{{ article['authors'][1].name }} '{{ article['authors'][1].class }}</a>{% else %}<a href="/authors/{{ article.authors[0].id }}" class="card-link" style="text-transform:uppercase; color: #fff; background-color:#ab192d; opacity:0.7; ">{{ article.authors[0].name }} '{{ article.authors[0].class }}</a>{% endif %}</h5>
-			<!-- <p class="card-text">{{ article.preview|safe }}</p> -->
 		  </div>
         </div>
         {% endfor %}
@@ -40,12 +32,6 @@
     <div class="row" style="width:100%">
         <h1 class="main-heading" style="width:100%">More</h1>
     </div>
-                              
-
-
-
-
-
 </div>
 
 {% endblock %}

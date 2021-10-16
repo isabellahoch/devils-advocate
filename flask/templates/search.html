@@ -163,7 +163,6 @@
 {% block js %}
 <script>
     $('#search').on('input', function() {
-        // $('#internal_search').attr("src","internal_search/"+$('#search').val())
         $('.article-result').hide()
         $('[data-title*="'+$('#search').val().toLowerCase()+'"]').show()
         $('[data-author*="'+$('#search').val().toLowerCase()+'"]').show()

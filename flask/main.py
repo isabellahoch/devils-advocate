@@ -1,5 +1,4 @@
 from flask import Flask, render_template, request, redirect, url_for, make_response, abort
-# from credentials import FIREBASE_API_KEY
 from flask import request
 import os
 import json
@@ -17,17 +16,12 @@ Compress(app)
 app.config['SECRET_KEY'] = os.urandom(24)
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
 
-
 import firebase_admin
-# from firebase_admin import credentials
 from firebase_admin import db
 from firebase_admin import credentials
 from firebase_admin import firestore
 
-# Use the application default credentials
-# cred = credentials.ApplicationDefault()
-
-# added this below might be wrong teehee :()
+# grab credentials from json file
 cred = credentials.Certificate("firebase-private-key.json")
 
 
@@ -36,7 +30,7 @@ firebase_admin.initialize_app(cred, {
   'databaseURL': 'https://uhs-devils-advocate.firebaseio.com'
 })
 
-import pyrebase
+import pyrebase # allows us to work with firebase in python more easily!
 
 config = {
   "apiKey": "AIzaSyARCliKyACLYhK_1qlK8a3IUSvQ4Do_3Jc",
@@ -45,16 +39,10 @@ config = {
   "storageBucket": "uhs-devils-advocate.appspot.com",
 }
 
+# temporarily exposing apiKey so that next editors have access to it, in future will transition to using more secure environment variables instead
+
 firebase = pyrebase.initialize_app(config)
 dbp = firebase.database()
-
-# db = firestore.client()
-
-# from forms import LoginForm
-
-# from werkzeug.security import generate_password_hash, check_password_hash
-
-# import google.auth
 
 try:
     credentials, project = google.auth.default(
@@ -71,8 +59,7 @@ credentials = service_account.Credentials.from_service_account_file(
 scoped_credentials = credentials.with_scopes(
     ['https://www.googleapis.com/auth/cloud-platform'])
 
-# port = int(os.environ.get('PORT', 5000))
-
+# adding an admin section for editors-in-chief to be able to edit and manage articles!
 from flask_login import LoginManager, current_user, login_user, login_required, logout_user
 from forms import LoginForm
 from creds import ACCESS_CODE
@@ -112,16 +99,8 @@ class User(sql_db.Model):
         """False, as anonymous users aren't supported."""
         return False
 
-# @app.route('/temporary-test')
-# def temporary_test():
-#     sql_db.create_all()
-#     test_user = User(email="studentitteam@sfuhs.org")
-#     sql_db.session.add(test_user)
-#     sql_db.session.commit()
-
 @login.user_loader
 def load_user(user_id):
-    # return User.query.get(int(id))
     return User.query.filter_by(email=user_id).first()
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -133,9 +112,7 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         next_url = request.args.get("next")
-        print(next_url)
         if form.password.data != ACCESS_CODE:
-            print(form.password.data)
             alert='Invalid access code. Please try again or contact UHS administration for help.'
             return redirect(url_for('login', alert=alert))
         user = User.query.filter_by(email=form.email.data).first()
@@ -161,17 +138,11 @@ def logout():
 @cache.cached(timeout=50, key_prefix='all_info')
 def get_info():
     info = {}
-    # snapshot = db.reference('/authors').get()
-    # info["authors"] = []
-    # for key, val in snapshot.items():
-    #     if not val["role"] == "Contributing Writer":
-    #         info["authors"].append(val)
     ref = db.reference('/sections')
     snapshot = ref.get()
     info["sections"] = {}
     for (key,val) in snapshot.items():
          info["sections"][key] = val
-    # info["sections"] = ["Arts & Entertainment","Current Events","Food","Op-Ed","Sports","Back Page"]
     info["archive"] = [{"name": "March 2021", "id": "march-2021"},{"name":"October 2020","id":"october-2020"},{"name":"September 2020","id":"september-2020"},{"name":"February 2020","id":"february-2020"},{"name":"November 2019","id":"november-2019"}]
     return info
 
@@ -183,10 +154,9 @@ def get_senior_wills_info():
     senior_wills_info = {}
     count = 0
     for this_will in senior_wills_info_old:
+        # put this code in a try catch block in case editors formatted the data incorrectly/unexpectedly in the database
         try:
-            print(this_will)
             will_id = this_will["name"].lower().replace(" ","-")
-            # senior_wills_info[will_id] = {"timestamp":this_will[0],"email":this_will[1],	"name":this_will[2],	"cause_of_death":this_will[3],	"freshmen":this_will[4],	"sophomores":this_will[5],	"juniors":this_will[6],	"faculty":this_will[7]}
             senior_wills_info[will_id] = {}
             senior_wills_info[will_id]["index"] = count
             senior_wills_info[will_id]["cause_of_death"] = this_will["senior will - cause of death (optional, but encouraged)"]
@@ -202,9 +172,7 @@ def get_senior_wills_info():
             if this_will["faculty"]:
                 senior_wills_info[will_id]["faculty"] = this_will["faculty"].split("\n")
             count = count + 1
-            print(senior_wills_info[will_id])
         except Exception as e:
-            print("nope")
             print(e)
     return senior_wills_info
 
@@ -234,7 +202,6 @@ def get_author_info(author_list):
                 author_info["img"] = author_info["img"]
             else:
                 author_info["img"] = "/static/img/authors/"+author_info["name"]+".png"
-            # authors.append(author_info)
         else:
             author_info = {}
             author_info["img"] = "/static/img/authors/anonymous.png"
@@ -311,13 +278,7 @@ def internal_server_error(e):
 def index():
     info = {}
     info["features"] = get_featured_articles()
-    # info["features"].append({"title":"Sorrel: UHS's Michelin-Starred Neighbor","id":"sorrel","img":"no","author":"no","edition":"no"})
-    # info["features"].append({"title":"Eve Leupold '20 Breaks Down Her Favorite Holiday Movies","id":"eve_movies","img":"no","author":"no","edition":"no"})
-    # info["articles"] = [{"title":"Eve Leupold '20 Breaks Down Her Favorite Holiday Movies","id":"eve_movies","author":{"name":"Eve Leupold","img":"https://previews.dropbox.com/p/thumb/AAtSmlmLIMt_5Rw4jAaAu_bQcWxfEJNqwYsRy8grIObRuOgNLLFCrZ-_V8Ck3YxZ7DmNP9MrjeAIKq4S5vIFXw8BlS9354PnNjQP2_tI2wAThcQ8P_CVwIlgendC_6yp9SrMZmSxtKwIbRvL4Gd4jJ4bRtHtxRXb676981DDagTcbzfohDjTbZNDGlH874BSB6RbmEGJzXtHsPHXRQup-60Usa8MaYXSUxBHy-za6pP-d_VT1XqmV754rx2rrOOePzcEDwMkdv8qH1p5g7RC5wXx-xHF6dTckG_na8UVC7QRRNRtoPLqx4jLzNmyug8tbViDlXIUiGeg5YWYrskS3_KJL1fDqlGf5KYuTT8Z35Ov6Q/p.jpeg?size=2048x1536&size_mode=3"}}]
     return render_template('index.html', if_notification = False, notification = {"message":"The SENIOR WILLS are out in the latest edition!", "link":"/latest"}, info = info, data = get_info())
-    # archive_info = db.reference('/archive').child("february-2020").get()
-    # return render_template('archive.html', info = archive_info, data = get_info())
-	# return render_template('index.html', feature_no = feature_indexes, features = features, logged_in=current_user.is_authenticated)
 
 @app.route('/authors')
 @login_required
@@ -334,7 +295,6 @@ def authors():
         info["sections"][section] = {"title":section,"editors":[]}
     info["sections"]["EICs"] = {"title":"Editors in Chief","editors":[]}
     for author in all_authors:
-        print(author["role"])
         if author["role"] == "Editor in Chief":
             info["sections"]["EICs"]["editors"].append(author)
         else:
@@ -373,13 +333,11 @@ def get_author(author_id):
 @app.route('/sections/<section_id>')
 @login_required
 def get_section(section_id):
-    # section_info = {"title":section_id,"id":section_id}
     section_info = {}
     snapshot = db.reference('/sections').child(section_id).get()
     for key, val in snapshot.items():
         section_info[key] = val
     snapshot = db.reference('/articles').order_by_child('section').equal_to(section_id).get()
-    #snapshot = db.reference('/articles').order_by_child('section').equal_to(section_id).order_by_child('edition').equal_to(latest_edition).get()
     if snapshot:
         section_info["articles"] = []
         for key, val in snapshot.items():
@@ -397,72 +355,6 @@ def get_section(section_id):
 def get_article(article_id):
     article_info = get_article_info(article_id)
     article_info["features"] = get_featured_articles()
-# =======
-#     article_info = db.reference('/articles').child(article_id).get()
-#     # if not "authors" in article_info:
-#     #     article_info["authors"] = [article_info["author"]]
-#     # print(article_info["authors"])
-#     print(article_info["author_count"])
-#     if article_info["author_count"] == 2:
-#         article_info["author"] = article_info["authors"][0].title().replace("-"," ")+" & "+article_info["authors"][1].title().replace("-"," ")
-#     else:
-#         article_info["author"] = article_info["authors"][0].title().replace("-"," ")
-#     article_authors = []
-#     for this_author in article_info["authors"]:
-#         print(this_author)
-#         this_author_dict = db.reference('/authors').child(this_author).get()
-#         if this_author_dict:
-#             if "img" in this_author_dict and "drive.google.com" in this_author_dict["img"]:
-#                 this_author_dict["img"] = this_author_dict["img"]
-#             else:
-#                 this_author_dict["img"] = "/static/img/authors/"+this_author_dict["name"]+".png"
-#             article_authors.append(this_author_dict)
-#         else:
-#             author_dict = {}
-#             author_dict["img"] = "/static/img/authors/anonymous.png"
-#             author_dict["name"] = this_author.title().replace("-"," ")
-#             author_dict["id"] = this_author
-#             article_authors.append(author_dict)
-#     article_info["authors"] = article_authors
-#     article_info["author"] = article_info["authors"][0]
-#     print(article_info["authors"])
-#     print(article_info["author_count"])
-#     snapshot = db.reference('/articles').order_by_child('featured').equal_to(True).get()
-#     if snapshot:
-#         article_info["features"] = []
-#         for key, val in snapshot.items():
-#             article_info2 = val
-#             if article_info2["author_count"] == 2:
-#                 article_info2["author"] = article_info2["authors"][0].title().replace("-"," ")+" & "+article_info2["authors"][1].title().replace("-"," ")
-#             else:
-#                 article_info2["author"] = article_info2["authors"][0].title().replace("-"," ")
-#             article_authors = []
-#             if not "authors" in article_info2:
-#                 article_info2o["authors"] = [article_info2["author"]]
-#             for this_author in article_info2["authors"]:
-#                 print(this_author)
-#                 this_author_dict = db.reference('/authors').child(this_author).get()
-#                 if this_author_dict:
-#                     if "img" in this_author_dict and "drive.google.com" in this_author_dict["img"]:
-#                         this_author_dict["img"] = this_author_dict["img"]
-#                     else:
-#                         this_author_dict["img"] = "/static/img/authors/"+this_author_dict["name"]+".png"
-#                     article_authors.append(this_author_dict)
-#                 else:
-#                     author_dict = {}
-#                     author_dict["img"] = "/static/img/authors/anonymous.png"
-#                     author_dict["name"] = this_author.title().replace("-"," ")
-#                     author_dict["id"] = this_author
-#                     article_authors.append(author_dict)
-#             article_info2["authors"] = article_authors
-#             article_info2["author"] = article_info2["authors"][0]
-#             # this_article_info["author_info"] = db.reference('/authors').child(this_article_info["author"]).get()
-#             # if this_article_info["author_info"]:
-#             #     this_article_info["author"] = this_article_info["author_info"]
-#             article_info["features"].append(article_info2)
-#     if "img" in article_info:
-#         if "drive.google.com/open" in article_info["img"]:
-#             article_info["img"] = "https://drive.google.com/uc?export=view&id="+article_info["img"].split("le.com/open?id=")[1]
     if current_user.is_authenticated:
         user_email = current_user.get_id()
     else:
@@ -511,8 +403,6 @@ def get_edition(edition_id):
                 if this_article_info["featured"] == True:
                     this_article_info["index"] = len(edition_info["features"])
                     edition_info["features"].append(this_article_info)
-    # edition_info["features"] = [{"title":"Sorrel: UHS's Michelin-Starred Neighbor","id":"sorrel"}, {"title":"Eve Leupold '20 Breaks Down Her Favorite Holiday Movies","id":"eve_movies"},{"title": "Lukas Bacho '20's Guide to College Etiquette","id":"lukas_coletiquette"}]
-    # edition_info["articles"] = [{"title":"Eve Leupold '20 Breaks Down Her Favorite Holiday Movies","id":"eve_movies","author":{"name":"Eve Leupold","img":"https://previews.dropbox.com/p/thumb/AAtSmlmLIMt_5Rw4jAaAu_bQcWxfEJNqwYsRy8grIObRuOgNLLFCrZ-_V8Ck3YxZ7DmNP9MrjeAIKq4S5vIFXw8BlS9354PnNjQP2_tI2wAThcQ8P_CVwIlgendC_6yp9SrMZmSxtKwIbRvL4Gd4jJ4bRtHtxRXb676981DDagTcbzfohDjTbZNDGlH874BSB6RbmEGJzXtHsPHXRQup-60Usa8MaYXSUxBHy-za6pP-d_VT1XqmV754rx2rrOOePzcEDwMkdv8qH1p5g7RC5wXx-xHF6dTckG_na8UVC7QRRNRtoPLqx4jLzNmyug8tbViDlXIUiGeg5YWYrskS3_KJL1fDqlGf5KYuTT8Z35Ov6Q/p.jpeg?size=2048x1536&size_mode=3"}}]
     return render_template('edition.html', info = edition_info, data = get_info())
 
 @app.route('/2020-senior-wills')
@@ -533,11 +423,10 @@ def senior_wills_2020():
         count = count + 1
     return render_template('senior_wills.html', info = senior_wills_info, data = get_info())
 
+# quick update to add senior wills for this year!
+
 import gspread
 gc = gspread.service_account(filename='service_account.json')
-
-# Open a spreadsheet by title
-
 
 @app.route('/2021-senior-wills')
 def senior_wills_2021():
@@ -549,25 +438,7 @@ def senior_wills_2021_formatted():
     senior_wills_info = get_senior_wills_info()
     return render_template('formatted_senior_wills.html', info = senior_wills_info, data = get_info())
 
-# @app.route('/pdf-senior-wills')
-# def senior_wills_2020_pdf():
-#     query = request.args.get('query')
-#     senior_wills_info = db.reference('/archive').child("2020-senior-wills").child("senior-wills").order_by_key().get()
-#     if(query):
-#         query = query.lower()
-#         old_senior_wills_info = senior_wills_info
-#         senior_wills_info = {}
-#         for this_will in old_senior_wills_info:
-#             if(matches_query(old_senior_wills_info[this_will], query)):
-#                 senior_wills_info[old_senior_wills_info[this_will]["id"]] = old_senior_wills_info[this_will]
-#     count = 0
-#     for this_will in senior_wills_info:
-#         senior_wills_info[this_will]["index"] = count
-#         count = count + 1
-#     return render_template('all_senior_wills.html', info = senior_wills_info, data = get_info())
-
 @app.route('/2021-senior-wills/<senior_will_id>')
-# @login_required
 def get_senior_will(senior_will_id):
     senior_will_info = get_senior_wills_info()
     senior_will_info = senior_will_info[senior_will_id]
@@ -692,37 +563,6 @@ def search():
                     article["img"] = "https://drive.google.com/uc?export=view&id="+article["img"].split("le.com/open?id=")[1]
             articles.append(article)
     return render_template('search.html', data = get_info(), info = articles)
-
-# from pdf_manager import make_pdf_from_url
-
-# @app.route('/test-pdf')
-# def test_pdf():
-#     query = request.args.get('query')
-#     senior_wills_info = db.reference('/archive').child("2020-senior-wills").child("senior-wills").order_by_key().get()
-#     if(query):
-#         query = query.lower()
-#         old_senior_wills_info = senior_wills_info
-#         senior_wills_info = {}
-#         for this_will in old_senior_wills_info:
-#             if(matches_query(old_senior_wills_info[this_will], query)):
-#                 senior_wills_info[old_senior_wills_info[this_will]["id"]] = old_senior_wills_info[this_will]
-#     count = 0
-#     for this_will in senior_wills_info:
-#         senior_wills_info[this_will]["index"] = count
-#         count = count + 1
-#     return render_template('test_pdf.html', info = senior_wills_info, data = get_info())
-
-
-# import pdfkit
-# config = pdfkit.configuration(wkhtmltopdf='/opt/bin/wkhtmltopdf')
-
-# @app.route('/make-pdf')
-# def make_pdf():
-#     pdfkit.from_url('http://devils-advocate.herokuapp.com/2020-senior-wills/tarak-duggal', 'test.pdf')
-#     # make_pdf_from_url("http://devils-advocate.herokuapp.com/2020-senior-wills/tarak-duggal")
-#     return redirect(url_for('index'))
-
-
 
 @app.route('/sitemap.xml', methods=['GET'])
 def sitemap():

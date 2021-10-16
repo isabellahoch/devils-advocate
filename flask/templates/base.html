@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="The Devils' Advocate is the school newspaper of San Francisco University High School!">
     <meta name="keywords" content="Devils' Advocate, UHS, SFUHS, University High School, newspaper, Red Devils, {% block keywords %}{% endblock %}" />
-    <!-- <meta name="google-site-verification" content="Ss04r2RuHsIZudXXchAJPMfK612nDTXvgSj6cWb80Uo" />
-    <meta name="p:domain_verify" content="ea53476f43b5e9c95ee0b0b8ede58130"/> -->
+    <meta name="google-site-verification" content="Ss04r2RuHsIZudXXchAJPMfK612nDTXvgSj6cWb80Uo" />
+    <meta name="p:domain_verify" content="ea53476f43b5e9c95ee0b0b8ede58130"/>
     {% block meta %}{% endblock %}
     <title>{% block title %}{% endblock %}THE DEVILS' ADVOCATE</title>
     <link rel="canonical" href="http://da.sfuhs.org">
@@ -22,201 +22,18 @@
     :root {
     --main-color: #ab192d !important; 
   }
-
-  h1 {
-  text-transform: uppercase;
-  line-height: 2em;
-  }
-
-  #page-content-wrapper p, li, span {
-    font-family: 'Libre Baskerville', serif !important;
-  }
-
-[class^="entypo-"]:before,
-[class*="entypo-"]:before {
-  font-family: 'entypo', sans-serif;
-}
-
-.form_title {
-  padding-top: 20px !important;
-  font-size:10pt !important;
-}
-
-/* mobile fix */
-@media (max-width: 768px) {
-  .dropdown-lr h3 {
-    color: #eee;
-  }
-  .dropdown-lr label {
-    color: #eee;
-  }
-
-  #logo {
-  	padding-right:75px
-  }
-
-}
-
-.link {
-  color: var(--main-color)
-}
-
-.nav li .active > a {
-  /* color: #000 !important; */
-}
-
-.nav-sublink {
-  text-transform:uppercase;
-  color:#fff;
-}
-
-.navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:focus, .navbar-inverse .navbar-nav>.active>a:hover {
-    background-color: inherit;
-    color: var(--main-color);
-}
-
-.nav li .active {
-  color: #d6d6d6;
-}
-
-.navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:focus, .navbar-inverse .navbar-nav>.active>a:hover {
-    background-color: inherit;
-    /*color: #4eb7c0;*/
-    color: var(--main-color)
-}
-
-a:hover {
-  color: var(--main-color) !important;
-  text-decoration: underline !important;
-}
-
-.link:hover {
-  color: var(--main-color) !important;
-  text-decoration: underline !important;
-}
-
-.link {
-  color: var(--main-color)
-}
-
-a {
-  color: var(--main-color)
-}
-
-.title {
-  width:100%;
-}
-
-.btn-custom {
-    color: #fff;
-    background-color: var(--main-color) !important;
-    border-color: var(--main-color) !important;
-    width:100%;
-    min-width:fit-content !important;
-}
-
-.btn-custom:hover {
-  color: #efefef !important;
-}
-
-.navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form {
-  border-style: none !important;
-}
-
-a.active-sub-link {
-  color: #A8A8A8 !important;
-}
-
-.divider {
-	margin-top: 5px;
-    font-size: 25px;
-}
-
-/*@media (min-width: 768px) {
-
-  .navbar-collapse.collapse {
-  width: 95vw !important;
-}
-
-@media (min-width: 830px) {
-
-  .navbar-collapse.collapse {
-  width: 90vw !important;
-}*/
-
-
-@media (min-width: 768px) {
-.navbar-expand-md .navbar-toggler {
-    display: none !important;
-}
-}
-
-@media screen and (min-width: 769px) {
-  #navbar {
-    font-size: 11px;
-  }
-}
-
-@media screen and (min-width: 788px) {
-  #navbar {
-    font-size: 12px !important;
-  }
-}
-
-#navbar li {
-	padding: 20px;
-}
-
-.navbar-nav.navbar-center {
-    position: absolute;
-    left: 50%;
-    transform: translatex(-50%);
-}
-
-
-@media (max-width: 768px) {
-  #menu {
-    display: unset !important;
-  }
-  #header {
-    display:none;
-  }
-  #horizontal-menu {
-      display: none !important;
-  }
-  #sidebar-wrapper {
-    margin-top:75px !important;
-  }
-  #page-content-wrapper {
-    padding-top:120px;
-  }
-  #remove-border-mobile {
-    border-left:unset !important;
-  }
-}
-
-.nav-link {
-  padding: 0px !important;
-}
-
   </style>
  {% block head %}{% endblock %}
-
-<!--  <script id="mcjs">!function(c,h,i,m,p){m=c.createElement(h),p=c.getElementsByTagName(h)[0],m.async=1,m.src=i,p.parentNode.insertBefore(m,p)}(document,"script","https://chimpstatic.com/mcjs-connected/js/users/49c78097cadb509a2727708cc/022a632cd4b59967de78c0ad5.js");</script> -->
     </head>
 
 <body>
-  <!-- <div id="password-protected-area-wrapper" style="display:none"> -->
   <div>
+    <!-- notification will be displayed temporarily above the header! -->
   {% block notification %}{% endblock %}
-	<!-- <div class="container">
-		<a href="/"><img src="http://devils-advocate.herokuapp.com/static/img/logo.png" style="max-width: 100%;/* max-height: 100px; */padding-left: 50px;padding-right: 50px;"></a>
-  </div> -->
   <div class="row header align-items-center justify-content-center text-center hidden-sm-down	" id="header">
     <a href="/" style="width:100%; "><img id="logo_header" src="/static/img/updated_logo.png" style="max-width: 100%; width:100%; /* max-height: 100px; */padding-left: 50px;padding-right: 50px;"></a>
   </div>
 	<nav class="navbar navbar-expand bg-primary navbar-light bg-light hidden-sm-down" style="background-color:#ab192d !important; font-family: 'Libre Baskerville',sans-serif" id="horizontal-menu">
-            <!--<div class="navbar-collapse collapse">-->
               <ul class="nav justify-content-center align-items-center" style="width:100%; font-size: 13pt">
                   <li class="nav-item dropdown">
                     <a class="nav-item dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color:#fff">
@@ -231,11 +48,9 @@ a.active-sub-link {
                   <li class="nav-link"><a class="nav-sublink" href="/about">about</a></li>
                   <li class="nav-link"><a class="nav-sublink" href="/staff">staff</a></li>
                   <li class="nav-link"><a class="nav-sublink" href="/contact">contact</a></li>
-                  <!-- <li class="nav-link"><a class="nav-sublink" href="/subscribe">newsletter</a></li> -->
                   <li class="nav-link"><a class="nav-sublink" href="/latest">latest edition</a></li>
                   <li class="nav-link"><a class="nav-sublink" href="/search">search</a></li>
               </ul>
-            <!--</div>-->
         </nav>
         <nav class="navbar navbar-light bg-light navbar-fixed-top" id="menu" style="display:none">
           <div class="container text-center justify-content-center align-items-center">
@@ -319,6 +134,7 @@ a.active-sub-link {
 					<li style="padding:15px">
 						<a href="/crossword" class="btn btn-custom">CROSSWORD</a>
 					</li>
+          <!-- EICs said to remove youtube link for now so I'm just leaving it commented out -->
           <!-- <li style="padding:15px">
             <a href="/youtube" class="btn btn-custom">LIE WITNESS NEWS</a>
           </li> -->
@@ -332,18 +148,10 @@ a.active-sub-link {
     <div class="row d-flex text-center justify-content-center mb-md-0 mb-4" style="padding-top: 25px; height: 75px;">
       <div class="col">
         <div class="social-footer mb-5 flex-center social-links" id="social-media-links" style="font-size:25px">
-          <!--Facebook-->
-          <!-- <a class="icons-sm fb-ic" href="https://www.facebook.com/UHS_Student_IT"><i class="fab fa-facebook-f"> </i></a> -->
           <!--Twitter-->
           <a class="icons-sm tw-ic" href="https://twitter.com/sfuhsda"><i class="fab fa-twitter"> </i></a>
-          <!--Google +-->
-          <!-- <a class="icons-sm gplus-ic" href="https://plus.google.com/106958539680238184412"><i class="fab fa-google-plus"> </i></a> -->
-          <!--Linkedin-->
-          <!-- <a class="icons-sm gh-ic" href="https://www.github.com/isabellahoch"><i class="fab fa-github"> </i></a>
-          Instagram -->
+          <!--Instagram -->
           <a class="icons-sm ins-ic" href="https://www.instagram.com/uhsdevilsadvocate/"><i class="fab fa-instagram"> </i></a>
-          <!--Pinterest-->
-          <!-- <a class="icons-sm pin-ic" href="https://www.pinterest.com/uhs-student-it-team/"><i class="fab fa-pinterest"> </i></a> -->
         </div>
       </div>
     </div>
@@ -387,19 +195,11 @@ document.getElementById("copyright_year").innerHTML = year.toString();
                 e.preventDefault();
                 $("#wrapper").toggleClass("toggled");
             });
-
-            // $(window).resize(function(e) {
-            //   if($(window).width()<=768){
-            //     $("#wrapper").removeClass("toggled");
-            //   }else{
-            //     $("#wrapper").addClass("toggled");
-            //   }
-            // });
           });
            
 </script>
 <script>
-	$(document).ready(function() { //<<====== wont work without this
+	$(document).ready(function() { 
       $(window).scroll(function() {
           if($("#wrapper").hasClass("toggled")) {
           	$("#wrapper").removeClass("toggled");
